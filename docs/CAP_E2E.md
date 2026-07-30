@@ -56,3 +56,11 @@ The full scheduled source-to-dashboard E2E closes only when:
 4. the Function and schedule are deployed and invoked;
 5. `scripts/e2e.py` passes using that Function invocation, with no synthetic
    record used as source proof.
+
+## Publication gate
+
+- The `main` branch was pushed to the dedicated private GitHub repository.
+- The local pre-push verification passed all 9 tests.
+- GitHub Actions did not allocate a runner (`runner_id: 0`, no steps). Its
+  annotation reports an account billing or spending-limit restriction. This is
+  GitHub account infrastructure, not a repository test failure.
