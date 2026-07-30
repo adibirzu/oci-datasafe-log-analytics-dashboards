@@ -167,13 +167,15 @@ PYTHONPATH=src python scripts/e2e.py \
   --profile cap \
   --compartment-id '<COMPARTMENT_OCID>' \
   --invoke-function-id '<FUNCTION_OCID>' \
+  --require-function-export \
   --deploy-dashboards
 ```
 
 The receipt is written under ignored `evidence/live/`. E2E success requires a
-real Log Analytics row and, when deployment is requested, all dashboards to be
-present. Query syntax success or HTTP 200 alone is not treated as end-to-end
-proof.
+real schema-v2 Log Analytics row, a positive Function export count when
+`--require-function-export` is used, and, when deployment is requested, all
+dashboards to be present. Query syntax success or HTTP 200 alone is not treated
+as end-to-end proof.
 
 ## Operations and security
 

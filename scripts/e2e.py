@@ -36,6 +36,11 @@ def main() -> int:
     parser.add_argument("--profile", default="cap")
     parser.add_argument("--compartment-id", required=True)
     parser.add_argument("--invoke-function-id")
+    parser.add_argument(
+        "--require-function-export",
+        action="store_true",
+        help="Require this invocation to export at least one schema-v2 Data Safe event.",
+    )
     parser.add_argument("--lookback-minutes", type=int, default=60)
     parser.add_argument("--poll-seconds", type=int, default=300)
     parser.add_argument("--deploy-dashboards", action="store_true")
@@ -61,6 +66,9 @@ def main() -> int:
         ]
     )
 
+    invocation_exported = None
+    if args.require_function_export and not args.invoke_function_id:
+        raise SystemExit("--require-function-export requires --invoke-function-id")
     if args.invoke_function_id:
         management = oci.functions.FunctionsManagementClient(config)
         invoke_endpoint = management.get_function(
@@ -69,11 +77,17 @@ def main() -> int:
         functions = oci.functions.FunctionsInvokeClient(
             config, service_endpoint=invoke_endpoint
         )
-        functions.invoke_function(
+        response = functions.invoke_function(
             args.invoke_function_id,
             invoke_function_body=b"{}",
             fn_invoke_type="sync",
         )
+        payload = (
+            response.data.content
+            if hasattr(response.data, "content")
+            else bytes(response.data)
+        )
+        invocation_exported = int(json.loads(payload.decode()).get("exported", 0))
 
     parse_failures = []
     for path in sorted(QUERY_DIR.glob("*.json")):
@@ -87,6 +101,11 @@ def main() -> int:
             parse_failures.append({"query": path.stem, "error": type(exc).__name__})
 
     source_query = "'Log Source' = 'OCI Data Safe Database Audit' | stats count as Events"
+    if args.require_function_export:
+        source_query = (
+            "'Log Source' = 'OCI Data Safe Database Audit' "
+            "and 'Schema Version' = '2.0' | stats count as Events"
+        )
     deadline = time.monotonic() + args.poll_seconds
     rows = []
     while time.monotonic() < deadline:
@@ -133,11 +152,13 @@ def main() -> int:
             "dashboard_bundle_current": True,
             "query_count": len(list(QUERY_DIR.glob("*.json"))),
             "parse_failures": parse_failures,
+            "function_exported": invocation_exported,
             "log_analytics_rows_available": bool(rows),
             "dashboard_count_expected": len(expected_names),
             "dashboard_count_present": len(expected_names & deployed_names),
         },
         "ready": not parse_failures
+        and (not args.require_function_export or (invocation_exported or 0) > 0)
         and bool(rows)
         and (not args.deploy_dashboards or expected_names <= deployed_names),
     }

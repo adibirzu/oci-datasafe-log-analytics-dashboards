@@ -88,6 +88,9 @@ and must never be reported as proof that Data Safe collection is working.
 3. Review Terraform plan.
 4. Apply and invoke once manually.
 5. Run `scripts/e2e.py` and preserve the redacted receipt outside Git.
+   Use `--invoke-function-id <FUNCTION_OCID> --require-function-export` for
+   release evidence; this requires a positive export count and a schema-v2 row
+   in Log Analytics.
 6. Confirm the scheduled invocation before closing the change.
 
 ## Idempotent repair
