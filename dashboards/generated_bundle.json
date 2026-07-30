@@ -571,7 +571,7 @@
           "compartmentId": "${compartment_id}",
           "dataConfig": [],
           "definedTags": {},
-          "description": "Data Safe event categories and outcomes.",
+          "description": "Data Safe operations, audit types, and outcomes.",
           "displayName": "Events Summary",
           "featuresConfig": {
             "crossService": {
@@ -597,7 +597,7 @@
           "type": "SEARCH_SHOW_IN_DASHBOARD",
           "uiConfig": {
             "enableWidgetInApp": true,
-            "queryString": "'Log Source' = 'OCI Data Safe Database Audit' | stats count as Events by 'Event Category', 'Operation Status' | sort -Events",
+            "queryString": "'Log Source' = 'OCI Data Safe Database Audit' | stats count as Events by 'Operation', 'Audit Type', 'Operation Status' | sort -Events | head 50",
             "scopeFilters": {
               "LogGroup": {
                 "flags": {
@@ -874,6 +874,1393 @@
         "suiteName": "OCI Data Safe Audit Analytics",
         "tabId": "activity-overview",
         "tabLabel": "Activity Overview"
+      }
+    },
+    {
+      "compartmentId": "${compartment_id}",
+      "dashboardId": "datasafe-audit-predefined-reports",
+      "dataConfig": [],
+      "definedTags": {},
+      "description": "All predefined OCI Data Safe Activity Auditing reports, recreated as Log Analytics saved-search visualizations.",
+      "displayName": "Data Safe Audit | Predefined Reports",
+      "drilldownConfig": [],
+      "featuresConfig": {
+        "crossService": {
+          "shared": false
+        },
+        "serviceTypes": [
+          "log-analytics"
+        ]
+      },
+      "freeformTags": {
+        "solution": "oci-datasafe-log-analytics",
+        "suite": "data-safe-audit",
+        "tab": "predefined-reports"
+      },
+      "isFavorite": false,
+      "isOobDashboard": false,
+      "isShowDescription": true,
+      "isShowInHome": true,
+      "metadataVersion": "2.0",
+      "nls": {},
+      "parametersConfig": [
+        {
+          "displayName": "Log Group Compartment",
+          "localStorageKey": "log-analytics-loggroup-filter",
+          "name": "log-analytics-loggroup-filter",
+          "parametersMap": {
+            "isStoreInLocalStorage": true
+          },
+          "savedSearchId": "OOBSS-management-dashboard-filter-4a",
+          "state": "DEFAULT",
+          "uiConfig": {
+            "filterName": "log-analytics-loggroup-filter",
+            "vizFilterType": "lxLogGroupDashFilterType"
+          },
+          "width": 4
+        },
+        {
+          "displayName": "$(bundle.globalSavedSearch.TIME)",
+          "name": "time",
+          "src": "$(context.time)"
+        }
+      ],
+      "providerId": "log-analytics",
+      "providerName": "Log Analytics",
+      "providerVersion": "3.0.0",
+      "savedSearches": [
+        {
+          "compartmentId": "${compartment_id}",
+          "dataConfig": [],
+          "definedTags": {},
+          "description": "All collected database audit activity, grouped by target, operation, and outcome.",
+          "displayName": "All Activity Report",
+          "featuresConfig": {
+            "crossService": {
+              "shared": false
+            },
+            "serviceTypes": [
+              "log-analytics"
+            ]
+          },
+          "freeformTags": {
+            "solution": "oci-datasafe-log-analytics",
+            "visualization": "summary_table"
+          },
+          "id": "all_activity_report",
+          "isOobSavedSearch": false,
+          "metadataVersion": "2.0",
+          "nls": {},
+          "parametersConfig": [],
+          "providerId": "log-analytics",
+          "providerName": "Log Analytics",
+          "providerVersion": "3.0.0",
+          "screenImage": " ",
+          "type": "SEARCH_SHOW_IN_DASHBOARD",
+          "uiConfig": {
+            "enableWidgetInApp": true,
+            "queryString": "'Log Source' = 'OCI Data Safe Database Audit' | stats count as Events by 'Data Safe Target Name', 'Operation', 'Operation Status' | sort -Events | head 100",
+            "scopeFilters": {
+              "LogGroup": {
+                "flags": {
+                  "IncludeSubCompartments": true
+                },
+                "type": "LogGroup",
+                "values": [
+                  {
+                    "label": "solution",
+                    "value": "${compartment_id}"
+                  }
+                ]
+              },
+              "filters": [
+                {
+                  "flags": {
+                    "IncludeSubCompartments": true
+                  },
+                  "type": "LogGroup",
+                  "values": [
+                    {
+                      "label": "solution",
+                      "value": "${compartment_id}"
+                    }
+                  ]
+                }
+              ],
+              "isGlobal": false
+            },
+            "showTitle": true,
+            "timeSelection": {
+              "timePeriod": "l7d"
+            },
+            "visualizationOptions": {},
+            "visualizationType": "summary_table",
+            "vizType": "lxSavedSearchWidgetType"
+          },
+          "widgetTemplate": "visualizations/widgetTemplate.html",
+          "widgetVM": "visualizations/widget"
+        },
+        {
+          "compartmentId": "${compartment_id}",
+          "dataConfig": [],
+          "definedTags": {},
+          "description": "Events classified by Data Safe as administrator activity.",
+          "displayName": "Admin Activity Report",
+          "featuresConfig": {
+            "crossService": {
+              "shared": false
+            },
+            "serviceTypes": [
+              "log-analytics"
+            ]
+          },
+          "freeformTags": {
+            "solution": "oci-datasafe-log-analytics",
+            "visualization": "summary_table"
+          },
+          "id": "admin_activity_report",
+          "isOobSavedSearch": false,
+          "metadataVersion": "2.0",
+          "nls": {},
+          "parametersConfig": [],
+          "providerId": "log-analytics",
+          "providerName": "Log Analytics",
+          "providerVersion": "3.0.0",
+          "screenImage": " ",
+          "type": "SEARCH_SHOW_IN_DASHBOARD",
+          "uiConfig": {
+            "enableWidgetInApp": true,
+            "queryString": "'Log Source' = 'OCI Data Safe Database Audit' and 'Admin User' = 1 | stats count as Events by 'Data Safe Target Name', 'Database User', 'Operation', 'Operation Status' | sort -Events | head 100",
+            "scopeFilters": {
+              "LogGroup": {
+                "flags": {
+                  "IncludeSubCompartments": true
+                },
+                "type": "LogGroup",
+                "values": [
+                  {
+                    "label": "solution",
+                    "value": "${compartment_id}"
+                  }
+                ]
+              },
+              "filters": [
+                {
+                  "flags": {
+                    "IncludeSubCompartments": true
+                  },
+                  "type": "LogGroup",
+                  "values": [
+                    {
+                      "label": "solution",
+                      "value": "${compartment_id}"
+                    }
+                  ]
+                }
+              ],
+              "isGlobal": false
+            },
+            "showTitle": true,
+            "timeSelection": {
+              "timePeriod": "l7d"
+            },
+            "visualizationOptions": {},
+            "visualizationType": "summary_table",
+            "vizType": "lxSavedSearchWidgetType"
+          },
+          "widgetTemplate": "visualizations/widgetTemplate.html",
+          "widgetVM": "visualizations/widget"
+        },
+        {
+          "compartmentId": "${compartment_id}",
+          "dataConfig": [],
+          "definedTags": {},
+          "description": "Database account, role, and privilege changes.",
+          "displayName": "User and Entitlement Changes Report",
+          "featuresConfig": {
+            "crossService": {
+              "shared": false
+            },
+            "serviceTypes": [
+              "log-analytics"
+            ]
+          },
+          "freeformTags": {
+            "solution": "oci-datasafe-log-analytics",
+            "visualization": "table"
+          },
+          "id": "user_entitlement_changes_report",
+          "isOobSavedSearch": false,
+          "metadataVersion": "2.0",
+          "nls": {},
+          "parametersConfig": [],
+          "providerId": "log-analytics",
+          "providerName": "Log Analytics",
+          "providerVersion": "3.0.0",
+          "screenImage": " ",
+          "type": "SEARCH_SHOW_IN_DASHBOARD",
+          "uiConfig": {
+            "enableWidgetInApp": true,
+            "queryString": "'Log Source' = 'OCI Data Safe Database Audit' and 'Operation' in ('CREATE USER','ALTER USER','DROP USER','GRANT','REVOKE','CREATE ROLE','ALTER ROLE','DROP ROLE','SET ROLE') | fields Time, 'Data Safe Target Name', 'Database User', 'Operation', 'Target User', 'Object Owner', 'Object Name', 'Operation Status' | sort -Time",
+            "scopeFilters": {
+              "LogGroup": {
+                "flags": {
+                  "IncludeSubCompartments": true
+                },
+                "type": "LogGroup",
+                "values": [
+                  {
+                    "label": "solution",
+                    "value": "${compartment_id}"
+                  }
+                ]
+              },
+              "filters": [
+                {
+                  "flags": {
+                    "IncludeSubCompartments": true
+                  },
+                  "type": "LogGroup",
+                  "values": [
+                    {
+                      "label": "solution",
+                      "value": "${compartment_id}"
+                    }
+                  ]
+                }
+              ],
+              "isGlobal": false
+            },
+            "showTitle": true,
+            "timeSelection": {
+              "timePeriod": "l7d"
+            },
+            "visualizationOptions": {},
+            "visualizationType": "table",
+            "vizType": "lxSavedSearchWidgetType"
+          },
+          "widgetTemplate": "visualizations/widgetTemplate.html",
+          "widgetVM": "visualizations/widget"
+        },
+        {
+          "compartmentId": "${compartment_id}",
+          "dataConfig": [],
+          "definedTags": {},
+          "description": "Changes to unified, traditional, and fine-grained audit policy configuration.",
+          "displayName": "Audit Policy Changes Report",
+          "featuresConfig": {
+            "crossService": {
+              "shared": false
+            },
+            "serviceTypes": [
+              "log-analytics"
+            ]
+          },
+          "freeformTags": {
+            "solution": "oci-datasafe-log-analytics",
+            "visualization": "table"
+          },
+          "id": "audit_policy_changes_report",
+          "isOobSavedSearch": false,
+          "metadataVersion": "2.0",
+          "nls": {},
+          "parametersConfig": [],
+          "providerId": "log-analytics",
+          "providerName": "Log Analytics",
+          "providerVersion": "3.0.0",
+          "screenImage": " ",
+          "type": "SEARCH_SHOW_IN_DASHBOARD",
+          "uiConfig": {
+            "enableWidgetInApp": true,
+            "queryString": "'Log Source' = 'OCI Data Safe Database Audit' and 'Operation' in ('AUDIT','NOAUDIT','CREATE AUDIT POLICY','ALTER AUDIT POLICY','DROP AUDIT POLICY','EXECUTE') | fields Time, 'Data Safe Target Name', 'Database User', 'Operation', 'Object Owner', 'Object Name', 'FGA Policy Name', 'Operation Status' | sort -Time",
+            "scopeFilters": {
+              "LogGroup": {
+                "flags": {
+                  "IncludeSubCompartments": true
+                },
+                "type": "LogGroup",
+                "values": [
+                  {
+                    "label": "solution",
+                    "value": "${compartment_id}"
+                  }
+                ]
+              },
+              "filters": [
+                {
+                  "flags": {
+                    "IncludeSubCompartments": true
+                  },
+                  "type": "LogGroup",
+                  "values": [
+                    {
+                      "label": "solution",
+                      "value": "${compartment_id}"
+                    }
+                  ]
+                }
+              ],
+              "isGlobal": false
+            },
+            "showTitle": true,
+            "timeSelection": {
+              "timePeriod": "l7d"
+            },
+            "visualizationOptions": {},
+            "visualizationType": "table",
+            "vizType": "lxSavedSearchWidgetType"
+          },
+          "widgetTemplate": "visualizations/widgetTemplate.html",
+          "widgetVM": "visualizations/widget"
+        },
+        {
+          "compartmentId": "${compartment_id}",
+          "dataConfig": [],
+          "definedTags": {},
+          "description": "Successful and failed database authentication events.",
+          "displayName": "Login Activity Report",
+          "featuresConfig": {
+            "crossService": {
+              "shared": false
+            },
+            "serviceTypes": [
+              "log-analytics"
+            ]
+          },
+          "freeformTags": {
+            "solution": "oci-datasafe-log-analytics",
+            "visualization": "summary_table"
+          },
+          "id": "login_activity_report",
+          "isOobSavedSearch": false,
+          "metadataVersion": "2.0",
+          "nls": {},
+          "parametersConfig": [],
+          "providerId": "log-analytics",
+          "providerName": "Log Analytics",
+          "providerVersion": "3.0.0",
+          "screenImage": " ",
+          "type": "SEARCH_SHOW_IN_DASHBOARD",
+          "uiConfig": {
+            "enableWidgetInApp": true,
+            "queryString": "'Log Source' = 'OCI Data Safe Database Audit' and 'Operation' in ('LOGIN','LOGON','LOGOFF') | stats count as Events by 'Data Safe Target Name', 'Database User', 'Operation Status', 'Client Host' | sort -Events | head 100",
+            "scopeFilters": {
+              "LogGroup": {
+                "flags": {
+                  "IncludeSubCompartments": true
+                },
+                "type": "LogGroup",
+                "values": [
+                  {
+                    "label": "solution",
+                    "value": "${compartment_id}"
+                  }
+                ]
+              },
+              "filters": [
+                {
+                  "flags": {
+                    "IncludeSubCompartments": true
+                  },
+                  "type": "LogGroup",
+                  "values": [
+                    {
+                      "label": "solution",
+                      "value": "${compartment_id}"
+                    }
+                  ]
+                }
+              ],
+              "isGlobal": false
+            },
+            "showTitle": true,
+            "timeSelection": {
+              "timePeriod": "l7d"
+            },
+            "visualizationOptions": {},
+            "visualizationType": "summary_table",
+            "vizType": "lxSavedSearchWidgetType"
+          },
+          "widgetTemplate": "visualizations/widgetTemplate.html",
+          "widgetVM": "visualizations/widget"
+        },
+        {
+          "compartmentId": "${compartment_id}",
+          "dataConfig": [],
+          "definedTags": {},
+          "description": "Read access to database data and objects.",
+          "displayName": "Data Access Report",
+          "featuresConfig": {
+            "crossService": {
+              "shared": false
+            },
+            "serviceTypes": [
+              "log-analytics"
+            ]
+          },
+          "freeformTags": {
+            "solution": "oci-datasafe-log-analytics",
+            "visualization": "summary_table"
+          },
+          "id": "data_access_report",
+          "isOobSavedSearch": false,
+          "metadataVersion": "2.0",
+          "nls": {},
+          "parametersConfig": [],
+          "providerId": "log-analytics",
+          "providerName": "Log Analytics",
+          "providerVersion": "3.0.0",
+          "screenImage": " ",
+          "type": "SEARCH_SHOW_IN_DASHBOARD",
+          "uiConfig": {
+            "enableWidgetInApp": true,
+            "queryString": "'Log Source' = 'OCI Data Safe Database Audit' and 'Operation' in ('SELECT','READ') | stats count as Events by 'Data Safe Target Name', 'Database User', 'Object Owner', 'Object Name' | sort -Events | head 100",
+            "scopeFilters": {
+              "LogGroup": {
+                "flags": {
+                  "IncludeSubCompartments": true
+                },
+                "type": "LogGroup",
+                "values": [
+                  {
+                    "label": "solution",
+                    "value": "${compartment_id}"
+                  }
+                ]
+              },
+              "filters": [
+                {
+                  "flags": {
+                    "IncludeSubCompartments": true
+                  },
+                  "type": "LogGroup",
+                  "values": [
+                    {
+                      "label": "solution",
+                      "value": "${compartment_id}"
+                    }
+                  ]
+                }
+              ],
+              "isGlobal": false
+            },
+            "showTitle": true,
+            "timeSelection": {
+              "timePeriod": "l7d"
+            },
+            "visualizationOptions": {},
+            "visualizationType": "summary_table",
+            "vizType": "lxSavedSearchWidgetType"
+          },
+          "widgetTemplate": "visualizations/widgetTemplate.html",
+          "widgetVM": "visualizations/widget"
+        },
+        {
+          "compartmentId": "${compartment_id}",
+          "dataConfig": [],
+          "definedTags": {},
+          "description": "DML activity that changes database data.",
+          "displayName": "Data Modification Report",
+          "featuresConfig": {
+            "crossService": {
+              "shared": false
+            },
+            "serviceTypes": [
+              "log-analytics"
+            ]
+          },
+          "freeformTags": {
+            "solution": "oci-datasafe-log-analytics",
+            "visualization": "summary_table"
+          },
+          "id": "data_modification_report",
+          "isOobSavedSearch": false,
+          "metadataVersion": "2.0",
+          "nls": {},
+          "parametersConfig": [],
+          "providerId": "log-analytics",
+          "providerName": "Log Analytics",
+          "providerVersion": "3.0.0",
+          "screenImage": " ",
+          "type": "SEARCH_SHOW_IN_DASHBOARD",
+          "uiConfig": {
+            "enableWidgetInApp": true,
+            "queryString": "'Log Source' = 'OCI Data Safe Database Audit' and 'Operation' in ('INSERT','UPDATE','DELETE','MERGE') | stats count as Events by 'Data Safe Target Name', 'Operation', 'Object Owner' | sort -Events | head 100",
+            "scopeFilters": {
+              "LogGroup": {
+                "flags": {
+                  "IncludeSubCompartments": true
+                },
+                "type": "LogGroup",
+                "values": [
+                  {
+                    "label": "solution",
+                    "value": "${compartment_id}"
+                  }
+                ]
+              },
+              "filters": [
+                {
+                  "flags": {
+                    "IncludeSubCompartments": true
+                  },
+                  "type": "LogGroup",
+                  "values": [
+                    {
+                      "label": "solution",
+                      "value": "${compartment_id}"
+                    }
+                  ]
+                }
+              ],
+              "isGlobal": false
+            },
+            "showTitle": true,
+            "timeSelection": {
+              "timePeriod": "l7d"
+            },
+            "visualizationOptions": {},
+            "visualizationType": "summary_table",
+            "vizType": "lxSavedSearchWidgetType"
+          },
+          "widgetTemplate": "visualizations/widgetTemplate.html",
+          "widgetVM": "visualizations/widget"
+        },
+        {
+          "compartmentId": "${compartment_id}",
+          "dataConfig": [],
+          "definedTags": {},
+          "description": "DDL changes to schemas and database objects.",
+          "displayName": "Database Schema Changes Report",
+          "featuresConfig": {
+            "crossService": {
+              "shared": false
+            },
+            "serviceTypes": [
+              "log-analytics"
+            ]
+          },
+          "freeformTags": {
+            "solution": "oci-datasafe-log-analytics",
+            "visualization": "summary_table"
+          },
+          "id": "database_schema_changes_report",
+          "isOobSavedSearch": false,
+          "metadataVersion": "2.0",
+          "nls": {},
+          "parametersConfig": [],
+          "providerId": "log-analytics",
+          "providerName": "Log Analytics",
+          "providerVersion": "3.0.0",
+          "screenImage": " ",
+          "type": "SEARCH_SHOW_IN_DASHBOARD",
+          "uiConfig": {
+            "enableWidgetInApp": true,
+            "queryString": "'Log Source' = 'OCI Data Safe Database Audit' and 'Operation' in ('CREATE','ALTER','DROP','TRUNCATE','RENAME') | stats count as Events by 'Data Safe Target Name', 'Operation', 'Object Type' | sort -Events | head 100",
+            "scopeFilters": {
+              "LogGroup": {
+                "flags": {
+                  "IncludeSubCompartments": true
+                },
+                "type": "LogGroup",
+                "values": [
+                  {
+                    "label": "solution",
+                    "value": "${compartment_id}"
+                  }
+                ]
+              },
+              "filters": [
+                {
+                  "flags": {
+                    "IncludeSubCompartments": true
+                  },
+                  "type": "LogGroup",
+                  "values": [
+                    {
+                      "label": "solution",
+                      "value": "${compartment_id}"
+                    }
+                  ]
+                }
+              ],
+              "isGlobal": false
+            },
+            "showTitle": true,
+            "timeSelection": {
+              "timePeriod": "l7d"
+            },
+            "visualizationOptions": {},
+            "visualizationType": "summary_table",
+            "vizType": "lxSavedSearchWidgetType"
+          },
+          "widgetTemplate": "visualizations/widgetTemplate.html",
+          "widgetVM": "visualizations/widget"
+        },
+        {
+          "compartmentId": "${compartment_id}",
+          "dataConfig": [],
+          "definedTags": {},
+          "description": "Audit activity generated by the Data Safe service account and Data Safe operations.",
+          "displayName": "Data Safe Activity Report",
+          "featuresConfig": {
+            "crossService": {
+              "shared": false
+            },
+            "serviceTypes": [
+              "log-analytics"
+            ]
+          },
+          "freeformTags": {
+            "solution": "oci-datasafe-log-analytics",
+            "visualization": "table"
+          },
+          "id": "data_safe_activity_report",
+          "isOobSavedSearch": false,
+          "metadataVersion": "2.0",
+          "nls": {},
+          "parametersConfig": [],
+          "providerId": "log-analytics",
+          "providerName": "Log Analytics",
+          "providerVersion": "3.0.0",
+          "screenImage": " ",
+          "type": "SEARCH_SHOW_IN_DASHBOARD",
+          "uiConfig": {
+            "enableWidgetInApp": true,
+            "queryString": "'Log Source' = 'OCI Data Safe Database Audit' and 'Data Safe Activity' = 1 | fields Time, 'Data Safe Target Name', 'Database User', 'Operation', 'Object Owner', 'Object Name', 'Operation Status' | sort -Time",
+            "scopeFilters": {
+              "LogGroup": {
+                "flags": {
+                  "IncludeSubCompartments": true
+                },
+                "type": "LogGroup",
+                "values": [
+                  {
+                    "label": "solution",
+                    "value": "${compartment_id}"
+                  }
+                ]
+              },
+              "filters": [
+                {
+                  "flags": {
+                    "IncludeSubCompartments": true
+                  },
+                  "type": "LogGroup",
+                  "values": [
+                    {
+                      "label": "solution",
+                      "value": "${compartment_id}"
+                    }
+                  ]
+                }
+              ],
+              "isGlobal": false
+            },
+            "showTitle": true,
+            "timeSelection": {
+              "timePeriod": "l7d"
+            },
+            "visualizationOptions": {},
+            "visualizationType": "table",
+            "vizType": "lxSavedSearchWidgetType"
+          },
+          "widgetTemplate": "visualizations/widgetTemplate.html",
+          "widgetVM": "visualizations/widget"
+        },
+        {
+          "compartmentId": "${compartment_id}",
+          "dataConfig": [],
+          "definedTags": {},
+          "description": "Database Vault policy, realm, and command-rule audit activity.",
+          "displayName": "Database Vault Activity Report",
+          "featuresConfig": {
+            "crossService": {
+              "shared": false
+            },
+            "serviceTypes": [
+              "log-analytics"
+            ]
+          },
+          "freeformTags": {
+            "solution": "oci-datasafe-log-analytics",
+            "visualization": "summary_table"
+          },
+          "id": "database_vault_activity_report",
+          "isOobSavedSearch": false,
+          "metadataVersion": "2.0",
+          "nls": {},
+          "parametersConfig": [],
+          "providerId": "log-analytics",
+          "providerName": "Log Analytics",
+          "providerVersion": "3.0.0",
+          "screenImage": " ",
+          "type": "SEARCH_SHOW_IN_DASHBOARD",
+          "uiConfig": {
+            "enableWidgetInApp": true,
+            "queryString": "'Log Source' = 'OCI Data Safe Database Audit' and 'Audit Type' = 'DATABASE_VAULT' | stats count as Events by 'Data Safe Target Name', 'Event Name', 'Operation Status' | sort -Events | head 100",
+            "scopeFilters": {
+              "LogGroup": {
+                "flags": {
+                  "IncludeSubCompartments": true
+                },
+                "type": "LogGroup",
+                "values": [
+                  {
+                    "label": "solution",
+                    "value": "${compartment_id}"
+                  }
+                ]
+              },
+              "filters": [
+                {
+                  "flags": {
+                    "IncludeSubCompartments": true
+                  },
+                  "type": "LogGroup",
+                  "values": [
+                    {
+                      "label": "solution",
+                      "value": "${compartment_id}"
+                    }
+                  ]
+                }
+              ],
+              "isGlobal": false
+            },
+            "showTitle": true,
+            "timeSelection": {
+              "timePeriod": "l7d"
+            },
+            "visualizationOptions": {},
+            "visualizationType": "summary_table",
+            "vizType": "lxSavedSearchWidgetType"
+          },
+          "widgetTemplate": "visualizations/widgetTemplate.html",
+          "widgetVM": "visualizations/widget"
+        },
+        {
+          "compartmentId": "${compartment_id}",
+          "dataConfig": [],
+          "definedTags": {},
+          "description": "Activity performed by Oracle Database common users.",
+          "displayName": "Common User Activity Report",
+          "featuresConfig": {
+            "crossService": {
+              "shared": false
+            },
+            "serviceTypes": [
+              "log-analytics"
+            ]
+          },
+          "freeformTags": {
+            "solution": "oci-datasafe-log-analytics",
+            "visualization": "summary_table"
+          },
+          "id": "common_user_activity_report",
+          "isOobSavedSearch": false,
+          "metadataVersion": "2.0",
+          "nls": {},
+          "parametersConfig": [],
+          "providerId": "log-analytics",
+          "providerName": "Log Analytics",
+          "providerVersion": "3.0.0",
+          "screenImage": " ",
+          "type": "SEARCH_SHOW_IN_DASHBOARD",
+          "uiConfig": {
+            "enableWidgetInApp": true,
+            "queryString": "'Log Source' = 'OCI Data Safe Database Audit' and 'Common User' = 1 | stats count as Events by 'Data Safe Target Name', 'Database User', 'Operation', 'Operation Status' | sort -Events | head 100",
+            "scopeFilters": {
+              "LogGroup": {
+                "flags": {
+                  "IncludeSubCompartments": true
+                },
+                "type": "LogGroup",
+                "values": [
+                  {
+                    "label": "solution",
+                    "value": "${compartment_id}"
+                  }
+                ]
+              },
+              "filters": [
+                {
+                  "flags": {
+                    "IncludeSubCompartments": true
+                  },
+                  "type": "LogGroup",
+                  "values": [
+                    {
+                      "label": "solution",
+                      "value": "${compartment_id}"
+                    }
+                  ]
+                }
+              ],
+              "isGlobal": false
+            },
+            "showTitle": true,
+            "timeSelection": {
+              "timePeriod": "l7d"
+            },
+            "visualizationOptions": {},
+            "visualizationType": "summary_table",
+            "vizType": "lxSavedSearchWidgetType"
+          },
+          "widgetTemplate": "visualizations/widgetTemplate.html",
+          "widgetVM": "visualizations/widget"
+        },
+        {
+          "compartmentId": "${compartment_id}",
+          "dataConfig": [],
+          "definedTags": {},
+          "description": "Failed audited database operations with their error codes and messages.",
+          "displayName": "Database Error Report",
+          "featuresConfig": {
+            "crossService": {
+              "shared": false
+            },
+            "serviceTypes": [
+              "log-analytics"
+            ]
+          },
+          "freeformTags": {
+            "solution": "oci-datasafe-log-analytics",
+            "visualization": "summary_table"
+          },
+          "id": "database_error_report",
+          "isOobSavedSearch": false,
+          "metadataVersion": "2.0",
+          "nls": {},
+          "parametersConfig": [],
+          "providerId": "log-analytics",
+          "providerName": "Log Analytics",
+          "providerVersion": "3.0.0",
+          "screenImage": " ",
+          "type": "SEARCH_SHOW_IN_DASHBOARD",
+          "uiConfig": {
+            "enableWidgetInApp": true,
+            "queryString": "'Log Source' = 'OCI Data Safe Database Audit' and 'Operation Status' = 'FAILURE' | stats count as Events by 'Data Safe Target Name', 'Error Code', 'Error Message', 'Operation' | sort -Events | head 100",
+            "scopeFilters": {
+              "LogGroup": {
+                "flags": {
+                  "IncludeSubCompartments": true
+                },
+                "type": "LogGroup",
+                "values": [
+                  {
+                    "label": "solution",
+                    "value": "${compartment_id}"
+                  }
+                ]
+              },
+              "filters": [
+                {
+                  "flags": {
+                    "IncludeSubCompartments": true
+                  },
+                  "type": "LogGroup",
+                  "values": [
+                    {
+                      "label": "solution",
+                      "value": "${compartment_id}"
+                    }
+                  ]
+                }
+              ],
+              "isGlobal": false
+            },
+            "showTitle": true,
+            "timeSelection": {
+              "timePeriod": "l7d"
+            },
+            "visualizationOptions": {},
+            "visualizationType": "summary_table",
+            "vizType": "lxSavedSearchWidgetType"
+          },
+          "widgetTemplate": "visualizations/widgetTemplate.html",
+          "widgetVM": "visualizations/widget"
+        },
+        {
+          "compartmentId": "${compartment_id}",
+          "dataConfig": [],
+          "definedTags": {},
+          "description": "Bulk export and extraction activity through RMAN, Data Pump, and direct-path APIs.",
+          "displayName": "Data Extraction Activity Report",
+          "featuresConfig": {
+            "crossService": {
+              "shared": false
+            },
+            "serviceTypes": [
+              "log-analytics"
+            ]
+          },
+          "freeformTags": {
+            "solution": "oci-datasafe-log-analytics",
+            "visualization": "summary_table"
+          },
+          "id": "data_extraction_activity_report",
+          "isOobSavedSearch": false,
+          "metadataVersion": "2.0",
+          "nls": {},
+          "parametersConfig": [],
+          "providerId": "log-analytics",
+          "providerName": "Log Analytics",
+          "providerVersion": "3.0.0",
+          "screenImage": " ",
+          "type": "SEARCH_SHOW_IN_DASHBOARD",
+          "uiConfig": {
+            "enableWidgetInApp": true,
+            "queryString": "'Log Source' = 'OCI Data Safe Database Audit' and 'Audit Type' in ('RMAN','DATAPUMP','DIRECT_PATH_API') | stats count as Events by 'Data Safe Target Name', 'Audit Type', 'Operation Status' | sort -Events | head 100",
+            "scopeFilters": {
+              "LogGroup": {
+                "flags": {
+                  "IncludeSubCompartments": true
+                },
+                "type": "LogGroup",
+                "values": [
+                  {
+                    "label": "solution",
+                    "value": "${compartment_id}"
+                  }
+                ]
+              },
+              "filters": [
+                {
+                  "flags": {
+                    "IncludeSubCompartments": true
+                  },
+                  "type": "LogGroup",
+                  "values": [
+                    {
+                      "label": "solution",
+                      "value": "${compartment_id}"
+                    }
+                  ]
+                }
+              ],
+              "isGlobal": false
+            },
+            "showTitle": true,
+            "timeSelection": {
+              "timePeriod": "l7d"
+            },
+            "visualizationOptions": {},
+            "visualizationType": "summary_table",
+            "vizType": "lxSavedSearchWidgetType"
+          },
+          "widgetTemplate": "visualizations/widgetTemplate.html",
+          "widgetVM": "visualizations/widget"
+        },
+        {
+          "compartmentId": "${compartment_id}",
+          "dataConfig": [],
+          "definedTags": {},
+          "description": "Events classified by Data Safe as access to sensitive data.",
+          "displayName": "Sensitive Data Activity Report",
+          "featuresConfig": {
+            "crossService": {
+              "shared": false
+            },
+            "serviceTypes": [
+              "log-analytics"
+            ]
+          },
+          "freeformTags": {
+            "solution": "oci-datasafe-log-analytics",
+            "visualization": "summary_table"
+          },
+          "id": "sensitive_data_activity_report",
+          "isOobSavedSearch": false,
+          "metadataVersion": "2.0",
+          "nls": {},
+          "parametersConfig": [],
+          "providerId": "log-analytics",
+          "providerName": "Log Analytics",
+          "providerVersion": "3.0.0",
+          "screenImage": " ",
+          "type": "SEARCH_SHOW_IN_DASHBOARD",
+          "uiConfig": {
+            "enableWidgetInApp": true,
+            "queryString": "'Log Source' = 'OCI Data Safe Database Audit' and 'Sensitive Activity' = 1 | stats count as Events by 'Data Safe Target Name', 'Operation', 'Object Owner' | sort -Events | head 100",
+            "scopeFilters": {
+              "LogGroup": {
+                "flags": {
+                  "IncludeSubCompartments": true
+                },
+                "type": "LogGroup",
+                "values": [
+                  {
+                    "label": "solution",
+                    "value": "${compartment_id}"
+                  }
+                ]
+              },
+              "filters": [
+                {
+                  "flags": {
+                    "IncludeSubCompartments": true
+                  },
+                  "type": "LogGroup",
+                  "values": [
+                    {
+                      "label": "solution",
+                      "value": "${compartment_id}"
+                    }
+                  ]
+                }
+              ],
+              "isGlobal": false
+            },
+            "showTitle": true,
+            "timeSelection": {
+              "timePeriod": "l7d"
+            },
+            "visualizationOptions": {},
+            "visualizationType": "summary_table",
+            "vizType": "lxSavedSearchWidgetType"
+          },
+          "widgetTemplate": "visualizations/widgetTemplate.html",
+          "widgetVM": "visualizations/widget"
+        },
+        {
+          "compartmentId": "${compartment_id}",
+          "dataConfig": [],
+          "definedTags": {},
+          "description": "Audited SQL Firewall violations surfaced through database audit policy and event metadata.",
+          "displayName": "SQL Firewall Audited Violations Report",
+          "featuresConfig": {
+            "crossService": {
+              "shared": false
+            },
+            "serviceTypes": [
+              "log-analytics"
+            ]
+          },
+          "freeformTags": {
+            "solution": "oci-datasafe-log-analytics",
+            "visualization": "table"
+          },
+          "id": "sql_firewall_violations_report",
+          "isOobSavedSearch": false,
+          "metadataVersion": "2.0",
+          "nls": {},
+          "parametersConfig": [],
+          "providerId": "log-analytics",
+          "providerName": "Log Analytics",
+          "providerVersion": "3.0.0",
+          "screenImage": " ",
+          "type": "SEARCH_SHOW_IN_DASHBOARD",
+          "uiConfig": {
+            "enableWidgetInApp": true,
+            "queryString": "'Log Source' = 'OCI Data Safe Database Audit' and ('Event Name' like '%SQL%FIREWALL%' or 'Audit Policies' like '%SQL%FIREWALL%') | fields Time, 'Data Safe Target Name', 'Database User', 'Event Name', 'Audit Policies', 'SQL Text', 'Operation Status' | sort -Time",
+            "scopeFilters": {
+              "LogGroup": {
+                "flags": {
+                  "IncludeSubCompartments": true
+                },
+                "type": "LogGroup",
+                "values": [
+                  {
+                    "label": "solution",
+                    "value": "${compartment_id}"
+                  }
+                ]
+              },
+              "filters": [
+                {
+                  "flags": {
+                    "IncludeSubCompartments": true
+                  },
+                  "type": "LogGroup",
+                  "values": [
+                    {
+                      "label": "solution",
+                      "value": "${compartment_id}"
+                    }
+                  ]
+                }
+              ],
+              "isGlobal": false
+            },
+            "showTitle": true,
+            "timeSelection": {
+              "timePeriod": "l7d"
+            },
+            "visualizationOptions": {},
+            "visualizationType": "table",
+            "vizType": "lxSavedSearchWidgetType"
+          },
+          "widgetTemplate": "visualizations/widgetTemplate.html",
+          "widgetVM": "visualizations/widget"
+        }
+      ],
+      "screenImage": " ",
+      "tiles": [
+        {
+          "column": 0,
+          "dataConfig": [],
+          "displayName": "All Activity Report",
+          "drilldownConfig": [],
+          "height": 6,
+          "nls": {},
+          "parametersMap": {
+            "log-analytics-log-group-compartment": "$(dashboard.params.log-analytics-loggroup-filter)",
+            "time": "$(dashboard.params.time)"
+          },
+          "row": 0,
+          "savedSearchId": "all_activity_report",
+          "state": "DEFAULT",
+          "uiConfig": {},
+          "width": 12
+        },
+        {
+          "column": 0,
+          "dataConfig": [],
+          "displayName": "Admin Activity Report",
+          "drilldownConfig": [],
+          "height": 6,
+          "nls": {},
+          "parametersMap": {
+            "log-analytics-log-group-compartment": "$(dashboard.params.log-analytics-loggroup-filter)",
+            "time": "$(dashboard.params.time)"
+          },
+          "row": 6,
+          "savedSearchId": "admin_activity_report",
+          "state": "DEFAULT",
+          "uiConfig": {},
+          "width": 12
+        },
+        {
+          "column": 0,
+          "dataConfig": [],
+          "displayName": "User and Entitlement Changes Report",
+          "drilldownConfig": [],
+          "height": 6,
+          "nls": {},
+          "parametersMap": {
+            "log-analytics-log-group-compartment": "$(dashboard.params.log-analytics-loggroup-filter)",
+            "time": "$(dashboard.params.time)"
+          },
+          "row": 12,
+          "savedSearchId": "user_entitlement_changes_report",
+          "state": "DEFAULT",
+          "uiConfig": {},
+          "width": 12
+        },
+        {
+          "column": 0,
+          "dataConfig": [],
+          "displayName": "Audit Policy Changes Report",
+          "drilldownConfig": [],
+          "height": 6,
+          "nls": {},
+          "parametersMap": {
+            "log-analytics-log-group-compartment": "$(dashboard.params.log-analytics-loggroup-filter)",
+            "time": "$(dashboard.params.time)"
+          },
+          "row": 18,
+          "savedSearchId": "audit_policy_changes_report",
+          "state": "DEFAULT",
+          "uiConfig": {},
+          "width": 12
+        },
+        {
+          "column": 0,
+          "dataConfig": [],
+          "displayName": "Login Activity Report",
+          "drilldownConfig": [],
+          "height": 6,
+          "nls": {},
+          "parametersMap": {
+            "log-analytics-log-group-compartment": "$(dashboard.params.log-analytics-loggroup-filter)",
+            "time": "$(dashboard.params.time)"
+          },
+          "row": 24,
+          "savedSearchId": "login_activity_report",
+          "state": "DEFAULT",
+          "uiConfig": {},
+          "width": 12
+        },
+        {
+          "column": 0,
+          "dataConfig": [],
+          "displayName": "Data Access Report",
+          "drilldownConfig": [],
+          "height": 6,
+          "nls": {},
+          "parametersMap": {
+            "log-analytics-log-group-compartment": "$(dashboard.params.log-analytics-loggroup-filter)",
+            "time": "$(dashboard.params.time)"
+          },
+          "row": 30,
+          "savedSearchId": "data_access_report",
+          "state": "DEFAULT",
+          "uiConfig": {},
+          "width": 12
+        },
+        {
+          "column": 0,
+          "dataConfig": [],
+          "displayName": "Data Modification Report",
+          "drilldownConfig": [],
+          "height": 6,
+          "nls": {},
+          "parametersMap": {
+            "log-analytics-log-group-compartment": "$(dashboard.params.log-analytics-loggroup-filter)",
+            "time": "$(dashboard.params.time)"
+          },
+          "row": 36,
+          "savedSearchId": "data_modification_report",
+          "state": "DEFAULT",
+          "uiConfig": {},
+          "width": 12
+        },
+        {
+          "column": 0,
+          "dataConfig": [],
+          "displayName": "Database Schema Changes Report",
+          "drilldownConfig": [],
+          "height": 6,
+          "nls": {},
+          "parametersMap": {
+            "log-analytics-log-group-compartment": "$(dashboard.params.log-analytics-loggroup-filter)",
+            "time": "$(dashboard.params.time)"
+          },
+          "row": 42,
+          "savedSearchId": "database_schema_changes_report",
+          "state": "DEFAULT",
+          "uiConfig": {},
+          "width": 12
+        },
+        {
+          "column": 0,
+          "dataConfig": [],
+          "displayName": "Data Safe Activity Report",
+          "drilldownConfig": [],
+          "height": 6,
+          "nls": {},
+          "parametersMap": {
+            "log-analytics-log-group-compartment": "$(dashboard.params.log-analytics-loggroup-filter)",
+            "time": "$(dashboard.params.time)"
+          },
+          "row": 48,
+          "savedSearchId": "data_safe_activity_report",
+          "state": "DEFAULT",
+          "uiConfig": {},
+          "width": 12
+        },
+        {
+          "column": 0,
+          "dataConfig": [],
+          "displayName": "Database Vault Activity Report",
+          "drilldownConfig": [],
+          "height": 6,
+          "nls": {},
+          "parametersMap": {
+            "log-analytics-log-group-compartment": "$(dashboard.params.log-analytics-loggroup-filter)",
+            "time": "$(dashboard.params.time)"
+          },
+          "row": 54,
+          "savedSearchId": "database_vault_activity_report",
+          "state": "DEFAULT",
+          "uiConfig": {},
+          "width": 12
+        },
+        {
+          "column": 0,
+          "dataConfig": [],
+          "displayName": "Common User Activity Report",
+          "drilldownConfig": [],
+          "height": 6,
+          "nls": {},
+          "parametersMap": {
+            "log-analytics-log-group-compartment": "$(dashboard.params.log-analytics-loggroup-filter)",
+            "time": "$(dashboard.params.time)"
+          },
+          "row": 60,
+          "savedSearchId": "common_user_activity_report",
+          "state": "DEFAULT",
+          "uiConfig": {},
+          "width": 12
+        },
+        {
+          "column": 0,
+          "dataConfig": [],
+          "displayName": "Database Error Report",
+          "drilldownConfig": [],
+          "height": 6,
+          "nls": {},
+          "parametersMap": {
+            "log-analytics-log-group-compartment": "$(dashboard.params.log-analytics-loggroup-filter)",
+            "time": "$(dashboard.params.time)"
+          },
+          "row": 66,
+          "savedSearchId": "database_error_report",
+          "state": "DEFAULT",
+          "uiConfig": {},
+          "width": 12
+        },
+        {
+          "column": 0,
+          "dataConfig": [],
+          "displayName": "Data Extraction Activity Report",
+          "drilldownConfig": [],
+          "height": 6,
+          "nls": {},
+          "parametersMap": {
+            "log-analytics-log-group-compartment": "$(dashboard.params.log-analytics-loggroup-filter)",
+            "time": "$(dashboard.params.time)"
+          },
+          "row": 72,
+          "savedSearchId": "data_extraction_activity_report",
+          "state": "DEFAULT",
+          "uiConfig": {},
+          "width": 12
+        },
+        {
+          "column": 0,
+          "dataConfig": [],
+          "displayName": "Sensitive Data Activity Report",
+          "drilldownConfig": [],
+          "height": 6,
+          "nls": {},
+          "parametersMap": {
+            "log-analytics-log-group-compartment": "$(dashboard.params.log-analytics-loggroup-filter)",
+            "time": "$(dashboard.params.time)"
+          },
+          "row": 78,
+          "savedSearchId": "sensitive_data_activity_report",
+          "state": "DEFAULT",
+          "uiConfig": {},
+          "width": 12
+        },
+        {
+          "column": 0,
+          "dataConfig": [],
+          "displayName": "SQL Firewall Audited Violations Report",
+          "drilldownConfig": [],
+          "height": 6,
+          "nls": {},
+          "parametersMap": {
+            "log-analytics-log-group-compartment": "$(dashboard.params.log-analytics-loggroup-filter)",
+            "time": "$(dashboard.params.time)"
+          },
+          "row": 84,
+          "savedSearchId": "sql_firewall_violations_report",
+          "state": "DEFAULT",
+          "uiConfig": {},
+          "width": 12
+        }
+      ],
+      "type": "normal",
+      "uiConfig": {
+        "isFilteringEnabled": true,
+        "isRefreshEnabled": true,
+        "isTimeRangeEnabled": true,
+        "suiteName": "OCI Data Safe Audit Analytics",
+        "tabId": "predefined-reports",
+        "tabLabel": "Predefined Reports"
       }
     },
     {
@@ -4544,29 +5931,34 @@
         "order": 1
       },
       {
+        "id": "predefined-reports",
+        "label": "Predefined Reports",
+        "order": 2
+      },
+      {
         "id": "audit-insights",
         "label": "Audit Insights",
-        "order": 2
+        "order": 3
       },
       {
         "id": "identity-access",
         "label": "Identity & Access",
-        "order": 3
+        "order": 4
       },
       {
         "id": "data-schema",
         "label": "Data & Schema",
-        "order": 4
+        "order": 5
       },
       {
         "id": "client-network",
         "label": "Client & Network",
-        "order": 5
+        "order": 6
       },
       {
         "id": "investigation",
         "label": "Investigation",
-        "order": 6
+        "order": 7
       }
     ]
   }

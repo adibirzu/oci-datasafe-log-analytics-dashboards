@@ -21,6 +21,7 @@ jobs:
       - run: python -m ruff check src scripts tests function
       - run: python -m pytest
       - run: python scripts/build_dashboard_bundle.py --check
+      - run: python scripts/build_orm_package.py --output /tmp/oci-datasafe-log-analytics-stack.zip
       - uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: 1.5.7

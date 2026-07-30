@@ -1,0 +1,183 @@
+title: "OCI Data Safe to Log Analytics"
+description: "Deploy the Data Safe audit exporter Function, OCI Logging route, Log Analytics fields/parser/source, and seven dashboard tabs."
+schemaVersion: 1.1.0
+version: "2.0.0"
+locale: "en"
+
+variableGroups:
+  - title: "Target compartments"
+    variables:
+      - tenancy_ocid
+      - compartment_ocid
+      - data_safe_compartment_ocid
+      - region
+
+  - title: "Function runtime"
+    variables:
+      - function_subnet_ocid
+      - function_image
+      - schedule_interval
+      - custom_schedule_cron
+      - custom_initial_lookback_minutes
+
+  - title: "Log Analytics"
+    variables:
+      - create_log_analytics_log_group
+      - log_analytics_log_group_ocid
+      - deploy_log_analytics_content
+      - deploy_dashboards
+
+  - title: "Security and deployment"
+    variables:
+      - deployment_name
+      - include_sql_text
+      - include_command_parameters
+      - hash_client_ip
+      - create_iam_resources
+      - deploy_function
+
+variables:
+  tenancy_ocid:
+    type: string
+    title: "Tenancy OCID"
+    description: "Auto-populated by OCI Resource Manager."
+    required: true
+
+  compartment_ocid:
+    type: oci:identity:compartment:id
+    title: "Solution compartment"
+    description: "Compartment for the Function, Logging, Connector Hub, and dashboards."
+    required: true
+
+  data_safe_compartment_ocid:
+    type: oci:identity:compartment:id
+    title: "Data Safe target compartment"
+    description: "Compartment containing Data Safe registered targets. Subcompartments are included."
+    required: true
+
+  region:
+    type: oci:identity:region:name
+    title: "Region"
+    description: "Region where Data Safe and Log Analytics are enabled."
+    required: true
+
+  function_subnet_ocid:
+    type: oci:core:subnet:id
+    title: "Function subnet"
+    description: "Existing regional subnet with access to OCI service endpoints."
+    required: true
+    dependsOn:
+      compartmentId: compartment_ocid
+
+  function_image:
+    type: string
+    title: "Function image"
+    description: "Published multi-architecture OCIR image URL with an immutable version tag."
+    required: true
+
+  schedule_interval:
+    type: enum
+    title: "Function run interval"
+    description: "Twelve hours is the default; choose a supported cadence or CUSTOM."
+    enum:
+      - "ONE_HOUR"
+      - "SIX_HOURS"
+      - "TWELVE_HOURS"
+      - "ONE_DAY"
+      - "CUSTOM"
+    default: "TWELVE_HOURS"
+    required: true
+
+  custom_schedule_cron:
+    type: string
+    title: "Custom UTC cron"
+    description: "Used only when Function run interval is CUSTOM."
+    default: ""
+    required: false
+    visible:
+      eq:
+        - schedule_interval
+        - "CUSTOM"
+
+  custom_initial_lookback_minutes:
+    type: number
+    title: "Custom first-run lookback"
+    description: "Minutes read on the first custom-schedule invocation."
+    default: 750
+    minimum: 15
+    maximum: 10080
+    required: false
+    visible:
+      eq:
+        - schedule_interval
+        - "CUSTOM"
+
+  create_log_analytics_log_group:
+    type: boolean
+    title: "Create Log Analytics log group"
+    description: "Recommended. Disable only to route into an existing group."
+    default: true
+    required: false
+
+  log_analytics_log_group_ocid:
+    type: string
+    title: "Existing Log Analytics log group OCID"
+    description: "Required only when creation of a dedicated group is disabled."
+    default: ""
+    required: false
+    visible:
+      not:
+        - create_log_analytics_log_group
+
+  deploy_log_analytics_content:
+    type: boolean
+    title: "Deploy fields, parser, and source"
+    description: "Imports the versioned content package with overwrite semantics, without duplicating same-name content."
+    default: true
+    required: false
+
+  deploy_dashboards:
+    type: boolean
+    title: "Deploy dashboards"
+    description: "Imports all seven tabs and their generated saved searches with same-name replacement."
+    default: true
+    required: false
+
+  deployment_name:
+    type: string
+    title: "Deployment prefix"
+    default: "datasafe-audit"
+    required: true
+
+  include_sql_text:
+    type: boolean
+    title: "Export SQL text"
+    description: "Privacy-sensitive. Disabled by default."
+    default: false
+    required: false
+
+  include_command_parameters:
+    type: boolean
+    title: "Export SQL parameters"
+    description: "Highly sensitive. Disabled by default."
+    default: false
+    required: false
+
+  hash_client_ip:
+    type: boolean
+    title: "Pseudonymize client IP"
+    description: "Recommended secure default; preserves grouping without exposing addresses."
+    default: true
+    required: false
+
+  create_iam_resources:
+    type: boolean
+    title: "Create IAM policies"
+    default: true
+    required: false
+
+  deploy_function:
+    type: boolean
+    title: "Deploy exporter Function"
+    default: true
+    required: false

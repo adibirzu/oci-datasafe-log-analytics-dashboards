@@ -23,6 +23,33 @@ class FakeDataSafe:
 
     def list_audit_events(self, **kwargs):
         self.calls.append(kwargs)
+        classifier = next(
+            (
+                name
+                for name in ("adminUser", "commonUser", "sensitiveActivity", "dsActivity")
+                if f"{name} eq 1" in kwargs["scim_query"]
+            ),
+            None,
+        )
+        if classifier:
+            ids = {
+                "adminUser": ["new"],
+                "commonUser": [],
+                "sensitiveActivity": ["new"],
+                "dsActivity": [],
+            }[classifier]
+            return SimpleNamespace(
+                data=SimpleNamespace(
+                    items=[
+                        {
+                            "id": item_id,
+                            "time_collected": "2026-07-30T11:03:00Z",
+                        }
+                        for item_id in ids
+                    ]
+                ),
+                headers={},
+            )
         items = [
             {
                 "id": "duplicate",
@@ -66,9 +93,16 @@ def test_exporter_uses_scim_cursor_deduplicates_and_advances_after_logging():
     )
     result = exporter.run()
     assert "timeCollected gt" in data_safe.calls[0]["scim_query"]
+    assert len(data_safe.calls) == 5
+    assert any("adminUser eq 1" in call["scim_query"] for call in data_safe.calls)
     assert result.queried == 2
     assert result.exported == 1
     assert result.duplicates == 1
     assert len(logging.calls) == 1
+    payload = logging.calls[0][1].log_entry_batches[0].entries[0].data
+    assert '"admin_user":1' in payload
+    assert '"common_user":0' in payload
+    assert '"sensitive_activity":1' in payload
+    assert '"ds_activity":0' in payload
     assert store.saved[1] == "etag"
     assert "new" in store.saved[0].recent_event_ids

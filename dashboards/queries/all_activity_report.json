@@ -1,0 +1,1 @@
+{"title":"All Activity Report","description":"All collected database audit activity, grouped by target, operation, and outcome.","query":"'Log Source' = 'OCI Data Safe Database Audit' | stats count as Events by 'Data Safe Target Name', 'Operation', 'Operation Status' | sort -Events | head 100","visualization":"summary_table","options":{},"layout":{"width":12,"height":6}}

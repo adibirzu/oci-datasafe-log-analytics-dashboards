@@ -12,10 +12,11 @@ SPEC.loader.exec_module(MODULE)
 
 def test_dashboard_suite_recreates_data_safe_landing_and_insights():
     bundle = MODULE.build_bundle()
-    assert len(bundle["dashboards"]) == 6
+    assert len(bundle["dashboards"]) == 7
     labels = [item["label"] for item in bundle["suite"]["navigation"]]
     assert labels == [
         "Activity Overview",
+        "Predefined Reports",
         "Audit Insights",
         "Identity & Access",
         "Data & Schema",
@@ -28,6 +29,11 @@ def test_dashboard_suite_recreates_data_safe_landing_and_insights():
     assert {"Failed Login Activity", "Admin Activity", "All Activity"} <= titles
     assert {"Events Summary", "Targets Summary"} <= titles
     assert {"Top Targets by Audit Volume", "Top Audit Policies by Volume"} <= titles
+    assert {
+        "Audit Policy Changes Report",
+        "Database Vault Activity Report",
+        "SQL Firewall Audited Violations Report",
+    } <= titles
 
 
 def test_all_tiles_are_in_bounds_and_non_overlapping():

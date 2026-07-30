@@ -3,7 +3,9 @@
 Production-oriented reference implementation for exporting Oracle Database audit
 events from **OCI Data Safe** into **OCI Logging**, routing them to **Oracle Log
 Analytics**, and recreating the Data Safe Activity Auditing and Audit Insights
-visualizations as a six-view OCI Management Dashboard suite.
+visualizations as a seven-view OCI Management Dashboard suite.
+
+[![Deploy to Oracle Cloud](https://oci-resourcemanager-plugin.plugins.oci.oraclecloud.com/latest/deploy-to-oracle-cloud.svg)](https://cloud.oracle.com/resourcemanager/stacks/create?zipUrl=https://github.com/adibirzu/oci-datasafe-log-analytics-dashboards/releases/latest/download/oci-datasafe-log-analytics-stack.zip)
 
 This project starts from Oracle DevRel's
 [`fn-datasafe-dbaudit-to-oci-logging`](https://github.com/oracle-devrel/technology-engineering/tree/main/oci-and-db/foundation/ciso/security-design/shared-assets/fn-datasafe-dbaudit-to-oci-logging)
@@ -19,11 +21,13 @@ security controls, and E2E validation. See [docs/UPSTREAM.md](docs/UPSTREAM.md).
 - Privacy defaults: SQL text and bind values excluded; client IPs
   pseudonymized with a deployment-specific salt.
 - OCI Logging custom log and Connector Hub route to Oracle Log Analytics.
-- Idempotent creation of 33 Log Analytics fields, one JSON parser, and one
+- Idempotent deployment of 43 Log Analytics fields, one JSON parser, and one
   custom source.
-- 37 generated saved searches across six named dashboard views:
-  Activity Overview, Audit Insights, Identity & Access, Data & Schema,
-  Client & Network, and Investigation.
+- 52 generated saved searches across seven named dashboard views:
+  Activity Overview, Predefined Reports, Audit Insights, Identity & Access,
+  Data & Schema, Client & Network, and Investigation.
+- All 15 predefined Data Safe Activity Auditing reports, plus additional
+  investigation, error, identity, client, and network analytics.
 - Terraform for Logging, Object Storage, Functions, Resource Scheduler,
   Connector Hub, and least-privilege IAM.
 - Local unit, lint, dashboard-layout, Terraform, live-parser, ingestion, and
@@ -34,18 +38,19 @@ security controls, and E2E validation. See [docs/UPSTREAM.md](docs/UPSTREAM.md).
 ```mermaid
 flowchart LR
     DB["Oracle Databases"] --> DS["OCI Data Safe<br/>Activity Auditing"]
-    RS["OCI Resource Scheduler<br/>every 5 minutes"] --> FN["OCI Function<br/>audit exporter"]
+    RS["OCI Resource Scheduler<br/>12 hours by default"] --> FN["OCI Function<br/>audit exporter"]
     DS --> FN
     FN --> CURSOR["Object Storage<br/>cursor + recent IDs"]
     FN --> LOG["OCI Logging<br/>custom log"]
     LOG --> SCH["Connector Hub"]
     SCH --> LA["Oracle Log Analytics<br/>JSON source + parser"]
     LA --> D1["Activity Overview"]
-    LA --> D2["Audit Insights"]
-    LA --> D3["Identity & Access"]
-    LA --> D4["Data & Schema"]
-    LA --> D5["Client & Network"]
-    LA --> D6["Investigation"]
+    LA --> D2["Predefined Reports"]
+    LA --> D3["Audit Insights"]
+    LA --> D4["Identity & Access"]
+    LA --> D5["Data & Schema"]
+    LA --> D6["Client & Network"]
+    LA --> D7["Investigation"]
 ```
 
 Connector Hub continuously supports OCI Logging as a source and Logging
@@ -63,12 +68,14 @@ views add operator-friendly drilldowns without requiring SQL text.
 
 See [docs/DASHBOARD_COVERAGE.md](docs/DASHBOARD_COVERAGE.md) for the exact
 source-to-widget mapping.
+See [docs/FIELD_CONTRACT.md](docs/FIELD_CONTRACT.md) for the complete
+audit-event-to-Log-Analytics field contract and privacy exceptions.
 
 ## Prerequisites
 
 - Data Safe is enabled and at least one target has an active audit trail.
 - Oracle Log Analytics is onboarded in the same region.
-- An existing Log Analytics log group.
+- A Log Analytics log group, or permission for the stack to create one.
 - An existing Functions subnet with access to OCI service endpoints.
 - An immutable function image pushed to OCIR.
 - OCI CLI and Terraform 1.5 or newer.
@@ -112,7 +119,20 @@ docker push '<REGION_KEY>.ocir.io/<NAMESPACE>/<REPOSITORY>:<IMMUTABLE_TAG>'
 
 Use a unique immutable tag or digest for every release.
 
-## Deploy
+## Deploy to OCI
+
+Select the button above, choose the target compartments and Function subnet,
+then choose the run interval. The default is `TWELVE_HOURS`; the stack also
+offers one hour, six hours, one day, and a custom UTC cron. The release package
+contains root-level Terraform, `schema.yaml`, the portable Log Analytics
+content ZIP, and the generated dashboard bundle.
+
+The stack creates or reuses the Log Analytics log group, imports fields,
+parser, and source with overwrite semantics, and imports dashboards with
+same-name replacement. It therefore updates this solution's content instead
+of creating duplicate fields, parsers, sources, or dashboards.
+
+## Local Terraform deployment
 
 Create an untracked `terraform/terraform.tfvars` from the example and review the
 plan:
@@ -124,8 +144,8 @@ terraform -chdir=terraform plan -out=plan.out
 terraform -chdir=terraform apply plan.out
 ```
 
-Then create the Log Analytics field/parser/source contract and import the
-dashboard suite:
+Terraform owns the Log Analytics content and dashboard imports. The scripts
+remain available for focused repair or validation:
 
 ```bash
 PYTHONPATH=src python scripts/setup_log_analytics_content.py \
@@ -140,7 +160,7 @@ PYTHONPATH=src python scripts/deploy_dashboards.py \
 ## Live E2E
 
 Invoke the exporter, wait for Connector Hub ingestion, parse every query, and
-verify all six dashboards:
+verify all seven dashboards:
 
 ```bash
 PYTHONPATH=src python scripts/e2e.py \
@@ -170,3 +190,4 @@ proof.
 - [Data Safe Audit Insights](https://docs.oracle.com/en-us/iaas/data-safe/doc/audit-insights.html)
 - [Create Log Analytics dashboards](https://docs.oracle.com/en-us/iaas/log-analytics/doc/create-dashboards.html)
 - [Schedule OCI Functions](https://docs.oracle.com/en-us/iaas/Content/Functions/Tasks/functionsschedulingfunctions-about.htm)
+- [Using the Deploy to Oracle Cloud button](https://docs.oracle.com/en-us/iaas/Content/ResourceManager/Tasks/deploybutton.htm)

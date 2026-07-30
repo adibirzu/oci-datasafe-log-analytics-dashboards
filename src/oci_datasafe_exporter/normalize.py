@@ -13,17 +13,18 @@ from .config import ExportConfig
 
 FIELD_ALIASES = {
     "id": "Data Safe Event ID",
+    "compartment_id": "Data Safe Compartment ID",
     "audit_event_time": "Audit Event Time",
     "time_collected": "Collection Time",
     "target_name": "Data Safe Target Name",
     "target_id": "Data Safe Target ID",
     "database_unique_name": "Database Unique Name",
     "database_type": "Database Type",
+    "target_class": "Target Class",
     "db_user_name": "Database User",
     "operation": "Operation",
     "operation_status": "Operation Status",
     "event_name": "Event Name",
-    "event_type": "Event Category",
     "action_taken": "Action Taken",
     "client_ip": "Client IP",
     "client_hostname": "Client Host",
@@ -36,6 +37,9 @@ FIELD_ALIASES = {
     "object_owner": "Object Owner",
     "audit_policies": "Audit Policies",
     "audit_type": "Audit Type",
+    "audit_trail_id": "Audit Trail ID",
+    "audit_location": "Audit Location",
+    "trail_source": "Trail Source",
     "error_code": "Error Code",
     "error_message": "Error Message",
     "admin_user": "Admin User",
@@ -44,6 +48,18 @@ FIELD_ALIASES = {
     "ds_activity": "Data Safe Activity",
     "command_text": "SQL Text",
     "command_param": "SQL Parameters",
+    "external_user_id": "External User ID",
+    "target_user": "Target User",
+    "peer_target_database_key": "Peer Target Database Key",
+    "application_contexts": "Application Contexts",
+    "extended_event_attributes": "Extended Event Attributes",
+    "fga_policy_name": "FGA Policy Name",
+}
+
+COMPLEX_STRING_FIELDS = {
+    "application_contexts",
+    "audit_policies",
+    "extended_event_attributes",
 }
 
 
@@ -88,11 +104,16 @@ def normalize_event(event: Any, config: ExportConfig) -> dict[str, Any]:
     # Keep transport keys JSONPath-safe. Log Analytics maps these stable wire
     # names to the reader-facing display fields in FIELD_ALIASES.
     normalized = {
-        source_name: _json_safe(raw.get(source_name))
+        source_name: (
+            json.dumps(_json_safe(raw.get(source_name)), sort_keys=True, separators=(",", ":"))
+            if source_name in COMPLEX_STRING_FIELDS
+            and isinstance(raw.get(source_name), (dict, list, tuple))
+            else _json_safe(raw.get(source_name))
+        )
         for source_name in FIELD_ALIASES
         if source_name in raw
     }
-    normalized["schema_version"] = "1.0"
+    normalized["schema_version"] = "2.0"
     return normalized
 
 

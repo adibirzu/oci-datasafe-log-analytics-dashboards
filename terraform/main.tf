@@ -11,6 +11,27 @@ locals {
     },
     var.freeform_tags
   )
+  schedule_crons = {
+    ONE_HOUR     = "0 * * * *"
+    SIX_HOURS    = "0 */6 * * *"
+    TWELVE_HOURS = "0 */12 * * *"
+    ONE_DAY      = "0 0 * * *"
+  }
+  effective_schedule_cron = var.schedule_interval == "CUSTOM" ? var.custom_schedule_cron : local.schedule_crons[var.schedule_interval]
+  initial_lookback_minutes = {
+    ONE_HOUR     = 75
+    SIX_HOURS    = 390
+    TWELVE_HOURS = 750
+    ONE_DAY      = 1470
+    CUSTOM       = var.custom_initial_lookback_minutes
+  }
+  dashboard_bundle_file      = fileexists("${path.module}/dashboard_bundle.json") ? "${path.module}/dashboard_bundle.json" : "${path.module}/../dashboards/generated_bundle.json"
+  log_analytics_namespace    = data.oci_log_analytics_namespaces.current.namespace_collection[0].items[0].namespace
+  log_analytics_log_group_id = var.create_log_analytics_log_group ? oci_log_analytics_log_analytics_log_group.audit[0].id : var.log_analytics_log_group_ocid
+}
+
+data "oci_log_analytics_namespaces" "current" {
+  compartment_id = var.tenancy_ocid
 }
 
 resource "oci_objectstorage_bucket" "cursor" {
@@ -42,6 +63,15 @@ resource "oci_logging_log" "audit" {
   freeform_tags = local.tags
 }
 
+resource "oci_log_analytics_log_analytics_log_group" "audit" {
+  count          = var.create_log_analytics_log_group ? 1 : 0
+  compartment_id = var.compartment_ocid
+  namespace      = local.log_analytics_namespace
+  display_name   = "${var.deployment_name}-analytics"
+  description    = "Log Analytics group for OCI Data Safe database audit events."
+  freeform_tags  = local.tags
+}
+
 resource "oci_functions_application" "audit" {
   count          = var.deploy_function ? 1 : 0
   compartment_id = var.compartment_ocid
@@ -70,7 +100,7 @@ resource "oci_functions_function" "audit" {
     LOGGING_LOG_ID             = oci_logging_log.audit.id
     CURSOR_BUCKET_NAME         = oci_objectstorage_bucket.cursor.name
     CURSOR_OBJECT_NAME         = "${var.deployment_name}/cursor.json"
-    INITIAL_LOOKBACK_MINUTES   = "60"
+    INITIAL_LOOKBACK_MINUTES   = tostring(local.initial_lookback_minutes[var.schedule_interval])
     CURSOR_OVERLAP_MINUTES     = "5"
     SAFETY_LAG_SECONDS         = "120"
     MAX_EVENTS_PER_RUN         = "50000"
@@ -92,12 +122,19 @@ resource "oci_resource_scheduler_schedule" "audit" {
   count              = var.deploy_function ? 1 : 0
   action             = "START_RESOURCE"
   compartment_id     = var.compartment_ocid
-  recurrence_details = var.schedule_cron
+  recurrence_details = local.effective_schedule_cron
   recurrence_type    = "CRON"
   display_name       = "${var.deployment_name}-schedule"
   description        = "Invokes the Data Safe audit export function."
   state              = "ACTIVE"
   freeform_tags      = local.tags
+
+  lifecycle {
+    precondition {
+      condition     = var.schedule_interval != "CUSTOM" || length(trimspace(var.custom_schedule_cron)) > 0
+      error_message = "custom_schedule_cron is required when schedule_interval is CUSTOM."
+    }
+  }
 
   resources {
     id = oci_functions_function.audit[0].id
@@ -122,6 +159,28 @@ resource "oci_sch_service_connector" "audit" {
 
   target {
     kind         = "loggingAnalytics"
-    log_group_id = var.log_analytics_log_group_ocid
+    log_group_id = local.log_analytics_log_group_id
   }
+
+  lifecycle {
+    precondition {
+      condition     = local.log_analytics_log_group_id != null && can(regex("^ocid1\\.loganalyticsloggroup\\.", local.log_analytics_log_group_id))
+      error_message = "Set create_log_analytics_log_group=true or provide log_analytics_log_group_ocid."
+    }
+  }
+}
+
+resource "oci_log_analytics_log_analytics_import_custom_content" "audit" {
+  count                      = var.deploy_log_analytics_content ? 1 : 0
+  namespace                  = local.log_analytics_namespace
+  import_custom_content_file = "${path.module}/content/oci-datasafe-log-analytics-content.zip"
+  is_overwrite               = true
+}
+
+resource "oci_management_dashboard_management_dashboards_import" "audit" {
+  count                                  = var.deploy_dashboards ? 1 : 0
+  import_details_file                    = local.dashboard_bundle_file
+  override_dashboard_compartment_ocid    = var.compartment_ocid
+  override_saved_search_compartment_ocid = var.compartment_ocid
+  override_same_name                     = "true"
 }

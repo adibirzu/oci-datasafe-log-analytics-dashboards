@@ -4,7 +4,8 @@
 
 1. Data Safe collects unified database audit records into its regional
    repository.
-2. Resource Scheduler invokes the exporter function on a five-minute cron.
+2. Resource Scheduler invokes the exporter function every twelve hours by
+   default, with one-hour, six-hour, one-day, and custom cadence options.
 3. The function reads a bounded `timeCollected` SCIM window. The window
    overlaps the previous cursor by five minutes; recent Data Safe event IDs
    remove duplicates.
@@ -13,7 +14,7 @@
 5. Connector Hub continuously transfers that log to a Log Analytics log group.
 6. The custom `OCI Data Safe Database Audit` source maps JSON properties to
    real Log Analytics display fields.
-7. Generated saved searches power six Management Dashboards.
+7. Fifty-two generated saved searches power seven Management Dashboards.
 
 ## Why `timeCollected` is the cursor
 
@@ -43,7 +44,7 @@ Connector Hub replay.
 
 OCI Management Dashboards currently documents individual custom dashboards and
 global scope/time filters. This repository therefore deploys a supported suite
-of six consistently prefixed dashboards, each tagged with a stable logical tab
+of seven consistently prefixed dashboards, each tagged with a stable logical tab
 identifier. The generated bundle includes ordered navigation metadata for
 future consumers.
 
@@ -58,8 +59,12 @@ does not emit undocumented SET payloads.
 - Function application and function
 - Resource Scheduler schedule
 - Connector Hub connector
+- Optional dedicated Log Analytics log group
+- Versioned Log Analytics fields/parser/source import
+- Same-name Management Dashboard import
 - Dynamic groups and policies when enabled
 
-The Log Analytics log group is deliberately supplied as an existing resource.
-The content setup script owns only the solution's fields, parser, and source.
-The dashboard deployer owns only dashboards prefixed `Data Safe Audit |`.
+An existing Log Analytics log group can be supplied, or the stack can create a
+dedicated group. The portable content package owns only the solution's fields,
+parser, and source. The dashboard import owns only dashboards prefixed
+`Data Safe Audit |`.

@@ -15,6 +15,21 @@
       ]
     },
     {
+      "id": "predefined-reports",
+      "label": "Predefined Reports",
+      "description": "All predefined OCI Data Safe Activity Auditing reports, recreated as Log Analytics saved-search visualizations.",
+      "widgets": [
+        "all_activity_report", "admin_activity_report",
+        "user_entitlement_changes_report", "audit_policy_changes_report",
+        "login_activity_report", "data_access_report",
+        "data_modification_report", "database_schema_changes_report",
+        "data_safe_activity_report", "database_vault_activity_report",
+        "common_user_activity_report", "database_error_report",
+        "data_extraction_activity_report", "sensitive_data_activity_report",
+        "sql_firewall_violations_report"
+      ]
+    },
+    {
       "id": "audit-insights",
       "label": "Audit Insights",
       "description": "Key metrics and top audit-volume contributors from Data Safe Audit Insights.",

@@ -4,6 +4,12 @@ variable "oci_profile" {
   default     = "cap"
 }
 
+variable "use_oci_profile" {
+  description = "Use oci_profile for local CLI deployment. Keep false in Resource Manager."
+  type        = bool
+  default     = false
+}
+
 variable "tenancy_ocid" {
   description = "Tenancy OCID. Keep this in an uncommitted tfvars file."
   type        = string
@@ -45,7 +51,15 @@ variable "function_image" {
 variable "log_analytics_log_group_ocid" {
   description = "Existing Oracle Log Analytics log group receiving Connector Hub data."
   type        = string
+  default     = null
+  nullable    = true
   sensitive   = true
+}
+
+variable "create_log_analytics_log_group" {
+  type        = bool
+  default     = false
+  description = "Create a dedicated Log Analytics log group. If false, provide log_analytics_log_group_ocid."
 }
 
 variable "deployment_name" {
@@ -58,10 +72,30 @@ variable "deployment_name" {
   }
 }
 
-variable "schedule_cron" {
+variable "schedule_interval" {
   type        = string
-  default     = "*/5 * * * *"
-  description = "UTC UNIX cron expression for Resource Scheduler."
+  default     = "TWELVE_HOURS"
+  description = "Function run interval: ONE_HOUR, SIX_HOURS, TWELVE_HOURS, ONE_DAY, or CUSTOM."
+  validation {
+    condition     = contains(["ONE_HOUR", "SIX_HOURS", "TWELVE_HOURS", "ONE_DAY", "CUSTOM"], var.schedule_interval)
+    error_message = "schedule_interval must be ONE_HOUR, SIX_HOURS, TWELVE_HOURS, ONE_DAY, or CUSTOM."
+  }
+}
+
+variable "custom_schedule_cron" {
+  type        = string
+  default     = ""
+  description = "UTC UNIX cron expression used only when schedule_interval is CUSTOM."
+}
+
+variable "custom_initial_lookback_minutes" {
+  type        = number
+  default     = 750
+  description = "First-run lookback used only with a custom schedule."
+  validation {
+    condition     = var.custom_initial_lookback_minutes >= 15 && var.custom_initial_lookback_minutes <= 10080
+    error_message = "custom_initial_lookback_minutes must be between 15 minutes and seven days."
+  }
 }
 
 variable "include_sql_text" {
@@ -92,6 +126,18 @@ variable "deploy_function" {
   type        = bool
   default     = true
   description = "Deploy the scheduled Function runtime. Set false for a profile-backed local E2E."
+}
+
+variable "deploy_log_analytics_content" {
+  type        = bool
+  default     = true
+  description = "Idempotently import the versioned Data Safe fields, parser, and source."
+}
+
+variable "deploy_dashboards" {
+  type        = bool
+  default     = true
+  description = "Idempotently import all generated Management Dashboard views and saved searches."
 }
 
 variable "freeform_tags" {

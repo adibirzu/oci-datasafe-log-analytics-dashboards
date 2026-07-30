@@ -1,6 +1,6 @@
 PYTHON ?= python3
 
-.PHONY: format lint test verify dashboard-bundle terraform-validate preflight e2e
+.PHONY: format lint test verify dashboard-bundle orm-package terraform-validate preflight e2e
 
 format:
 	$(PYTHON) -m ruff format src scripts tests function
@@ -14,11 +14,14 @@ test:
 dashboard-bundle:
 	$(PYTHON) scripts/build_dashboard_bundle.py
 
+orm-package:
+	$(PYTHON) scripts/build_orm_package.py
+
 terraform-validate:
 	terraform -chdir=terraform init -backend=false
 	terraform -chdir=terraform validate
 
-verify: lint test dashboard-bundle terraform-validate
+verify: lint test dashboard-bundle orm-package terraform-validate
 
 preflight:
 	PYTHONPATH=src $(PYTHON) scripts/preflight.py \

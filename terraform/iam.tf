@@ -54,6 +54,6 @@ resource "oci_identity_policy" "connector" {
   freeform_tags  = local.tags
   statements = [
     "Allow any-user to read log-content in compartment id ${var.compartment_ocid} where all {request.principal.type='serviceconnector', request.principal.compartment.id='${var.compartment_ocid}'}",
-    "Allow any-user to use loganalytics-log-group in compartment id ${var.compartment_ocid} where all {request.principal.type='serviceconnector', target.loganalytics-log-group.id='${var.log_analytics_log_group_ocid}', request.principal.compartment.id='${var.compartment_ocid}'}",
+    "Allow any-user to use loganalytics-log-group in compartment id ${var.compartment_ocid} where all {request.principal.type='serviceconnector', target.loganalytics-log-group.id='${local.log_analytics_log_group_id}', request.principal.compartment.id='${var.compartment_ocid}'}",
   ]
 }

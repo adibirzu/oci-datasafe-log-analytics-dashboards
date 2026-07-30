@@ -17,6 +17,13 @@ from .normalize import event_id, normalize_event
 
 LOG = logging.getLogger(__name__)
 
+CLASSIFIERS = {
+    "admin_user": "adminUser",
+    "common_user": "commonUser",
+    "sensitive_activity": "sensitiveActivity",
+    "ds_activity": "dsActivity",
+}
+
 
 def _rfc3339(value: datetime) -> str:
     return value.astimezone(UTC).isoformat(timespec="milliseconds").replace("+00:00", "Z")
@@ -60,11 +67,20 @@ class AuditExporter:
         )
         return _rfc3339(start), _rfc3339(end), loaded
 
-    def _list_events(self, start: str, end: str) -> tuple[list[Any], bool]:
+    def _list_events(
+        self,
+        start: str,
+        end: str,
+        extra_filter: str | None = None,
+        max_events: int | None = None,
+    ) -> tuple[list[Any], bool]:
         scim_query = f'(timeCollected gt "{start}") and (timeCollected le "{end}")'
+        if extra_filter:
+            scim_query = f"({scim_query}) and ({extra_filter})"
         items: list[Any] = []
         page = None
         truncated = False
+        limit_total = max_events or self.config.max_events
         while True:
             response = self.data_safe.list_audit_events(
                 compartment_id=self.config.data_safe_compartment_id,
@@ -76,16 +92,33 @@ class AuditExporter:
                 limit=self.config.page_size,
                 page=page,
             )
-            remaining = self.config.max_events - len(items)
+            remaining = limit_total - len(items)
             items.extend(response.data.items[:remaining])
             next_page = response.headers.get("opc-next-page")
-            if len(items) >= self.config.max_events:
+            if len(items) >= limit_total:
                 truncated = bool(next_page) or len(response.data.items) > remaining
                 break
             if not next_page:
                 break
             page = next_page
         return items, truncated
+
+    def _classifier_event_ids(self, start: str, end: str) -> dict[str, set[str]]:
+        """Fetch Data Safe's filter-only report classifiers and join by event id."""
+        classified: dict[str, set[str]] = {}
+        for wire_name, filter_name in CLASSIFIERS.items():
+            items, _ = self._list_events(
+                start,
+                end,
+                f"{filter_name} eq 1",
+                self.config.max_events,
+            )
+            classified[wire_name] = {
+                str(oci.util.to_dict(item).get("id"))
+                for item in items
+                if oci.util.to_dict(item).get("id")
+            }
+        return classified
 
     def _batches(self, events: Iterable[dict[str, Any]]) -> Iterable[list[dict[str, Any]]]:
         batch: list[dict[str, Any]] = []
@@ -132,11 +165,21 @@ class AuditExporter:
     def run(self) -> ExportResult:
         start, end, loaded = self._window()
         raw_events, truncated = self._list_events(start, end)
+        classifier_end = end
+        if truncated and raw_events:
+            classifier_end = str(
+                oci.util.to_dict(raw_events[-1]).get("time_collected") or end
+            )
+        classified = self._classifier_event_ids(start, classifier_end)
         seen = set(loaded.cursor.recent_event_ids)
         normalized: list[dict[str, Any]] = []
         duplicates = 0
         for raw in raw_events:
-            item = normalize_event(raw, self.config)
+            enriched = oci.util.to_dict(raw)
+            raw_id = str(enriched.get("id") or "")
+            for wire_name, ids in classified.items():
+                enriched[wire_name] = 1 if raw_id in ids else 0
+            item = normalize_event(enriched, self.config)
             if event_id(item) in seen:
                 duplicates += 1
                 continue

@@ -22,7 +22,27 @@ output "service_connector_id" {
   sensitive = true
 }
 
+output "log_analytics_log_group_id" {
+  value     = local.log_analytics_log_group_id
+  sensitive = true
+}
+
 output "resource_schedule_id" {
   value     = try(oci_resource_scheduler_schedule.audit[0].id, null)
   sensitive = true
+}
+
+output "function_schedule" {
+  value = {
+    interval = var.schedule_interval
+    cron     = local.effective_schedule_cron
+  }
+}
+
+output "log_analytics_content" {
+  value = try({
+    fields  = oci_log_analytics_log_analytics_import_custom_content.audit[0].field_names
+    parsers = oci_log_analytics_log_analytics_import_custom_content.audit[0].parser_names
+    sources = oci_log_analytics_log_analytics_import_custom_content.audit[0].source_names
+  }, null)
 }

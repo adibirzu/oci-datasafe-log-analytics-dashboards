@@ -29,18 +29,21 @@ Log Analytics.
 - Created: private versioned cursor bucket, custom Logging group/log, active
   Connector Hub route, generated pseudonymization salt, and scoped connector
   policy.
-- Log Analytics content: 33 fields, one JSON parser, and one custom source.
+- Log Analytics content: 43 fields, one JSON parser, and one custom source.
 - Fabricated audit-shaped records written: 1, explicitly labeled synthetic.
 - Real Log Analytics row observed after Connector Hub delivery: yes.
-- Dashboard query parse checks: 37 passed, 0 failed.
-- Dashboard views imported and present: 6 of 6.
+- Dashboard query parse checks: 52 passed, 0 failed.
+- Dashboard views imported and present: 7 of 7.
+- Terraform content/dashboard apply: 2 additions, 0 changes, 0 destroys.
+- Post-apply local-state plan: no changes.
 - Final downstream E2E status: ready.
 
 ## Function runtime gate
 
 - ARM64 OCI Function image build: passed.
 - Private OCIR repository creation: passed.
-- Image push: blocked by OCIR authentication (`Unauthorized`).
+- Federated OCIR authentication: passed after propagation.
+- Image push: blocked by registry authorization after login.
 - Temporary authentication tokens used during diagnostics were deleted
   immediately, and Docker was logged out.
 - Scheduled Function deployment was intentionally skipped; the same exporter
@@ -52,7 +55,8 @@ The full scheduled source-to-dashboard E2E closes only when:
 
 1. the database owner applies the Data Safe collection privilege script;
 2. at least one audit trail is collecting and a real event is visible;
-3. an operator supplies working OCIR push credentials;
+3. an OCI owner resolves OCIR layer-push authorization or publishes the
+   release image through an owner-controlled build pipeline;
 4. the Function and schedule are deployed and invoked;
 5. `scripts/e2e.py` passes using that Function invocation, with no synthetic
    record used as source proof.
@@ -60,7 +64,9 @@ The full scheduled source-to-dashboard E2E closes only when:
 ## Publication gate
 
 - The `main` branch was pushed to the dedicated private GitHub repository.
-- The local pre-push verification passed all 9 tests.
+- The local verification passes 11 tests, Ruff, Terraform validation, the
+  deterministic Resource Manager package test, 52 live query parses, and 7/7
+  dashboard presence.
 - GitHub Actions did not allocate a runner (`runner_id: 0`, no steps). Its
   annotation reports an account billing or spending-limit restriction. This is
   GitHub account infrastructure, not a repository test failure.

@@ -15,6 +15,31 @@
 
 - All dashboard queries parse and each expected dashboard exists.
 
+## Schedule
+
+`schedule_interval` controls Resource Scheduler:
+
+| Selection | UTC cron | First-run lookback |
+|---|---:|---:|
+| `ONE_HOUR` | `0 * * * *` | 75 minutes |
+| `SIX_HOURS` | `0 */6 * * *` | 390 minutes |
+| `TWELVE_HOURS` (default) | `0 */12 * * *` | 750 minutes |
+| `ONE_DAY` | `0 0 * * *` | 1,470 minutes |
+| `CUSTOM` | `custom_schedule_cron` | `custom_initial_lookback_minutes` |
+
+Every later run resumes from the Object Storage cursor and overlaps by five
+minutes, so changing cadence does not reset or skip the cursor.
+
+## Data Safe database privileges
+
+An active registered target is not sufficient: each audit trail must be
+started and the Data Safe service account needs `AUDIT_COLLECTION`. Download
+the target-specific `datasafe_privileges.sql` script from Data Safe, run it as
+an authorized database administrator, and enable `DV_MONITOR` when Database
+Vault collection is required. Then start the trail and verify it reaches
+`COLLECTING` or `IDLE`. The exporter cannot grant database privileges through
+OCI IAM.
+
 ## No events
 
 1. Check the Data Safe target and audit-trail states.
@@ -27,6 +52,9 @@
 6. Query the canonical source over a wider window and include
    subcompartments. An empty result is inconclusive until source, scope, and
    window are verified.
+7. If the trail is `STOPPED_NEEDS_ATTN`, inspect its Data Safe error. Missing
+   `AUDIT_COLLECTION` is a database-side prerequisite, not a Function,
+   Connector Hub, parser, or dashboard defect.
 
 ## Cursor recovery
 
@@ -57,3 +85,14 @@ and must never be reported as proof that Data Safe collection is working.
 4. Apply and invoke once manually.
 5. Run `scripts/e2e.py` and preserve the redacted receipt outside Git.
 6. Confirm the scheduled invocation before closing the change.
+
+## Idempotent repair
+
+- `scripts/setup_log_analytics_content.py` reuses display/internal field names,
+  updates the parser with its ETag, and upserts the existing source.
+- Terraform imports `terraform/content/oci-datasafe-log-analytics-content.zip`
+  with overwrite enabled.
+- Dashboard import sets same-name replacement, so the seven suite dashboards
+  and their saved searches are updated rather than duplicated.
+- The Connector Hub connector is a normal Terraform resource; repeated plans
+  preserve it unless the reviewed configuration changes.
