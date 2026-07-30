@@ -52,12 +52,7 @@ def _source_name(client, namespace: str, compartment_id: str) -> str:
         compartment_id,
         is_system="ALL",
     )
-    matches = [
-        source
-        for source in response.data
-        if source.name in {SOURCE_INTERNAL, SOURCE_DISPLAY}
-        or source.display_name == SOURCE_DISPLAY
-    ]
+    matches = [source for source in response.data if source.name == SOURCE_INTERNAL]
     if len(matches) != 1:
         raise RuntimeError(
             f"expected exactly one {SOURCE_DISPLAY!r} source, found {len(matches)}"

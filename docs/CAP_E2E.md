@@ -68,6 +68,23 @@ verified pipeline for the collecting targets.
   deterministic Resource Manager package test, 52 live query parses, and 7/7
   dashboard presence.
 - Public release: `v2.0.2`.
+
+## Dashboard data-path repair — 2026-07-31
+
+- Root cause 1: embedded saved searches scoped `LogGroup` to a compartment
+  OCID, which made every widget empty even when source rows existed.
+- Root cause 2: the source's immutable internal name did not match the Function
+  CloudEvents type, so custom records used the catch-all source.
+- Root cause 3: parser paths addressed `$.<field>` although Connector Hub sends
+  OCI Logging's `logContent` object and the payload is under `$.data.<field>`.
+- Repaired suite: seven unique dashboards; 24 stale duplicate dashboards were
+  removed after a successful same-name import.
+- Bounded real-data reindex: 2,406 recent audit events in five batches.
+- Hardened E2E: 52/52 queries parsed, 11,227 schema-v2 events found, target/user/
+  operation dimensions populated, seven dashboards present, zero duplicates.
+- Strict discovery: seven active targets, seven audit profiles, thirteen audit
+  trails, four collecting trails, correct source/parser association, and one
+  active Connector Hub connector.
 - The release ZIP is anonymously downloadable and byte-identical to the
   locally verified deterministic package.
 - GitHub Actions did not allocate a runner (`runner_id: 0`, no steps). Its

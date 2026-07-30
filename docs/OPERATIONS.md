@@ -60,6 +60,28 @@ uses `in tenancy`; otherwise it is restricted to the selected compartment ID.
    `AUDIT_COLLECTION` is a database-side prerequisite, not a Function,
    Connector Hub, parser, or dashboard defect.
 
+### Every dashboard says `No data to display`
+
+1. Query
+   `'Log Source' = 'OCI Data Safe Database Audit' | stats count as Events`.
+   `Events` must be greater than zero. An aggregate row containing `Events: 0`
+   is not ingestion proof.
+2. Query schema-v2 records and require positive distinct counts for
+   `Data Safe Target Name`, `Database User`, and `Operation`. A positive event
+   count with zero dimensions means the source matched but the JSON parser did
+   not map OCI Logging's `logContent.data` wrapper.
+3. Fetch the dashboard and verify embedded saved searches have empty
+   `scopeFilters`. Dashboard parameters own scope; never put a compartment OCID
+   into a `LogGroup` values list.
+4. Verify exactly one dashboard exists for each of the seven suite names.
+   `scripts/deploy_dashboards.py --cleanup-duplicates` retains the newest copy
+   after a successful import.
+5. Confirm the Log Group Compartment filter selects the solution compartment
+   and the time range covers the latest export.
+
+The live E2E gate enforces a positive source count, populated customer
+dimensions, all query parses, and exactly one deployed dashboard per suite view.
+
 ## Cursor recovery
 
 The cursor bucket has versioning enabled. Restore an earlier cursor object

@@ -31,6 +31,17 @@ def query_window(lookback_minutes: int) -> oci.log_analytics.models.TimeRange:
     )
 
 
+def aggregate_count(rows: list[object], field: str = "Events") -> int:
+    """Return an aggregate count without treating a zero-valued row as evidence."""
+    if not rows:
+        return 0
+    first = oci.util.to_dict(rows[0])
+    try:
+        return int(first.get(field) or 0)
+    except (TypeError, ValueError):
+        return 0
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--profile", default="cap")
@@ -108,6 +119,7 @@ def main() -> int:
         )
     deadline = time.monotonic() + args.poll_seconds
     rows = []
+    source_event_count = 0
     while time.monotonic() < deadline:
         response = la.query(
             namespace,
@@ -121,11 +133,12 @@ def main() -> int:
             ),
         )
         rows = response.data.items
-        if rows:
+        source_event_count = aggregate_count(rows)
+        if source_event_count > 0:
             break
         time.sleep(15)
 
-    if args.deploy_dashboards and not parse_failures and rows:
+    if args.deploy_dashboards and not parse_failures and source_event_count > 0:
         run(
             [
                 sys.executable,
@@ -134,6 +147,7 @@ def main() -> int:
                 args.profile,
                 "--compartment-id",
                 args.compartment_id,
+                "--cleanup-duplicates",
             ]
         )
 
@@ -142,7 +156,35 @@ def main() -> int:
         for tab in json.loads((ROOT / "dashboards" / "catalog.json").read_text())["tabs"]
     }
     deployed = md.list_management_dashboards(compartment_id=args.compartment_id).data.items
-    deployed_names = {item.display_name for item in deployed}
+    deployed_counts = {
+        name: sum(item.display_name == name for item in deployed) for name in expected_names
+    }
+    field_query = (
+        "'Log Source' = 'OCI Data Safe Database Audit' and 'Schema Version' = '2.0' "
+        "| stats distinctcount('Data Safe Target Name') as Targets, "
+        "distinctcount('Database User') as Users, "
+        "distinctcount('Operation') as Operations"
+    )
+    field_response = la.query(
+        namespace,
+        oci.log_analytics.models.QueryDetails(
+            compartment_id=args.compartment_id,
+            compartment_id_in_subtree=True,
+            query_string=field_query,
+            sub_system="LOG",
+            time_filter=query_window(args.lookback_minutes),
+            max_total_count=10,
+        ),
+    )
+    field_row = (
+        oci.util.to_dict(field_response.data.items[0])
+        if field_response.data.items
+        else {}
+    )
+    populated_dimensions = {
+        name: int(field_row.get(name) or 0)
+        for name in ("Targets", "Users", "Operations")
+    }
     report = {
         "schemaVersion": "1.0",
         "generatedAt": datetime.now(UTC).isoformat().replace("+00:00", "Z"),
@@ -153,14 +195,20 @@ def main() -> int:
             "query_count": len(list(QUERY_DIR.glob("*.json"))),
             "parse_failures": parse_failures,
             "function_exported": invocation_exported,
-            "log_analytics_rows_available": bool(rows),
+            "log_analytics_event_count": source_event_count,
+            "log_analytics_rows_available": source_event_count > 0,
+            "populated_dimensions": populated_dimensions,
             "dashboard_count_expected": len(expected_names),
-            "dashboard_count_present": len(expected_names & deployed_names),
+            "dashboard_count_present": sum(count > 0 for count in deployed_counts.values()),
+            "dashboard_duplicate_count": sum(
+                max(0, count - 1) for count in deployed_counts.values()
+            ),
         },
         "ready": not parse_failures
         and (not args.require_function_export or (invocation_exported or 0) > 0)
-        and bool(rows)
-        and (not args.deploy_dashboards or expected_names <= deployed_names),
+        and source_event_count > 0
+        and all(count > 0 for count in populated_dimensions.values())
+        and all(count == 1 for count in deployed_counts.values()),
     }
     evidence_path.parent.mkdir(parents=True, exist_ok=True)
     evidence_path.write_text(json.dumps(report, indent=2) + "\n")

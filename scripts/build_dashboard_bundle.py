@@ -31,21 +31,9 @@ def _saved_search(search_id: str, query: dict, compartment: str, period: str) ->
         "uiConfig": {
             "enableWidgetInApp": True,
             "queryString": query["query"],
-            "scopeFilters": {
-                "LogGroup": {
-                    "flags": {"IncludeSubCompartments": True},
-                    "type": "LogGroup",
-                    "values": [{"label": "solution", "value": compartment}],
-                },
-                "filters": [
-                    {
-                        "flags": {"IncludeSubCompartments": True},
-                        "type": "LogGroup",
-                        "values": [{"label": "solution", "value": compartment}],
-                    }
-                ],
-                "isGlobal": False,
-            },
+            # Scope is supplied by dashboard parameters. A compartment OCID is
+            # not a LogGroup value; putting it here empties every widget.
+            "scopeFilters": {},
             "showTitle": True,
             "timeSelection": {"timePeriod": period},
             "visualizationOptions": query.get("options", {}),
@@ -129,6 +117,9 @@ def _place(queries: list[tuple[str, dict]]) -> list[dict]:
                 "state": "DEFAULT",
                 "drilldownConfig": [],
                 "parametersMap": {
+                    "log-analytics-entity": (
+                        "$(dashboard.params.log-analytics-entity-filter)"
+                    ),
                     "log-analytics-log-group-compartment": (
                         "$(dashboard.params.log-analytics-loggroup-filter)"
                     ),
@@ -203,22 +194,25 @@ def build_bundle() -> dict:
                 "definedTags": {},
                 "parametersConfig": [
                     {
+                        "paramName": "log-analytics-loggroup-filter",
                         "displayName": "Log Group Compartment",
-                        "localStorageKey": "log-analytics-loggroup-filter",
-                        "name": "log-analytics-loggroup-filter",
-                        "parametersMap": {"isStoreInLocalStorage": True},
-                        "savedSearchId": "OOBSS-management-dashboard-filter-4a",
-                        "state": "DEFAULT",
-                        "uiConfig": {
-                            "filterName": "log-analytics-loggroup-filter",
-                            "vizFilterType": "lxLogGroupDashFilterType",
-                        },
-                        "width": 4,
+                        "paramType": "LogAnalyticsLogGroupCompartment",
+                        "defaultValue": compartment,
+                        "isRequired": False,
                     },
                     {
-                        "displayName": "$(bundle.globalSavedSearch.TIME)",
-                        "name": "time",
-                        "src": "$(context.time)",
+                        "paramName": "log-analytics-entity-filter",
+                        "displayName": "Entity",
+                        "paramType": "LogAnalyticsEntity",
+                        "defaultValue": "",
+                        "isRequired": False,
+                    },
+                    {
+                        "paramName": "time",
+                        "displayName": "Time Range",
+                        "paramType": "Time",
+                        "defaultValue": period,
+                        "isRequired": False,
                     },
                 ],
                 "drilldownConfig": [],

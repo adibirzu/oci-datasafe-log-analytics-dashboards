@@ -132,6 +132,12 @@ parser, and source with overwrite semantics, and imports dashboards with
 same-name replacement. It therefore updates this solution's content instead
 of creating duplicate fields, parsers, sources, or dashboards.
 
+Dashboard scope is supplied by reusable Log Group Compartment, Entity, and Time
+Range filters. Embedded searches do not hard-code a LogGroup value. Table and
+summary-table widgets retain Log Analytics `Add to Search` and `Exclude from
+Search` pivots for target, user, operation, object, schema, client, and policy
+drilldown.
+
 ## Local Terraform deployment
 
 Create an untracked `terraform/terraform.tfvars` from the example and review the
@@ -142,6 +148,37 @@ cp terraform/terraform.tfvars.example terraform/terraform.tfvars
 terraform -chdir=terraform init
 terraform -chdir=terraform plan -out=plan.out
 terraform -chdir=terraform apply plan.out
+```
+
+For one plan/apply/repair/acceptance run, use the wrapper with an untracked
+variables file. Without `--apply`, it stops after producing and summarizing the
+reviewed plan:
+
+```bash
+PYTHONPATH=src python3 scripts/deploy_all.py \
+  --profile <OCI_PROFILE> \
+  --data-safe-compartment-id <DATA_SAFE_COMPARTMENT_OCID> \
+  --solution-compartment-id <SOLUTION_COMPARTMENT_OCID> \
+  --deployment-name <DEPLOYMENT_NAME> \
+  --tfvars terraform/terraform.tfvars \
+  --apply
+```
+
+The wrapper applies the exact saved plan, repairs the two-phase Log Analytics
+source/parser contract, imports the dashboard suite with duplicate cleanup,
+runs live data/field/dashboard acceptance, and finishes with strict redacted
+discovery. Resource Manager uses the same generated root package through the
+Deploy to OCI button.
+
+Read-only inventory and drift diagnosis:
+
+```bash
+PYTHONPATH=src python3 scripts/discover.py \
+  --profile <OCI_PROFILE> \
+  --data-safe-compartment-id <DATA_SAFE_COMPARTMENT_OCID> \
+  --solution-compartment-id <SOLUTION_COMPARTMENT_OCID> \
+  --deployment-name <DEPLOYMENT_NAME> \
+  --strict
 ```
 
 Terraform owns the Log Analytics content and dashboard imports. The scripts

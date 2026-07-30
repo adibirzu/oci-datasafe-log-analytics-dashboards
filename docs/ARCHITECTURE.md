@@ -69,3 +69,18 @@ An existing Log Analytics log group can be supplied, or the stack can create a
 dedicated group. The portable content package owns only the solution's fields,
 parser, and source. The dashboard import owns only dashboards prefixed
 `Data Safe Audit |`.
+
+## OCI Logging wrapper contract
+
+The Function writes a CloudEvents batch type of
+`com.oraclecloud.logging.custom.datasafe.audit`. The Log Analytics source has
+that exact immutable internal name and the reader-facing display name
+`OCI Data Safe Database Audit`. Connector Hub uses the batch type to choose the
+source automatically for a Logging source.
+
+Connector Hub passes the value of OCI Logging's `logContent` object to the JSON
+parser. Audit payload fields are therefore mapped from `$.data.<wire_field>`,
+not `$.<wire_field>`. Content setup uses a two-phase source upsert because Log
+Analytics derives a new source's immutable internal name from its initial
+display name: it first creates the routing identifier and then updates only the
+display name.

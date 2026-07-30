@@ -1,6 +1,6 @@
 PYTHON ?= python3
 
-.PHONY: format lint test verify dashboard-bundle orm-package terraform-validate preflight e2e
+.PHONY: format lint test verify dashboard-bundle orm-package terraform-validate preflight discover e2e
 
 format:
 	$(PYTHON) -m ruff format src scripts tests function
@@ -28,6 +28,14 @@ preflight:
 		--profile "$${OCI_PROFILE:-cap}" \
 		--data-safe-compartment-id "$${DATA_SAFE_COMPARTMENT_ID:?set DATA_SAFE_COMPARTMENT_ID}" \
 		--solution-compartment-id "$${SOLUTION_COMPARTMENT_ID:?set SOLUTION_COMPARTMENT_ID}"
+
+discover:
+	PYTHONPATH=src $(PYTHON) scripts/discover.py \
+		--profile "$${OCI_PROFILE:-cap}" \
+		--data-safe-compartment-id "$${DATA_SAFE_COMPARTMENT_ID:?set DATA_SAFE_COMPARTMENT_ID}" \
+		--solution-compartment-id "$${SOLUTION_COMPARTMENT_ID:?set SOLUTION_COMPARTMENT_ID}" \
+		--deployment-name "$${DEPLOYMENT_NAME:-datasafe-audit}" \
+		--strict
 
 e2e:
 	PYTHONPATH=src $(PYTHON) scripts/e2e.py \

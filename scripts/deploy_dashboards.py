@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import json
+from collections import defaultdict
 from copy import deepcopy
 from pathlib import Path
 
@@ -29,6 +30,11 @@ def main() -> int:
     parser.add_argument("--profile", default="cap")
     parser.add_argument("--compartment-id", required=True)
     parser.add_argument("--dry-run", action="store_true")
+    parser.add_argument(
+        "--cleanup-duplicates",
+        action="store_true",
+        help="Retain only the newest imported dashboard for each suite name.",
+    )
     args = parser.parse_args()
     payload = json.loads(BUNDLE.read_text())
     dashboards = replace_compartment(deepcopy(payload["dashboards"]), args.compartment_id)
@@ -40,8 +46,43 @@ def main() -> int:
     details = oci.management_dashboard.models.ManagementDashboardImportDetails(
         dashboards=dashboards
     )
-    client.import_dashboard(details)
-    print(json.dumps({"dashboards": len(dashboards), "status": "imported"}))
+    client.import_dashboard(
+        details,
+        override_same_name="true",
+        override_dashboard_compartment_ocid=args.compartment_id,
+        override_saved_search_compartment_ocid=args.compartment_id,
+    )
+    removed = 0
+    if args.cleanup_duplicates:
+        expected_names = {item["displayName"] for item in dashboards}
+        grouped = defaultdict(list)
+        for item in client.list_management_dashboards(
+            compartment_id=args.compartment_id
+        ).data.items:
+            if item.display_name in expected_names:
+                grouped[item.display_name].append(item)
+        for items in grouped.values():
+            ordered = sorted(
+                items,
+                key=lambda item: (item.time_created, item.id),
+                reverse=True,
+            )
+            for duplicate in ordered[1:]:
+                response = client.get_management_dashboard(duplicate.id)
+                client.delete_management_dashboard(
+                    duplicate.id,
+                    if_match=response.headers.get("etag"),
+                )
+                removed += 1
+    print(
+        json.dumps(
+            {
+                "dashboards": len(dashboards),
+                "duplicates_removed": removed,
+                "status": "imported",
+            }
+        )
+    )
     return 0
 
 

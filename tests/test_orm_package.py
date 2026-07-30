@@ -23,3 +23,8 @@ def test_resource_manager_package_is_rooted_and_secret_free(tmp_path):
             ".terraform/" in name or name.endswith((".tfstate", ".plan"))
             for name in names
         )
+
+
+def test_logging_connector_leaves_stream_only_source_identifier_unset():
+    main = (ROOT / "terraform" / "main.tf").read_text()
+    assert "log_source_identifier" not in main

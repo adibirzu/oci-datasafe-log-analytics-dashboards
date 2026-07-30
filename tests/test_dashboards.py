@@ -51,3 +51,21 @@ def test_all_tiles_are_in_bounds_and_non_overlapping():
 def test_committed_bundle_is_current():
     expected = json.dumps(MODULE.build_bundle(), indent=2, sort_keys=True) + "\n"
     assert (ROOT / "dashboards" / "generated_bundle.json").read_text() == expected
+
+
+def test_dashboard_scope_uses_runtime_parameters_not_invalid_log_group_ocids():
+    for dashboard in MODULE.build_bundle()["dashboards"]:
+        parameters = {
+            item["paramName"]: item for item in dashboard["parametersConfig"]
+        }
+        assert parameters["log-analytics-loggroup-filter"]["defaultValue"] == (
+            "${compartment_id}"
+        )
+        assert parameters["time"]["defaultValue"] == "l7d"
+        assert "log-analytics-entity-filter" in parameters
+        for saved_search in dashboard["savedSearches"]:
+            assert saved_search["uiConfig"]["scopeFilters"] == {}
+        for tile in dashboard["tiles"]:
+            assert tile["parametersMap"]["log-analytics-entity"] == (
+                "$(dashboard.params.log-analytics-entity-filter)"
+            )

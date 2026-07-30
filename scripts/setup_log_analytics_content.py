@@ -19,12 +19,12 @@ from oci.log_analytics.models import (
 
 from oci_datasafe_exporter.normalize import FIELD_ALIASES
 
-SOURCE_INTERNAL = "com.oraclecloud.logging.custom.datasafe.audit"
 SOURCE_DISPLAY = "OCI Data Safe Database Audit"
+SOURCE_INTERNAL = "com.oraclecloud.logging.custom.datasafe.audit"
 PARSER_NAME = "ociDataSafeAuditJsonParser"
 PARSER_DISPLAY = "OCI Data Safe Audit JSON Parser"
 LONG_FIELDS = {"Admin User", "Common User", "Sensitive Activity", "Data Safe Activity"}
-EXAMPLE = {
+EVENT_EXAMPLE = {
     "id": "synthetic-event-001",
     "audit_event_time": "2026-07-30T12:00:00.000Z",
     "time_collected": "2026-07-30T12:01:00.000Z",
@@ -48,6 +48,15 @@ EXAMPLE = {
     "sensitive_activity": 1,
     "ds_activity": 0,
     "schema_version": "2.0",
+}
+EXAMPLE = {
+    "data": EVENT_EXAMPLE,
+    "id": "synthetic-logging-record-001",
+    "source": "OCIDataSafe",
+    "specversion": "1.0",
+    "subject": "OracleDatabaseAudit",
+    "time": "2026-07-30T12:01:00.000Z",
+    "type": SOURCE_INTERNAL,
 }
 
 
@@ -98,7 +107,9 @@ def ensure_parser(client, namespace: str, fields: dict[str, str]) -> None:
                 parser_field_name=internal,
                 parser_field_sequence=sequence,
                 storage_field_name=internal,
-                structured_column_info=f"$.{wire_name}",
+                # Connector Hub sends the value of OCI Logging's logContent
+                # object. The Function payload is nested under logContent.data.
+                structured_column_info=f"$.data.{wire_name}",
             )
         )
     content = json.dumps(EXAMPLE, indent=2)
@@ -135,11 +146,10 @@ def ensure_source(profile: str, namespace: str, compartment_id: str, client) -> 
         compartment_id,
         is_system="ALL",
     )
-    matches = [
-        source
-        for source in response.data
-        if source.name in {SOURCE_INTERNAL, SOURCE_DISPLAY} or source.display_name == SOURCE_DISPLAY
-    ]
+    # OCI Logging -> Log Analytics routing matches the custom log batch `type`
+    # to the source's immutable internal name. A same-display-name source is not
+    # equivalent and must not be reused.
+    matches = [source for source in response.data if source.name == SOURCE_INTERNAL]
     if matches:
         source_name = matches[0].name
         etag = client.get_source(namespace, source_name, compartment_id).headers.get("etag")
@@ -167,8 +177,6 @@ def ensure_source(profile: str, namespace: str, compartment_id: str, client) -> 
             namespace,
             "--name",
             source_name,
-            "--display-name",
-            SOURCE_DISPLAY,
             "--description",
             "OCI Data Safe database audit events from OCI Logging.",
             "--type-name",
@@ -182,10 +190,30 @@ def ensure_source(profile: str, namespace: str, compartment_id: str, client) -> 
             "--entity-types",
             f"file://{entity_file}",
         ]
-        if etag:
-            command.extend(["--if-match", etag])
+        # The service creates the immutable internal name from displayName on
+        # first upsert. Bootstrap with the routing identifier, then update only
+        # the reader-facing display name.
+        if not etag:
+            subprocess.run(  # noqa: S603
+                [*command, "--display-name", SOURCE_INTERNAL],
+                check=True,
+                capture_output=True,
+                text=True,
+            )
+            etag = client.get_source(
+                namespace, SOURCE_INTERNAL, compartment_id
+            ).headers.get("etag")
         subprocess.run(  # noqa: S603
-            command, check=True, capture_output=True, text=True
+            [
+                *command,
+                "--display-name",
+                SOURCE_DISPLAY,
+                "--if-match",
+                etag,
+            ],
+            check=True,
+            capture_output=True,
+            text=True,
         )
 
 

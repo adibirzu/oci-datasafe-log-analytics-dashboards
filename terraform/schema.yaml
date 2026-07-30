@@ -1,7 +1,7 @@
 title: "OCI Data Safe to Log Analytics"
 description: "Deploy the Data Safe audit exporter Function, OCI Logging route, Log Analytics fields/parser/source, and seven dashboard tabs."
 schemaVersion: 1.1.0
-version: "2.0.0"
+version: "2.1.0"
 locale: "en"
 
 variableGroups:

@@ -100,6 +100,10 @@ def test_exporter_uses_scim_cursor_deduplicates_and_advances_after_logging():
     assert result.duplicates == 1
     assert len(logging.calls) == 1
     payload = logging.calls[0][1].log_entry_batches[0].entries[0].data
+    assert (
+        logging.calls[0][1].log_entry_batches[0].type
+        == "com.oraclecloud.logging.custom.datasafe.audit"
+    )
     assert '"admin_user":1' in payload
     assert '"common_user":0' in payload
     assert '"sensitive_activity":1' in payload
