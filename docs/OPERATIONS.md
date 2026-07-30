@@ -40,6 +40,10 @@ Vault collection is required. Then start the trail and verify it reaches
 `COLLECTING` or `IDLE`. The exporter cannot grant database privileges through
 OCI IAM.
 
+When targets span unrelated top-level compartments, set
+`data_safe_compartment_ocid` to the tenancy OCID. The generated IAM policy then
+uses `in tenancy`; otherwise it is restricted to the selected compartment ID.
+
 ## No events
 
 1. Check the Data Safe target and audit-trail states.

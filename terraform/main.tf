@@ -28,6 +28,7 @@ locals {
   dashboard_bundle_file      = fileexists("${path.module}/dashboard_bundle.json") ? "${path.module}/dashboard_bundle.json" : "${path.module}/../dashboards/generated_bundle.json"
   log_analytics_namespace    = data.oci_log_analytics_namespaces.current.namespace_collection[0].items[0].namespace
   log_analytics_log_group_id = var.create_log_analytics_log_group ? oci_log_analytics_log_analytics_log_group.audit[0].id : var.log_analytics_log_group_ocid
+  data_safe_iam_scope        = var.data_safe_compartment_ocid == var.tenancy_ocid ? "in tenancy" : "in compartment id ${var.data_safe_compartment_ocid}"
 }
 
 data "oci_log_analytics_namespaces" "current" {

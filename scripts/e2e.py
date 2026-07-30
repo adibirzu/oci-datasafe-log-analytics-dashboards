@@ -62,7 +62,13 @@ def main() -> int:
     )
 
     if args.invoke_function_id:
-        functions = oci.functions.FunctionsInvokeClient(config)
+        management = oci.functions.FunctionsManagementClient(config)
+        invoke_endpoint = management.get_function(
+            args.invoke_function_id
+        ).data.invoke_endpoint
+        functions = oci.functions.FunctionsInvokeClient(
+            config, service_endpoint=invoke_endpoint
+        )
         functions.invoke_function(
             args.invoke_function_id,
             invoke_function_body=b"{}",

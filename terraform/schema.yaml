@@ -50,9 +50,9 @@ variables:
     required: true
 
   data_safe_compartment_ocid:
-    type: oci:identity:compartment:id
+    type: string
     title: "Data Safe target compartment"
-    description: "Compartment containing Data Safe registered targets. Subcompartments are included."
+    description: "Compartment containing Data Safe registered targets, or the tenancy OCID when targets span compartment trees. Subcompartments are included."
     required: true
 
   region:

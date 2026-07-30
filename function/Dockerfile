@@ -8,4 +8,6 @@ WORKDIR /function
 COPY --from=build-stage /python /python
 COPY src/oci_datasafe_exporter /function/oci_datasafe_exporter
 COPY function/func.py /function/func.py
+ENV PYTHONPATH=/python
+ENV PATH=/python/bin:${PATH}
 ENTRYPOINT ["/python/bin/fdk", "/function/func.py", "handler"]
