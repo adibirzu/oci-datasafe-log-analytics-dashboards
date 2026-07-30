@@ -1,0 +1,1 @@
+{"title":"Failed Login Trend","description":"Failed database login events over time.","query":"'Log Source' = 'OCI Data Safe Database Audit' and 'Operation' in ('LOGIN','LOGON') and 'Operation Status' = 'FAILURE' | timestats span = 1h count as 'Failed Logins'","visualization":"line","options":{"timeField":"Time","valueField":"Failed Logins"},"layout":{"width":6,"height":5}}

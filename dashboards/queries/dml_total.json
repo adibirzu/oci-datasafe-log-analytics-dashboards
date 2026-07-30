@@ -1,0 +1,1 @@
+{"title":"DML Commands","description":"SELECT, INSERT, UPDATE, DELETE, MERGE, CALL, and EXECUTE events.","query":"'Log Source' = 'OCI Data Safe Database Audit' and 'Operation' in ('SELECT','INSERT','UPDATE','DELETE','MERGE','CALL','EXECUTE') | stats count as DML","visualization":"tile","options":{"dataField":"DML"},"layout":{"width":3,"height":3}}

@@ -1,0 +1,1 @@
+{"title":"Admin Activity Trend","description":"Administrator activity over time.","query":"'Log Source' = 'OCI Data Safe Database Audit' and 'Admin User' = 1 | timestats span = 1h count as 'Admin Events'","visualization":"line","options":{"timeField":"Time","valueField":"Admin Events"},"layout":{"width":6,"height":5}}

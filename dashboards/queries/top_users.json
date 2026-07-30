@@ -1,0 +1,1 @@
+{"title":"Top Database Users by Volume","description":"Database users producing the most audit events.","query":"'Log Source' = 'OCI Data Safe Database Audit' and 'Database User' != null | stats count as Events by 'Database User' | sort -Events | head 10","visualization":"hbar","options":{"categoryField":"Database User","valueField":"Events"},"layout":{"width":6,"height":5}}

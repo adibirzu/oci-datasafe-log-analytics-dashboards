@@ -1,0 +1,1 @@
+{"title":"Client Activity Trend","description":"Activity over time by client program.","query":"'Log Source' = 'OCI Data Safe Database Audit' and 'Client Program' != null | timestats span = 1h count as Events by 'Client Program'","visualization":"line","options":{"timeField":"Time","seriesField":"Client Program","valueField":"Events"},"layout":{"width":12,"height":5}}

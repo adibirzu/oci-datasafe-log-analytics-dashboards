@@ -1,0 +1,1 @@
+{"title":"Client to Target Matrix","description":"Client, database, and target relationships by event volume.","query":"'Log Source' = 'OCI Data Safe Database Audit' | stats count as Events by 'Client IP', 'Client Host', 'Database User', 'Data Safe Target Name' | sort -Events | head 50","visualization":"summary_table","options":{},"layout":{"width":12,"height":6}}

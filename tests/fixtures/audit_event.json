@@ -1,0 +1,14 @@
+{
+  "id": "event-001",
+  "audit_event_time": "2026-07-30T12:00:00.000Z",
+  "time_collected": "2026-07-30T12:01:00.000Z",
+  "target_name": "example-target",
+  "db_user_name": "APP_USER",
+  "operation": "SELECT",
+  "operation_status": "SUCCESS",
+  "client_ip": "10.0.0.10",
+  "command_text": "select secret from customers",
+  "command_param": "token=secret",
+  "admin_user": 0,
+  "sensitive_activity": 1
+}

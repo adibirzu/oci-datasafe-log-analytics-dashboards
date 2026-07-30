@@ -1,0 +1,8 @@
+This project is derived from Oracle's "Data Safe Audit Database to OCI Logging"
+reference architecture:
+
+https://github.com/oracle-devrel/technology-engineering/tree/main/oci-and-db/foundation/ciso/security-design/shared-assets/fn-datasafe-dbaudit-to-oci-logging
+
+The upstream implementation is licensed under the Universal Permissive License
+(UPL) 1.0. This repository retains the UPL license and records the upstream
+source revision in docs/UPSTREAM.md.

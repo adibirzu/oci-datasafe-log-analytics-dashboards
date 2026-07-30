@@ -1,0 +1,1 @@
+{"title":"Database Errors","description":"Failed operations grouped by database error code and message.","query":"'Log Source' = 'OCI Data Safe Database Audit' and 'Operation Status' = 'FAILURE' | stats count as Events by 'Error Code', 'Error Message', 'Operation' | sort -Events | head 50","visualization":"summary_table","options":{},"layout":{"width":12,"height":6}}

@@ -1,0 +1,1 @@
+{"title":"All Activity Trend","description":"All Data Safe audit events over time.","query":"'Log Source' = 'OCI Data Safe Database Audit' | timestats span = 1h count as Events","visualization":"line","options":{"timeField":"Time","valueField":"Events"},"layout":{"width":12,"height":5}}

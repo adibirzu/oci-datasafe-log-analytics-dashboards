@@ -1,0 +1,1 @@
+{"title":"Database Users","description":"Distinct database users in the selected period.","query":"'Log Source' = 'OCI Data Safe Database Audit' | stats distinctcount('Database User') as Users","visualization":"tile","options":{"dataField":"Users"},"layout":{"width":3,"height":3}}

@@ -1,0 +1,1 @@
+{"title":"Top Targets by Audit Volume","description":"Target databases producing the most audit records.","query":"'Log Source' = 'OCI Data Safe Database Audit' | stats count as Events by 'Data Safe Target Name' | sort -Events | head 10","visualization":"hbar","options":{"categoryField":"Data Safe Target Name","valueField":"Events"},"layout":{"width":6,"height":5}}

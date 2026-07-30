@@ -1,0 +1,1 @@
+{"title":"All Activity","description":"Total audit events in the selected period.","query":"'Log Source' = 'OCI Data Safe Database Audit' | stats count as Events","visualization":"tile","options":{"dataField":"Events"},"layout":{"width":3,"height":3}}

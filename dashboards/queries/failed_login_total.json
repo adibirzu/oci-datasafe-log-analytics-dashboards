@@ -1,0 +1,1 @@
+{"title":"Failed Login Activity","description":"Failed LOGIN or LOGON operations.","query":"'Log Source' = 'OCI Data Safe Database Audit' and 'Operation' in ('LOGIN','LOGON') and 'Operation Status' = 'FAILURE' | stats count as 'Failed Logins'","visualization":"tile","options":{"dataField":"Failed Logins"},"layout":{"width":3,"height":3}}

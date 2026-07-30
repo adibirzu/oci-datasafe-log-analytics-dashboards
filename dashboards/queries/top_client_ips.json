@@ -1,0 +1,1 @@
+{"title":"Top Client IPs","description":"Pseudonymous client IPs producing the most activity.","query":"'Log Source' = 'OCI Data Safe Database Audit' and 'Client IP' != null | stats count as Events by 'Client IP' | sort -Events | head 10","visualization":"hbar","options":{"categoryField":"Client IP","valueField":"Events"},"layout":{"width":6,"height":5}}

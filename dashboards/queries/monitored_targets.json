@@ -1,0 +1,1 @@
+{"title":"Targets","description":"Distinct Data Safe target databases represented in the audit stream.","query":"'Log Source' = 'OCI Data Safe Database Audit' | stats distinctcount('Data Safe Target Name') as Targets","visualization":"tile","options":{"dataField":"Targets"},"layout":{"width":3,"height":3}}

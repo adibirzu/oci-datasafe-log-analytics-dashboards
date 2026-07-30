@@ -1,0 +1,1 @@
+{"title":"Top Client Programs","description":"Applications producing the most database activity.","query":"'Log Source' = 'OCI Data Safe Database Audit' and 'Client Program' != null | stats count as Events by 'Client Program' | sort -Events | head 10","visualization":"hbar","options":{"categoryField":"Client Program","valueField":"Events"},"layout":{"width":6,"height":5}}

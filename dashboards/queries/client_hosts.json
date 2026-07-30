@@ -1,0 +1,1 @@
+{"title":"Client Hosts","description":"Distinct client hosts in the selected period.","query":"'Log Source' = 'OCI Data Safe Database Audit' | stats distinctcount('Client Host') as 'Client Hosts'","visualization":"tile","options":{"dataField":"Client Hosts"},"layout":{"width":3,"height":3}}

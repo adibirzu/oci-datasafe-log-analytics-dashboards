@@ -1,0 +1,1 @@
+{"title":"Admin Activity by User","description":"Administrator events grouped by database user and operation.","query":"'Log Source' = 'OCI Data Safe Database Audit' and 'Admin User' = 1 | stats count as Events by 'Database User', 'Operation' | sort -Events | head 25","visualization":"summary_table","options":{},"layout":{"width":6,"height":5}}

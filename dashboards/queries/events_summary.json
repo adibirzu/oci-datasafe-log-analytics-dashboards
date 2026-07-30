@@ -1,0 +1,1 @@
+{"title":"Events Summary","description":"Data Safe event categories and outcomes.","query":"'Log Source' = 'OCI Data Safe Database Audit' | stats count as Events by 'Event Category', 'Operation Status' | sort -Events","visualization":"summary_table","options":{},"layout":{"width":12,"height":5}}

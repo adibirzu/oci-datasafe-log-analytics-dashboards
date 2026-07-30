@@ -1,0 +1,1 @@
+{"title":"User & Entitlement Changes","description":"Database account and privilege changes.","query":"'Log Source' = 'OCI Data Safe Database Audit' and 'Operation' in ('CREATE USER','ALTER USER','DROP USER','GRANT','REVOKE','CREATE ROLE','DROP ROLE','SET ROLE') | stats count as Changes","visualization":"tile","options":{"dataField":"Changes"},"layout":{"width":3,"height":3}}

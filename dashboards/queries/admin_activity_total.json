@@ -1,0 +1,1 @@
+{"title":"Admin Activity","description":"Audit events identified as administrator activity by Data Safe.","query":"'Log Source' = 'OCI Data Safe Database Audit' and 'Admin User' = 1 | stats count as 'Admin Events'","visualization":"tile","options":{"dataField":"Admin Events"},"layout":{"width":3,"height":3}}

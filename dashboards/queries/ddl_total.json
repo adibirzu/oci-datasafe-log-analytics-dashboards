@@ -1,0 +1,1 @@
+{"title":"DDL Commands","description":"CREATE, ALTER, DROP, TRUNCATE, RENAME, COMMENT, and FLASHBACK events.","query":"'Log Source' = 'OCI Data Safe Database Audit' and 'Operation' in ('CREATE','ALTER','DROP','TRUNCATE','RENAME','COMMENT','FLASHBACK') | stats count as DDL","visualization":"tile","options":{"dataField":"DDL"},"layout":{"width":3,"height":3}}

@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.0",
+  "display_name": "OCI Data Safe Audit Analytics",
+  "description": "Data Safe Activity Auditing and Audit Insights recreated in Oracle Log Analytics.",
+  "default_time_period": "l7d",
+  "tabs": [
+    {
+      "id": "activity-overview",
+      "label": "Activity Overview",
+      "description": "Data Safe Activity Auditing landing page: failed login, admin, all activity, events, and targets.",
+      "widgets": [
+        "total_events", "failed_login_total", "admin_activity_total", "monitored_targets",
+        "all_activity_trend", "failed_login_trend", "admin_activity_trend",
+        "events_summary", "targets_summary"
+      ]
+    },
+    {
+      "id": "audit-insights",
+      "label": "Audit Insights",
+      "description": "Key metrics and top audit-volume contributors from Data Safe Audit Insights.",
+      "widgets": [
+        "monitored_targets", "active_users", "client_hosts", "ddl_total",
+        "entitlement_changes", "dml_total", "failed_login_total", "total_events",
+        "top_targets", "top_audit_policies", "top_schemas", "top_objects",
+        "top_users", "top_client_hosts"
+      ]
+    },
+    {
+      "id": "identity-access",
+      "label": "Identity & Access",
+      "description": "Database identities, authentication outcomes, entitlement changes, and administration.",
+      "widgets": [
+        "user_activity", "failed_logins_by_user", "login_outcomes",
+        "entitlement_change_detail", "admin_activity_by_user", "top_client_programs"
+      ]
+    },
+    {
+      "id": "data-schema",
+      "label": "Data & Schema",
+      "description": "DDL, DML, schema, object, sensitive-data, and database error activity.",
+      "widgets": [
+        "ddl_trend", "dml_trend", "top_schemas", "top_objects",
+        "sensitive_activity_detail", "database_errors"
+      ]
+    },
+    {
+      "id": "client-network",
+      "label": "Client & Network",
+      "description": "Pseudonymous client network, host, program, OS-user, and target relationships.",
+      "widgets": [
+        "top_client_ips", "top_client_hosts", "top_client_programs",
+        "top_os_users", "client_target_matrix", "client_activity_trend"
+      ]
+    },
+    {
+      "id": "investigation",
+      "label": "Investigation",
+      "description": "Operator drilldowns for failed, administrative, sensitive, and recent database activity.",
+      "widgets": [
+        "failed_activity_detail", "admin_activity_detail",
+        "sensitive_activity_detail", "database_errors", "recent_activity"
+      ]
+    }
+  ]
+}
