@@ -3,6 +3,11 @@ output "function_id" {
   sensitive = true
 }
 
+output "function_invoke_log_id" {
+  value     = try(oci_logging_log.function_invoke[0].id, null)
+  sensitive = true
+}
+
 output "logging_log_id" {
   value     = oci_logging_log.audit.id
   sensitive = true

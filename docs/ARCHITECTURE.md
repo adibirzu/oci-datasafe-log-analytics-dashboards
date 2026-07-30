@@ -57,6 +57,7 @@ does not emit undocumented SET payloads.
 - Cursor bucket
 - OCI Logging group and custom log
 - Function application and function
+- Function invocation service log for runtime diagnosis
 - Resource Scheduler schedule
 - Connector Hub connector
 - Optional dedicated Log Analytics log group

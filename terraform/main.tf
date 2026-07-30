@@ -119,6 +119,25 @@ resource "oci_functions_function" "audit" {
   }
 }
 
+resource "oci_logging_log" "function_invoke" {
+  count         = var.deploy_function ? 1 : 0
+  display_name  = "${var.deployment_name}-function-invoke"
+  log_group_id  = oci_logging_log_group.audit.id
+  log_type      = "SERVICE"
+  is_enabled    = true
+  freeform_tags = local.tags
+
+  configuration {
+    compartment_id = var.compartment_ocid
+    source {
+      category    = "invoke"
+      resource    = oci_functions_application.audit[0].id
+      service     = "functions"
+      source_type = "OCISERVICE"
+    }
+  }
+}
+
 resource "oci_resource_scheduler_schedule" "audit" {
   count              = var.deploy_function ? 1 : 0
   action             = "START_RESOURCE"
