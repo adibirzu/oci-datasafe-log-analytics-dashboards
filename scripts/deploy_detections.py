@@ -20,10 +20,47 @@ def saved_search_details(
     display_name: str,
     description: str,
     compartment_id: str,
-    log_group_id: str,
+    scope_compartment_id: str,
     query: str,
     update: bool = False,
 ):
+    log_group_value = {
+        "label": "Selected compartment",
+        "value": scope_compartment_id,
+    }
+    scope_filters = {
+        "LogGroup": {
+            "flags": {"IncludeSubCompartments": True},
+            "type": "LogGroup",
+            "values": [log_group_value],
+        },
+        "Entity": {
+            "flags": {
+                "IncludeDependents": True,
+                "ScopeCompartmentId": scope_compartment_id,
+            },
+            "type": "Entity",
+            "values": [],
+        },
+        "LogSet": {"flags": {}, "type": "LogSet", "values": []},
+        "filters": [
+            {
+                "flags": {"includeSubCompartments": True},
+                "type": "LogGroup",
+                "values": [log_group_value],
+            },
+            {
+                "flags": {
+                    "includeDependents": True,
+                    "scopeCompartmentId": scope_compartment_id,
+                },
+                "type": "Entity",
+                "values": [],
+            },
+            {"flags": {}, "type": "LogSet", "values": []},
+        ],
+        "isGlobal": False,
+    }
     model = (
         oci.management_dashboard.models.UpdateManagementSavedSearchDetails
         if update
@@ -42,21 +79,7 @@ def saved_search_details(
         ui_config={
             "enableWidgetInApp": True,
             "queryString": query,
-            "scopeFilters": {
-                "filters": [
-                    {
-                        "type": "LogGroup",
-                        "flags": {"IncludeSubCompartments": False},
-                        "values": [{"value": log_group_id}],
-                    }
-                ],
-                "isGlobal": False,
-                "LogGroup": {
-                    "type": "LogGroup",
-                    "flags": {"IncludeSubCompartments": False},
-                    "values": [{"value": log_group_id}],
-                },
-            },
+            "scopeFilters": scope_filters,
             "showTitle": True,
             "visualizationType": "summary_table",
             "visualizationOptions": {},
@@ -134,7 +157,10 @@ def main() -> int:
     parser.add_argument("--profile", required=True)
     parser.add_argument("--compartment-id", required=True)
     parser.add_argument("--deployment-name", required=True)
-    parser.add_argument("--log-group-id", required=True)
+    parser.add_argument(
+        "--scope-compartment-id",
+        help="Log Analytics log-group compartment; defaults to --compartment-id.",
+    )
     parser.add_argument("--interval", choices=sorted(INTERVALS), default="PT5M")
     parser.add_argument("--dry-run", action="store_true")
     parser.add_argument(
@@ -143,6 +169,7 @@ def main() -> int:
         help="Recreate only exact-name solution-owned searches before scheduling.",
     )
     args = parser.parse_args()
+    scope_compartment_id = args.scope_compartment_id or args.compartment_id
 
     rules = json.loads(CATALOG.read_text())
     config = oci.config.from_file(profile_name=args.profile)
@@ -179,7 +206,7 @@ def main() -> int:
                 display_name=search_name,
                 description=rule["description"],
                 compartment_id=args.compartment_id,
-                log_group_id=args.log_group_id,
+                scope_compartment_id=scope_compartment_id,
                 query=rule["query"],
                 update=bool(matches),
             )
@@ -198,7 +225,7 @@ def main() -> int:
                         display_name=search_name,
                         description=rule["description"],
                         compartment_id=args.compartment_id,
-                        log_group_id=args.log_group_id,
+                        scope_compartment_id=scope_compartment_id,
                         query=rule["query"],
                     )
                 ).data.id
@@ -217,7 +244,7 @@ def main() -> int:
                             display_name=search_name,
                             description=rule["description"],
                             compartment_id=args.compartment_id,
-                            log_group_id=args.log_group_id,
+                            scope_compartment_id=scope_compartment_id,
                             query=rule["query"],
                         )
                     ).data.id

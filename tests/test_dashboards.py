@@ -66,8 +66,34 @@ def test_dashboard_scope_uses_runtime_parameters_not_invalid_log_group_ocids():
         assert parameters["time"]["defaultValue"] == "l7d"
         assert "log-analytics-entity-filter" in parameters
         for saved_search in dashboard["savedSearches"]:
-            assert saved_search["uiConfig"]["scopeFilters"] == {}
+            scope = saved_search["uiConfig"]["scopeFilters"]
+            assert scope["LogGroup"]["values"] == [
+                {
+                    "label": "Selected compartment",
+                    "value": "${compartment_id}",
+                }
+            ]
+            assert scope["LogGroup"]["flags"]["IncludeSubCompartments"] is True
+            assert scope["Entity"]["flags"]["ScopeCompartmentId"] == (
+                "${compartment_id}"
+            )
+            assert scope["filters"][0]["type"] == "LogGroup"
+            assert scope["isGlobal"] is False
         for tile in dashboard["tiles"]:
             assert tile["parametersMap"]["log-analytics-entity"] == (
                 "$(dashboard.params.log-analytics-entity-filter)"
             )
+
+
+def test_saved_searches_use_current_log_analytics_widget_contract():
+    searches = [
+        search
+        for dashboard in MODULE.build_bundle()["dashboards"]
+        for search in dashboard["savedSearches"]
+    ]
+    assert {
+        search["widgetTemplate"] for search in searches
+    } == {"visualizations/chartWidgetTemplate.html"}
+    assert {
+        search["widgetVM"] for search in searches
+    } == {"jet-modules/dashboards/widgets/lxSavedSearchWidget"}

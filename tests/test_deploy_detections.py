@@ -22,11 +22,14 @@ def test_saved_search_is_service_shared_and_uses_runtime_log_group():
         display_name="customer-deploy | Failed Login Spike",
         description="Repeated failures.",
         compartment_id="ocid1.compartment.oc1..example",
-        log_group_id="ocid1.loganalyticsloggroup.oc1..example",
+        scope_compartment_id="ocid1.compartment.oc1..example",
         query="* | stats count as DetectionCount",
     )
     assert details.features_config["crossService"]["shared"] is True
     assert (
         details.ui_config["scopeFilters"]["LogGroup"]["values"][0]["value"]
-        == "ocid1.loganalyticsloggroup.oc1..example"
+        == "ocid1.compartment.oc1..example"
     )
+    assert details.ui_config["scopeFilters"]["Entity"]["values"] == []
+    assert details.ui_config["scopeFilters"]["LogSet"]["values"] == []
+    assert len(details.ui_config["scopeFilters"]["filters"]) == 3

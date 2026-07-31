@@ -75,16 +75,6 @@ def main() -> int:
         return 0
 
     run(["terraform", "-chdir=terraform", "apply", "-auto-approve", plan.name])
-    log_group_id = run(
-        [
-            "terraform",
-            "-chdir=terraform",
-            "output",
-            "-raw",
-            "log_analytics_log_group_id",
-        ],
-        capture=True,
-    ).stdout.strip()
     run(
         [
             sys.executable,
@@ -105,8 +95,8 @@ def main() -> int:
             args.solution_compartment_id,
             "--deployment-name",
             args.deployment_name,
-            "--log-group-id",
-            log_group_id,
+            "--scope-compartment-id",
+            args.solution_compartment_id,
             "--interval",
             args.detection_interval,
         ]

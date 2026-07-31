@@ -13,3 +13,9 @@
   row and deployed dashboard presence.
 - Preserve privacy defaults unless the user explicitly approves a different
   data-processing posture.
+- Use `skills/oci-log-analytics-dashboard-enhancer/SKILL.md` for dashboard,
+  visualization, drilldown, or detection-scheduling changes.
+- Search `docs/KB.md` before debugging. After verification, add a KB entry for
+  every newly confirmed component failure mode.
+- Dashboard acceptance requires rendered data and a clean browser console;
+  query parsing and resource presence alone are insufficient.

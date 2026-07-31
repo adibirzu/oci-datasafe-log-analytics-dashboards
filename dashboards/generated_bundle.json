@@ -85,7 +85,61 @@
           "uiConfig": {
             "enableWidgetInApp": true,
             "queryString": "'Log Source' = 'OCI Data Safe Database Audit' | stats count as Events",
-            "scopeFilters": {},
+            "scopeFilters": {
+              "Entity": {
+                "flags": {
+                  "IncludeDependents": true,
+                  "ScopeCompartmentId": "${compartment_id}"
+                },
+                "type": "Entity",
+                "values": []
+              },
+              "LogGroup": {
+                "flags": {
+                  "IncludeSubCompartments": true
+                },
+                "type": "LogGroup",
+                "values": [
+                  {
+                    "label": "Selected compartment",
+                    "value": "${compartment_id}"
+                  }
+                ]
+              },
+              "LogSet": {
+                "flags": {},
+                "type": "LogSet",
+                "values": []
+              },
+              "filters": [
+                {
+                  "flags": {
+                    "includeSubCompartments": true
+                  },
+                  "type": "LogGroup",
+                  "values": [
+                    {
+                      "label": "Selected compartment",
+                      "value": "${compartment_id}"
+                    }
+                  ]
+                },
+                {
+                  "flags": {
+                    "includeDependents": true,
+                    "scopeCompartmentId": "${compartment_id}"
+                  },
+                  "type": "Entity",
+                  "values": []
+                },
+                {
+                  "flags": {},
+                  "type": "LogSet",
+                  "values": []
+                }
+              ],
+              "isGlobal": false
+            },
             "showTitle": true,
             "timeSelection": {
               "timePeriod": "l7d"
@@ -96,8 +150,8 @@
             "visualizationType": "tile",
             "vizType": "lxSavedSearchWidgetType"
           },
-          "widgetTemplate": "visualizations/widgetTemplate.html",
-          "widgetVM": "visualizations/widget"
+          "widgetTemplate": "visualizations/chartWidgetTemplate.html",
+          "widgetVM": "jet-modules/dashboards/widgets/lxSavedSearchWidget"
         },
         {
           "compartmentId": "${compartment_id}",
@@ -130,7 +184,61 @@
           "uiConfig": {
             "enableWidgetInApp": true,
             "queryString": "'Log Source' = 'OCI Data Safe Database Audit' and 'Operation' in ('LOGIN','LOGON') and 'Operation Status' = 'FAILURE' | stats count as 'Failed Logins'",
-            "scopeFilters": {},
+            "scopeFilters": {
+              "Entity": {
+                "flags": {
+                  "IncludeDependents": true,
+                  "ScopeCompartmentId": "${compartment_id}"
+                },
+                "type": "Entity",
+                "values": []
+              },
+              "LogGroup": {
+                "flags": {
+                  "IncludeSubCompartments": true
+                },
+                "type": "LogGroup",
+                "values": [
+                  {
+                    "label": "Selected compartment",
+                    "value": "${compartment_id}"
+                  }
+                ]
+              },
+              "LogSet": {
+                "flags": {},
+                "type": "LogSet",
+                "values": []
+              },
+              "filters": [
+                {
+                  "flags": {
+                    "includeSubCompartments": true
+                  },
+                  "type": "LogGroup",
+                  "values": [
+                    {
+                      "label": "Selected compartment",
+                      "value": "${compartment_id}"
+                    }
+                  ]
+                },
+                {
+                  "flags": {
+                    "includeDependents": true,
+                    "scopeCompartmentId": "${compartment_id}"
+                  },
+                  "type": "Entity",
+                  "values": []
+                },
+                {
+                  "flags": {},
+                  "type": "LogSet",
+                  "values": []
+                }
+              ],
+              "isGlobal": false
+            },
             "showTitle": true,
             "timeSelection": {
               "timePeriod": "l7d"
@@ -141,8 +249,8 @@
             "visualizationType": "tile",
             "vizType": "lxSavedSearchWidgetType"
           },
-          "widgetTemplate": "visualizations/widgetTemplate.html",
-          "widgetVM": "visualizations/widget"
+          "widgetTemplate": "visualizations/chartWidgetTemplate.html",
+          "widgetVM": "jet-modules/dashboards/widgets/lxSavedSearchWidget"
         },
         {
           "compartmentId": "${compartment_id}",
@@ -175,7 +283,61 @@
           "uiConfig": {
             "enableWidgetInApp": true,
             "queryString": "'Log Source' = 'OCI Data Safe Database Audit' and 'Admin User' = 1 | stats count as 'Admin Events'",
-            "scopeFilters": {},
+            "scopeFilters": {
+              "Entity": {
+                "flags": {
+                  "IncludeDependents": true,
+                  "ScopeCompartmentId": "${compartment_id}"
+                },
+                "type": "Entity",
+                "values": []
+              },
+              "LogGroup": {
+                "flags": {
+                  "IncludeSubCompartments": true
+                },
+                "type": "LogGroup",
+                "values": [
+                  {
+                    "label": "Selected compartment",
+                    "value": "${compartment_id}"
+                  }
+                ]
+              },
+              "LogSet": {
+                "flags": {},
+                "type": "LogSet",
+                "values": []
+              },
+              "filters": [
+                {
+                  "flags": {
+                    "includeSubCompartments": true
+                  },
+                  "type": "LogGroup",
+                  "values": [
+                    {
+                      "label": "Selected compartment",
+                      "value": "${compartment_id}"
+                    }
+                  ]
+                },
+                {
+                  "flags": {
+                    "includeDependents": true,
+                    "scopeCompartmentId": "${compartment_id}"
+                  },
+                  "type": "Entity",
+                  "values": []
+                },
+                {
+                  "flags": {},
+                  "type": "LogSet",
+                  "values": []
+                }
+              ],
+              "isGlobal": false
+            },
             "showTitle": true,
             "timeSelection": {
               "timePeriod": "l7d"
@@ -186,8 +348,8 @@
             "visualizationType": "tile",
             "vizType": "lxSavedSearchWidgetType"
           },
-          "widgetTemplate": "visualizations/widgetTemplate.html",
-          "widgetVM": "visualizations/widget"
+          "widgetTemplate": "visualizations/chartWidgetTemplate.html",
+          "widgetVM": "jet-modules/dashboards/widgets/lxSavedSearchWidget"
         },
         {
           "compartmentId": "${compartment_id}",
@@ -220,7 +382,61 @@
           "uiConfig": {
             "enableWidgetInApp": true,
             "queryString": "'Log Source' = 'OCI Data Safe Database Audit' | stats distinctcount('Data Safe Target Name') as Targets",
-            "scopeFilters": {},
+            "scopeFilters": {
+              "Entity": {
+                "flags": {
+                  "IncludeDependents": true,
+                  "ScopeCompartmentId": "${compartment_id}"
+                },
+                "type": "Entity",
+                "values": []
+              },
+              "LogGroup": {
+                "flags": {
+                  "IncludeSubCompartments": true
+                },
+                "type": "LogGroup",
+                "values": [
+                  {
+                    "label": "Selected compartment",
+                    "value": "${compartment_id}"
+                  }
+                ]
+              },
+              "LogSet": {
+                "flags": {},
+                "type": "LogSet",
+                "values": []
+              },
+              "filters": [
+                {
+                  "flags": {
+                    "includeSubCompartments": true
+                  },
+                  "type": "LogGroup",
+                  "values": [
+                    {
+                      "label": "Selected compartment",
+                      "value": "${compartment_id}"
+                    }
+                  ]
+                },
+                {
+                  "flags": {
+                    "includeDependents": true,
+                    "scopeCompartmentId": "${compartment_id}"
+                  },
+                  "type": "Entity",
+                  "values": []
+                },
+                {
+                  "flags": {},
+                  "type": "LogSet",
+                  "values": []
+                }
+              ],
+              "isGlobal": false
+            },
             "showTitle": true,
             "timeSelection": {
               "timePeriod": "l7d"
@@ -231,8 +447,8 @@
             "visualizationType": "tile",
             "vizType": "lxSavedSearchWidgetType"
           },
-          "widgetTemplate": "visualizations/widgetTemplate.html",
-          "widgetVM": "visualizations/widget"
+          "widgetTemplate": "visualizations/chartWidgetTemplate.html",
+          "widgetVM": "jet-modules/dashboards/widgets/lxSavedSearchWidget"
         },
         {
           "compartmentId": "${compartment_id}",
@@ -265,7 +481,61 @@
           "uiConfig": {
             "enableWidgetInApp": true,
             "queryString": "'Log Source' = 'OCI Data Safe Database Audit' | timestats span = 1h count as Events",
-            "scopeFilters": {},
+            "scopeFilters": {
+              "Entity": {
+                "flags": {
+                  "IncludeDependents": true,
+                  "ScopeCompartmentId": "${compartment_id}"
+                },
+                "type": "Entity",
+                "values": []
+              },
+              "LogGroup": {
+                "flags": {
+                  "IncludeSubCompartments": true
+                },
+                "type": "LogGroup",
+                "values": [
+                  {
+                    "label": "Selected compartment",
+                    "value": "${compartment_id}"
+                  }
+                ]
+              },
+              "LogSet": {
+                "flags": {},
+                "type": "LogSet",
+                "values": []
+              },
+              "filters": [
+                {
+                  "flags": {
+                    "includeSubCompartments": true
+                  },
+                  "type": "LogGroup",
+                  "values": [
+                    {
+                      "label": "Selected compartment",
+                      "value": "${compartment_id}"
+                    }
+                  ]
+                },
+                {
+                  "flags": {
+                    "includeDependents": true,
+                    "scopeCompartmentId": "${compartment_id}"
+                  },
+                  "type": "Entity",
+                  "values": []
+                },
+                {
+                  "flags": {},
+                  "type": "LogSet",
+                  "values": []
+                }
+              ],
+              "isGlobal": false
+            },
             "showTitle": true,
             "timeSelection": {
               "timePeriod": "l7d"
@@ -277,8 +547,8 @@
             "visualizationType": "line",
             "vizType": "lxSavedSearchWidgetType"
           },
-          "widgetTemplate": "visualizations/widgetTemplate.html",
-          "widgetVM": "visualizations/widget"
+          "widgetTemplate": "visualizations/chartWidgetTemplate.html",
+          "widgetVM": "jet-modules/dashboards/widgets/lxSavedSearchWidget"
         },
         {
           "compartmentId": "${compartment_id}",
@@ -311,7 +581,61 @@
           "uiConfig": {
             "enableWidgetInApp": true,
             "queryString": "'Log Source' = 'OCI Data Safe Database Audit' and 'Operation' in ('LOGIN','LOGON') and 'Operation Status' = 'FAILURE' | timestats span = 1h count as 'Failed Logins'",
-            "scopeFilters": {},
+            "scopeFilters": {
+              "Entity": {
+                "flags": {
+                  "IncludeDependents": true,
+                  "ScopeCompartmentId": "${compartment_id}"
+                },
+                "type": "Entity",
+                "values": []
+              },
+              "LogGroup": {
+                "flags": {
+                  "IncludeSubCompartments": true
+                },
+                "type": "LogGroup",
+                "values": [
+                  {
+                    "label": "Selected compartment",
+                    "value": "${compartment_id}"
+                  }
+                ]
+              },
+              "LogSet": {
+                "flags": {},
+                "type": "LogSet",
+                "values": []
+              },
+              "filters": [
+                {
+                  "flags": {
+                    "includeSubCompartments": true
+                  },
+                  "type": "LogGroup",
+                  "values": [
+                    {
+                      "label": "Selected compartment",
+                      "value": "${compartment_id}"
+                    }
+                  ]
+                },
+                {
+                  "flags": {
+                    "includeDependents": true,
+                    "scopeCompartmentId": "${compartment_id}"
+                  },
+                  "type": "Entity",
+                  "values": []
+                },
+                {
+                  "flags": {},
+                  "type": "LogSet",
+                  "values": []
+                }
+              ],
+              "isGlobal": false
+            },
             "showTitle": true,
             "timeSelection": {
               "timePeriod": "l7d"
@@ -323,8 +647,8 @@
             "visualizationType": "line",
             "vizType": "lxSavedSearchWidgetType"
           },
-          "widgetTemplate": "visualizations/widgetTemplate.html",
-          "widgetVM": "visualizations/widget"
+          "widgetTemplate": "visualizations/chartWidgetTemplate.html",
+          "widgetVM": "jet-modules/dashboards/widgets/lxSavedSearchWidget"
         },
         {
           "compartmentId": "${compartment_id}",
@@ -357,7 +681,61 @@
           "uiConfig": {
             "enableWidgetInApp": true,
             "queryString": "'Log Source' = 'OCI Data Safe Database Audit' and 'Admin User' = 1 | timestats span = 1h count as 'Admin Events'",
-            "scopeFilters": {},
+            "scopeFilters": {
+              "Entity": {
+                "flags": {
+                  "IncludeDependents": true,
+                  "ScopeCompartmentId": "${compartment_id}"
+                },
+                "type": "Entity",
+                "values": []
+              },
+              "LogGroup": {
+                "flags": {
+                  "IncludeSubCompartments": true
+                },
+                "type": "LogGroup",
+                "values": [
+                  {
+                    "label": "Selected compartment",
+                    "value": "${compartment_id}"
+                  }
+                ]
+              },
+              "LogSet": {
+                "flags": {},
+                "type": "LogSet",
+                "values": []
+              },
+              "filters": [
+                {
+                  "flags": {
+                    "includeSubCompartments": true
+                  },
+                  "type": "LogGroup",
+                  "values": [
+                    {
+                      "label": "Selected compartment",
+                      "value": "${compartment_id}"
+                    }
+                  ]
+                },
+                {
+                  "flags": {
+                    "includeDependents": true,
+                    "scopeCompartmentId": "${compartment_id}"
+                  },
+                  "type": "Entity",
+                  "values": []
+                },
+                {
+                  "flags": {},
+                  "type": "LogSet",
+                  "values": []
+                }
+              ],
+              "isGlobal": false
+            },
             "showTitle": true,
             "timeSelection": {
               "timePeriod": "l7d"
@@ -369,8 +747,8 @@
             "visualizationType": "line",
             "vizType": "lxSavedSearchWidgetType"
           },
-          "widgetTemplate": "visualizations/widgetTemplate.html",
-          "widgetVM": "visualizations/widget"
+          "widgetTemplate": "visualizations/chartWidgetTemplate.html",
+          "widgetVM": "jet-modules/dashboards/widgets/lxSavedSearchWidget"
         },
         {
           "compartmentId": "${compartment_id}",
@@ -403,7 +781,61 @@
           "uiConfig": {
             "enableWidgetInApp": true,
             "queryString": "'Log Source' = 'OCI Data Safe Database Audit' | stats count as Events by 'Operation', 'Audit Type', 'Operation Status' | sort -Events | head 50",
-            "scopeFilters": {},
+            "scopeFilters": {
+              "Entity": {
+                "flags": {
+                  "IncludeDependents": true,
+                  "ScopeCompartmentId": "${compartment_id}"
+                },
+                "type": "Entity",
+                "values": []
+              },
+              "LogGroup": {
+                "flags": {
+                  "IncludeSubCompartments": true
+                },
+                "type": "LogGroup",
+                "values": [
+                  {
+                    "label": "Selected compartment",
+                    "value": "${compartment_id}"
+                  }
+                ]
+              },
+              "LogSet": {
+                "flags": {},
+                "type": "LogSet",
+                "values": []
+              },
+              "filters": [
+                {
+                  "flags": {
+                    "includeSubCompartments": true
+                  },
+                  "type": "LogGroup",
+                  "values": [
+                    {
+                      "label": "Selected compartment",
+                      "value": "${compartment_id}"
+                    }
+                  ]
+                },
+                {
+                  "flags": {
+                    "includeDependents": true,
+                    "scopeCompartmentId": "${compartment_id}"
+                  },
+                  "type": "Entity",
+                  "values": []
+                },
+                {
+                  "flags": {},
+                  "type": "LogSet",
+                  "values": []
+                }
+              ],
+              "isGlobal": false
+            },
             "showTitle": true,
             "timeSelection": {
               "timePeriod": "l7d"
@@ -412,8 +844,8 @@
             "visualizationType": "summary_table",
             "vizType": "lxSavedSearchWidgetType"
           },
-          "widgetTemplate": "visualizations/widgetTemplate.html",
-          "widgetVM": "visualizations/widget"
+          "widgetTemplate": "visualizations/chartWidgetTemplate.html",
+          "widgetVM": "jet-modules/dashboards/widgets/lxSavedSearchWidget"
         },
         {
           "compartmentId": "${compartment_id}",
@@ -446,7 +878,61 @@
           "uiConfig": {
             "enableWidgetInApp": true,
             "queryString": "'Log Source' = 'OCI Data Safe Database Audit' | eval 'Failure Flag' = if('Operation Status' = 'FAILURE', 1, 0) | stats count as Events, distinctcount('Database User') as Users, distinctcount('Client IP') as Clients, sum('Failure Flag') as Failures by 'Data Safe Target Name' | sort -Events",
-            "scopeFilters": {},
+            "scopeFilters": {
+              "Entity": {
+                "flags": {
+                  "IncludeDependents": true,
+                  "ScopeCompartmentId": "${compartment_id}"
+                },
+                "type": "Entity",
+                "values": []
+              },
+              "LogGroup": {
+                "flags": {
+                  "IncludeSubCompartments": true
+                },
+                "type": "LogGroup",
+                "values": [
+                  {
+                    "label": "Selected compartment",
+                    "value": "${compartment_id}"
+                  }
+                ]
+              },
+              "LogSet": {
+                "flags": {},
+                "type": "LogSet",
+                "values": []
+              },
+              "filters": [
+                {
+                  "flags": {
+                    "includeSubCompartments": true
+                  },
+                  "type": "LogGroup",
+                  "values": [
+                    {
+                      "label": "Selected compartment",
+                      "value": "${compartment_id}"
+                    }
+                  ]
+                },
+                {
+                  "flags": {
+                    "includeDependents": true,
+                    "scopeCompartmentId": "${compartment_id}"
+                  },
+                  "type": "Entity",
+                  "values": []
+                },
+                {
+                  "flags": {},
+                  "type": "LogSet",
+                  "values": []
+                }
+              ],
+              "isGlobal": false
+            },
             "showTitle": true,
             "timeSelection": {
               "timePeriod": "l7d"
@@ -455,8 +941,8 @@
             "visualizationType": "summary_table",
             "vizType": "lxSavedSearchWidgetType"
           },
-          "widgetTemplate": "visualizations/widgetTemplate.html",
-          "widgetVM": "visualizations/widget"
+          "widgetTemplate": "visualizations/chartWidgetTemplate.html",
+          "widgetVM": "jet-modules/dashboards/widgets/lxSavedSearchWidget"
         }
       ],
       "screenImage": " ",
@@ -719,7 +1205,61 @@
           "uiConfig": {
             "enableWidgetInApp": true,
             "queryString": "'Log Source' = 'OCI Data Safe Database Audit' | stats count as Events by 'Data Safe Target Name', 'Operation', 'Operation Status' | sort -Events | head 100",
-            "scopeFilters": {},
+            "scopeFilters": {
+              "Entity": {
+                "flags": {
+                  "IncludeDependents": true,
+                  "ScopeCompartmentId": "${compartment_id}"
+                },
+                "type": "Entity",
+                "values": []
+              },
+              "LogGroup": {
+                "flags": {
+                  "IncludeSubCompartments": true
+                },
+                "type": "LogGroup",
+                "values": [
+                  {
+                    "label": "Selected compartment",
+                    "value": "${compartment_id}"
+                  }
+                ]
+              },
+              "LogSet": {
+                "flags": {},
+                "type": "LogSet",
+                "values": []
+              },
+              "filters": [
+                {
+                  "flags": {
+                    "includeSubCompartments": true
+                  },
+                  "type": "LogGroup",
+                  "values": [
+                    {
+                      "label": "Selected compartment",
+                      "value": "${compartment_id}"
+                    }
+                  ]
+                },
+                {
+                  "flags": {
+                    "includeDependents": true,
+                    "scopeCompartmentId": "${compartment_id}"
+                  },
+                  "type": "Entity",
+                  "values": []
+                },
+                {
+                  "flags": {},
+                  "type": "LogSet",
+                  "values": []
+                }
+              ],
+              "isGlobal": false
+            },
             "showTitle": true,
             "timeSelection": {
               "timePeriod": "l7d"
@@ -728,8 +1268,8 @@
             "visualizationType": "summary_table",
             "vizType": "lxSavedSearchWidgetType"
           },
-          "widgetTemplate": "visualizations/widgetTemplate.html",
-          "widgetVM": "visualizations/widget"
+          "widgetTemplate": "visualizations/chartWidgetTemplate.html",
+          "widgetVM": "jet-modules/dashboards/widgets/lxSavedSearchWidget"
         },
         {
           "compartmentId": "${compartment_id}",
@@ -762,7 +1302,61 @@
           "uiConfig": {
             "enableWidgetInApp": true,
             "queryString": "'Log Source' = 'OCI Data Safe Database Audit' and 'Admin User' = 1 | stats count as Events by 'Data Safe Target Name', 'Database User', 'Operation', 'Operation Status' | sort -Events | head 100",
-            "scopeFilters": {},
+            "scopeFilters": {
+              "Entity": {
+                "flags": {
+                  "IncludeDependents": true,
+                  "ScopeCompartmentId": "${compartment_id}"
+                },
+                "type": "Entity",
+                "values": []
+              },
+              "LogGroup": {
+                "flags": {
+                  "IncludeSubCompartments": true
+                },
+                "type": "LogGroup",
+                "values": [
+                  {
+                    "label": "Selected compartment",
+                    "value": "${compartment_id}"
+                  }
+                ]
+              },
+              "LogSet": {
+                "flags": {},
+                "type": "LogSet",
+                "values": []
+              },
+              "filters": [
+                {
+                  "flags": {
+                    "includeSubCompartments": true
+                  },
+                  "type": "LogGroup",
+                  "values": [
+                    {
+                      "label": "Selected compartment",
+                      "value": "${compartment_id}"
+                    }
+                  ]
+                },
+                {
+                  "flags": {
+                    "includeDependents": true,
+                    "scopeCompartmentId": "${compartment_id}"
+                  },
+                  "type": "Entity",
+                  "values": []
+                },
+                {
+                  "flags": {},
+                  "type": "LogSet",
+                  "values": []
+                }
+              ],
+              "isGlobal": false
+            },
             "showTitle": true,
             "timeSelection": {
               "timePeriod": "l7d"
@@ -771,8 +1365,8 @@
             "visualizationType": "summary_table",
             "vizType": "lxSavedSearchWidgetType"
           },
-          "widgetTemplate": "visualizations/widgetTemplate.html",
-          "widgetVM": "visualizations/widget"
+          "widgetTemplate": "visualizations/chartWidgetTemplate.html",
+          "widgetVM": "jet-modules/dashboards/widgets/lxSavedSearchWidget"
         },
         {
           "compartmentId": "${compartment_id}",
@@ -805,7 +1399,61 @@
           "uiConfig": {
             "enableWidgetInApp": true,
             "queryString": "'Log Source' = 'OCI Data Safe Database Audit' and 'Operation' in ('CREATE USER','ALTER USER','DROP USER','GRANT','REVOKE','CREATE ROLE','ALTER ROLE','DROP ROLE','SET ROLE') | fields Time, 'Data Safe Target Name', 'Database User', 'Operation', 'Target User', 'Object Owner', 'Object Name', 'Operation Status' | sort -Time",
-            "scopeFilters": {},
+            "scopeFilters": {
+              "Entity": {
+                "flags": {
+                  "IncludeDependents": true,
+                  "ScopeCompartmentId": "${compartment_id}"
+                },
+                "type": "Entity",
+                "values": []
+              },
+              "LogGroup": {
+                "flags": {
+                  "IncludeSubCompartments": true
+                },
+                "type": "LogGroup",
+                "values": [
+                  {
+                    "label": "Selected compartment",
+                    "value": "${compartment_id}"
+                  }
+                ]
+              },
+              "LogSet": {
+                "flags": {},
+                "type": "LogSet",
+                "values": []
+              },
+              "filters": [
+                {
+                  "flags": {
+                    "includeSubCompartments": true
+                  },
+                  "type": "LogGroup",
+                  "values": [
+                    {
+                      "label": "Selected compartment",
+                      "value": "${compartment_id}"
+                    }
+                  ]
+                },
+                {
+                  "flags": {
+                    "includeDependents": true,
+                    "scopeCompartmentId": "${compartment_id}"
+                  },
+                  "type": "Entity",
+                  "values": []
+                },
+                {
+                  "flags": {},
+                  "type": "LogSet",
+                  "values": []
+                }
+              ],
+              "isGlobal": false
+            },
             "showTitle": true,
             "timeSelection": {
               "timePeriod": "l7d"
@@ -814,8 +1462,8 @@
             "visualizationType": "table",
             "vizType": "lxSavedSearchWidgetType"
           },
-          "widgetTemplate": "visualizations/widgetTemplate.html",
-          "widgetVM": "visualizations/widget"
+          "widgetTemplate": "visualizations/chartWidgetTemplate.html",
+          "widgetVM": "jet-modules/dashboards/widgets/lxSavedSearchWidget"
         },
         {
           "compartmentId": "${compartment_id}",
@@ -848,7 +1496,61 @@
           "uiConfig": {
             "enableWidgetInApp": true,
             "queryString": "'Log Source' = 'OCI Data Safe Database Audit' and 'Operation' in ('AUDIT','NOAUDIT','CREATE AUDIT POLICY','ALTER AUDIT POLICY','DROP AUDIT POLICY','EXECUTE') | fields Time, 'Data Safe Target Name', 'Database User', 'Operation', 'Object Owner', 'Object Name', 'FGA Policy Name', 'Operation Status' | sort -Time",
-            "scopeFilters": {},
+            "scopeFilters": {
+              "Entity": {
+                "flags": {
+                  "IncludeDependents": true,
+                  "ScopeCompartmentId": "${compartment_id}"
+                },
+                "type": "Entity",
+                "values": []
+              },
+              "LogGroup": {
+                "flags": {
+                  "IncludeSubCompartments": true
+                },
+                "type": "LogGroup",
+                "values": [
+                  {
+                    "label": "Selected compartment",
+                    "value": "${compartment_id}"
+                  }
+                ]
+              },
+              "LogSet": {
+                "flags": {},
+                "type": "LogSet",
+                "values": []
+              },
+              "filters": [
+                {
+                  "flags": {
+                    "includeSubCompartments": true
+                  },
+                  "type": "LogGroup",
+                  "values": [
+                    {
+                      "label": "Selected compartment",
+                      "value": "${compartment_id}"
+                    }
+                  ]
+                },
+                {
+                  "flags": {
+                    "includeDependents": true,
+                    "scopeCompartmentId": "${compartment_id}"
+                  },
+                  "type": "Entity",
+                  "values": []
+                },
+                {
+                  "flags": {},
+                  "type": "LogSet",
+                  "values": []
+                }
+              ],
+              "isGlobal": false
+            },
             "showTitle": true,
             "timeSelection": {
               "timePeriod": "l7d"
@@ -857,8 +1559,8 @@
             "visualizationType": "table",
             "vizType": "lxSavedSearchWidgetType"
           },
-          "widgetTemplate": "visualizations/widgetTemplate.html",
-          "widgetVM": "visualizations/widget"
+          "widgetTemplate": "visualizations/chartWidgetTemplate.html",
+          "widgetVM": "jet-modules/dashboards/widgets/lxSavedSearchWidget"
         },
         {
           "compartmentId": "${compartment_id}",
@@ -891,7 +1593,61 @@
           "uiConfig": {
             "enableWidgetInApp": true,
             "queryString": "'Log Source' = 'OCI Data Safe Database Audit' and 'Operation' in ('LOGIN','LOGON','LOGOFF') | stats count as Events by 'Data Safe Target Name', 'Database User', 'Operation Status', 'Client Host' | sort -Events | head 100",
-            "scopeFilters": {},
+            "scopeFilters": {
+              "Entity": {
+                "flags": {
+                  "IncludeDependents": true,
+                  "ScopeCompartmentId": "${compartment_id}"
+                },
+                "type": "Entity",
+                "values": []
+              },
+              "LogGroup": {
+                "flags": {
+                  "IncludeSubCompartments": true
+                },
+                "type": "LogGroup",
+                "values": [
+                  {
+                    "label": "Selected compartment",
+                    "value": "${compartment_id}"
+                  }
+                ]
+              },
+              "LogSet": {
+                "flags": {},
+                "type": "LogSet",
+                "values": []
+              },
+              "filters": [
+                {
+                  "flags": {
+                    "includeSubCompartments": true
+                  },
+                  "type": "LogGroup",
+                  "values": [
+                    {
+                      "label": "Selected compartment",
+                      "value": "${compartment_id}"
+                    }
+                  ]
+                },
+                {
+                  "flags": {
+                    "includeDependents": true,
+                    "scopeCompartmentId": "${compartment_id}"
+                  },
+                  "type": "Entity",
+                  "values": []
+                },
+                {
+                  "flags": {},
+                  "type": "LogSet",
+                  "values": []
+                }
+              ],
+              "isGlobal": false
+            },
             "showTitle": true,
             "timeSelection": {
               "timePeriod": "l7d"
@@ -900,8 +1656,8 @@
             "visualizationType": "summary_table",
             "vizType": "lxSavedSearchWidgetType"
           },
-          "widgetTemplate": "visualizations/widgetTemplate.html",
-          "widgetVM": "visualizations/widget"
+          "widgetTemplate": "visualizations/chartWidgetTemplate.html",
+          "widgetVM": "jet-modules/dashboards/widgets/lxSavedSearchWidget"
         },
         {
           "compartmentId": "${compartment_id}",
@@ -934,7 +1690,61 @@
           "uiConfig": {
             "enableWidgetInApp": true,
             "queryString": "'Log Source' = 'OCI Data Safe Database Audit' and 'Operation' in ('SELECT','READ') | stats count as Events by 'Data Safe Target Name', 'Database User', 'Object Owner', 'Object Name' | sort -Events | head 100",
-            "scopeFilters": {},
+            "scopeFilters": {
+              "Entity": {
+                "flags": {
+                  "IncludeDependents": true,
+                  "ScopeCompartmentId": "${compartment_id}"
+                },
+                "type": "Entity",
+                "values": []
+              },
+              "LogGroup": {
+                "flags": {
+                  "IncludeSubCompartments": true
+                },
+                "type": "LogGroup",
+                "values": [
+                  {
+                    "label": "Selected compartment",
+                    "value": "${compartment_id}"
+                  }
+                ]
+              },
+              "LogSet": {
+                "flags": {},
+                "type": "LogSet",
+                "values": []
+              },
+              "filters": [
+                {
+                  "flags": {
+                    "includeSubCompartments": true
+                  },
+                  "type": "LogGroup",
+                  "values": [
+                    {
+                      "label": "Selected compartment",
+                      "value": "${compartment_id}"
+                    }
+                  ]
+                },
+                {
+                  "flags": {
+                    "includeDependents": true,
+                    "scopeCompartmentId": "${compartment_id}"
+                  },
+                  "type": "Entity",
+                  "values": []
+                },
+                {
+                  "flags": {},
+                  "type": "LogSet",
+                  "values": []
+                }
+              ],
+              "isGlobal": false
+            },
             "showTitle": true,
             "timeSelection": {
               "timePeriod": "l7d"
@@ -943,8 +1753,8 @@
             "visualizationType": "summary_table",
             "vizType": "lxSavedSearchWidgetType"
           },
-          "widgetTemplate": "visualizations/widgetTemplate.html",
-          "widgetVM": "visualizations/widget"
+          "widgetTemplate": "visualizations/chartWidgetTemplate.html",
+          "widgetVM": "jet-modules/dashboards/widgets/lxSavedSearchWidget"
         },
         {
           "compartmentId": "${compartment_id}",
@@ -977,7 +1787,61 @@
           "uiConfig": {
             "enableWidgetInApp": true,
             "queryString": "'Log Source' = 'OCI Data Safe Database Audit' and 'Operation' in ('INSERT','UPDATE','DELETE','MERGE') | stats count as Events by 'Data Safe Target Name', 'Operation', 'Object Owner' | sort -Events | head 100",
-            "scopeFilters": {},
+            "scopeFilters": {
+              "Entity": {
+                "flags": {
+                  "IncludeDependents": true,
+                  "ScopeCompartmentId": "${compartment_id}"
+                },
+                "type": "Entity",
+                "values": []
+              },
+              "LogGroup": {
+                "flags": {
+                  "IncludeSubCompartments": true
+                },
+                "type": "LogGroup",
+                "values": [
+                  {
+                    "label": "Selected compartment",
+                    "value": "${compartment_id}"
+                  }
+                ]
+              },
+              "LogSet": {
+                "flags": {},
+                "type": "LogSet",
+                "values": []
+              },
+              "filters": [
+                {
+                  "flags": {
+                    "includeSubCompartments": true
+                  },
+                  "type": "LogGroup",
+                  "values": [
+                    {
+                      "label": "Selected compartment",
+                      "value": "${compartment_id}"
+                    }
+                  ]
+                },
+                {
+                  "flags": {
+                    "includeDependents": true,
+                    "scopeCompartmentId": "${compartment_id}"
+                  },
+                  "type": "Entity",
+                  "values": []
+                },
+                {
+                  "flags": {},
+                  "type": "LogSet",
+                  "values": []
+                }
+              ],
+              "isGlobal": false
+            },
             "showTitle": true,
             "timeSelection": {
               "timePeriod": "l7d"
@@ -986,8 +1850,8 @@
             "visualizationType": "summary_table",
             "vizType": "lxSavedSearchWidgetType"
           },
-          "widgetTemplate": "visualizations/widgetTemplate.html",
-          "widgetVM": "visualizations/widget"
+          "widgetTemplate": "visualizations/chartWidgetTemplate.html",
+          "widgetVM": "jet-modules/dashboards/widgets/lxSavedSearchWidget"
         },
         {
           "compartmentId": "${compartment_id}",
@@ -1020,7 +1884,61 @@
           "uiConfig": {
             "enableWidgetInApp": true,
             "queryString": "'Log Source' = 'OCI Data Safe Database Audit' and 'Operation' in ('CREATE','ALTER','DROP','TRUNCATE','RENAME') | stats count as Events by 'Data Safe Target Name', 'Operation', 'Object Type' | sort -Events | head 100",
-            "scopeFilters": {},
+            "scopeFilters": {
+              "Entity": {
+                "flags": {
+                  "IncludeDependents": true,
+                  "ScopeCompartmentId": "${compartment_id}"
+                },
+                "type": "Entity",
+                "values": []
+              },
+              "LogGroup": {
+                "flags": {
+                  "IncludeSubCompartments": true
+                },
+                "type": "LogGroup",
+                "values": [
+                  {
+                    "label": "Selected compartment",
+                    "value": "${compartment_id}"
+                  }
+                ]
+              },
+              "LogSet": {
+                "flags": {},
+                "type": "LogSet",
+                "values": []
+              },
+              "filters": [
+                {
+                  "flags": {
+                    "includeSubCompartments": true
+                  },
+                  "type": "LogGroup",
+                  "values": [
+                    {
+                      "label": "Selected compartment",
+                      "value": "${compartment_id}"
+                    }
+                  ]
+                },
+                {
+                  "flags": {
+                    "includeDependents": true,
+                    "scopeCompartmentId": "${compartment_id}"
+                  },
+                  "type": "Entity",
+                  "values": []
+                },
+                {
+                  "flags": {},
+                  "type": "LogSet",
+                  "values": []
+                }
+              ],
+              "isGlobal": false
+            },
             "showTitle": true,
             "timeSelection": {
               "timePeriod": "l7d"
@@ -1029,8 +1947,8 @@
             "visualizationType": "summary_table",
             "vizType": "lxSavedSearchWidgetType"
           },
-          "widgetTemplate": "visualizations/widgetTemplate.html",
-          "widgetVM": "visualizations/widget"
+          "widgetTemplate": "visualizations/chartWidgetTemplate.html",
+          "widgetVM": "jet-modules/dashboards/widgets/lxSavedSearchWidget"
         },
         {
           "compartmentId": "${compartment_id}",
@@ -1063,7 +1981,61 @@
           "uiConfig": {
             "enableWidgetInApp": true,
             "queryString": "'Log Source' = 'OCI Data Safe Database Audit' and 'Data Safe Activity' = 1 | fields Time, 'Data Safe Target Name', 'Database User', 'Operation', 'Object Owner', 'Object Name', 'Operation Status' | sort -Time",
-            "scopeFilters": {},
+            "scopeFilters": {
+              "Entity": {
+                "flags": {
+                  "IncludeDependents": true,
+                  "ScopeCompartmentId": "${compartment_id}"
+                },
+                "type": "Entity",
+                "values": []
+              },
+              "LogGroup": {
+                "flags": {
+                  "IncludeSubCompartments": true
+                },
+                "type": "LogGroup",
+                "values": [
+                  {
+                    "label": "Selected compartment",
+                    "value": "${compartment_id}"
+                  }
+                ]
+              },
+              "LogSet": {
+                "flags": {},
+                "type": "LogSet",
+                "values": []
+              },
+              "filters": [
+                {
+                  "flags": {
+                    "includeSubCompartments": true
+                  },
+                  "type": "LogGroup",
+                  "values": [
+                    {
+                      "label": "Selected compartment",
+                      "value": "${compartment_id}"
+                    }
+                  ]
+                },
+                {
+                  "flags": {
+                    "includeDependents": true,
+                    "scopeCompartmentId": "${compartment_id}"
+                  },
+                  "type": "Entity",
+                  "values": []
+                },
+                {
+                  "flags": {},
+                  "type": "LogSet",
+                  "values": []
+                }
+              ],
+              "isGlobal": false
+            },
             "showTitle": true,
             "timeSelection": {
               "timePeriod": "l7d"
@@ -1072,8 +2044,8 @@
             "visualizationType": "table",
             "vizType": "lxSavedSearchWidgetType"
           },
-          "widgetTemplate": "visualizations/widgetTemplate.html",
-          "widgetVM": "visualizations/widget"
+          "widgetTemplate": "visualizations/chartWidgetTemplate.html",
+          "widgetVM": "jet-modules/dashboards/widgets/lxSavedSearchWidget"
         },
         {
           "compartmentId": "${compartment_id}",
@@ -1106,7 +2078,61 @@
           "uiConfig": {
             "enableWidgetInApp": true,
             "queryString": "'Log Source' = 'OCI Data Safe Database Audit' and 'Audit Type' = 'DATABASE_VAULT' | stats count as Events by 'Data Safe Target Name', 'Event Name', 'Operation Status' | sort -Events | head 100",
-            "scopeFilters": {},
+            "scopeFilters": {
+              "Entity": {
+                "flags": {
+                  "IncludeDependents": true,
+                  "ScopeCompartmentId": "${compartment_id}"
+                },
+                "type": "Entity",
+                "values": []
+              },
+              "LogGroup": {
+                "flags": {
+                  "IncludeSubCompartments": true
+                },
+                "type": "LogGroup",
+                "values": [
+                  {
+                    "label": "Selected compartment",
+                    "value": "${compartment_id}"
+                  }
+                ]
+              },
+              "LogSet": {
+                "flags": {},
+                "type": "LogSet",
+                "values": []
+              },
+              "filters": [
+                {
+                  "flags": {
+                    "includeSubCompartments": true
+                  },
+                  "type": "LogGroup",
+                  "values": [
+                    {
+                      "label": "Selected compartment",
+                      "value": "${compartment_id}"
+                    }
+                  ]
+                },
+                {
+                  "flags": {
+                    "includeDependents": true,
+                    "scopeCompartmentId": "${compartment_id}"
+                  },
+                  "type": "Entity",
+                  "values": []
+                },
+                {
+                  "flags": {},
+                  "type": "LogSet",
+                  "values": []
+                }
+              ],
+              "isGlobal": false
+            },
             "showTitle": true,
             "timeSelection": {
               "timePeriod": "l7d"
@@ -1115,8 +2141,8 @@
             "visualizationType": "summary_table",
             "vizType": "lxSavedSearchWidgetType"
           },
-          "widgetTemplate": "visualizations/widgetTemplate.html",
-          "widgetVM": "visualizations/widget"
+          "widgetTemplate": "visualizations/chartWidgetTemplate.html",
+          "widgetVM": "jet-modules/dashboards/widgets/lxSavedSearchWidget"
         },
         {
           "compartmentId": "${compartment_id}",
@@ -1149,7 +2175,61 @@
           "uiConfig": {
             "enableWidgetInApp": true,
             "queryString": "'Log Source' = 'OCI Data Safe Database Audit' and 'Common User' = 1 | stats count as Events by 'Data Safe Target Name', 'Database User', 'Operation', 'Operation Status' | sort -Events | head 100",
-            "scopeFilters": {},
+            "scopeFilters": {
+              "Entity": {
+                "flags": {
+                  "IncludeDependents": true,
+                  "ScopeCompartmentId": "${compartment_id}"
+                },
+                "type": "Entity",
+                "values": []
+              },
+              "LogGroup": {
+                "flags": {
+                  "IncludeSubCompartments": true
+                },
+                "type": "LogGroup",
+                "values": [
+                  {
+                    "label": "Selected compartment",
+                    "value": "${compartment_id}"
+                  }
+                ]
+              },
+              "LogSet": {
+                "flags": {},
+                "type": "LogSet",
+                "values": []
+              },
+              "filters": [
+                {
+                  "flags": {
+                    "includeSubCompartments": true
+                  },
+                  "type": "LogGroup",
+                  "values": [
+                    {
+                      "label": "Selected compartment",
+                      "value": "${compartment_id}"
+                    }
+                  ]
+                },
+                {
+                  "flags": {
+                    "includeDependents": true,
+                    "scopeCompartmentId": "${compartment_id}"
+                  },
+                  "type": "Entity",
+                  "values": []
+                },
+                {
+                  "flags": {},
+                  "type": "LogSet",
+                  "values": []
+                }
+              ],
+              "isGlobal": false
+            },
             "showTitle": true,
             "timeSelection": {
               "timePeriod": "l7d"
@@ -1158,8 +2238,8 @@
             "visualizationType": "summary_table",
             "vizType": "lxSavedSearchWidgetType"
           },
-          "widgetTemplate": "visualizations/widgetTemplate.html",
-          "widgetVM": "visualizations/widget"
+          "widgetTemplate": "visualizations/chartWidgetTemplate.html",
+          "widgetVM": "jet-modules/dashboards/widgets/lxSavedSearchWidget"
         },
         {
           "compartmentId": "${compartment_id}",
@@ -1192,7 +2272,61 @@
           "uiConfig": {
             "enableWidgetInApp": true,
             "queryString": "'Log Source' = 'OCI Data Safe Database Audit' and 'Operation Status' = 'FAILURE' | stats count as Events by 'Data Safe Target Name', 'Error Code', 'Error Message', 'Operation' | sort -Events | head 100",
-            "scopeFilters": {},
+            "scopeFilters": {
+              "Entity": {
+                "flags": {
+                  "IncludeDependents": true,
+                  "ScopeCompartmentId": "${compartment_id}"
+                },
+                "type": "Entity",
+                "values": []
+              },
+              "LogGroup": {
+                "flags": {
+                  "IncludeSubCompartments": true
+                },
+                "type": "LogGroup",
+                "values": [
+                  {
+                    "label": "Selected compartment",
+                    "value": "${compartment_id}"
+                  }
+                ]
+              },
+              "LogSet": {
+                "flags": {},
+                "type": "LogSet",
+                "values": []
+              },
+              "filters": [
+                {
+                  "flags": {
+                    "includeSubCompartments": true
+                  },
+                  "type": "LogGroup",
+                  "values": [
+                    {
+                      "label": "Selected compartment",
+                      "value": "${compartment_id}"
+                    }
+                  ]
+                },
+                {
+                  "flags": {
+                    "includeDependents": true,
+                    "scopeCompartmentId": "${compartment_id}"
+                  },
+                  "type": "Entity",
+                  "values": []
+                },
+                {
+                  "flags": {},
+                  "type": "LogSet",
+                  "values": []
+                }
+              ],
+              "isGlobal": false
+            },
             "showTitle": true,
             "timeSelection": {
               "timePeriod": "l7d"
@@ -1201,8 +2335,8 @@
             "visualizationType": "summary_table",
             "vizType": "lxSavedSearchWidgetType"
           },
-          "widgetTemplate": "visualizations/widgetTemplate.html",
-          "widgetVM": "visualizations/widget"
+          "widgetTemplate": "visualizations/chartWidgetTemplate.html",
+          "widgetVM": "jet-modules/dashboards/widgets/lxSavedSearchWidget"
         },
         {
           "compartmentId": "${compartment_id}",
@@ -1235,7 +2369,61 @@
           "uiConfig": {
             "enableWidgetInApp": true,
             "queryString": "'Log Source' = 'OCI Data Safe Database Audit' and 'Audit Type' in ('RMAN','DATAPUMP','DIRECT_PATH_API') | stats count as Events by 'Data Safe Target Name', 'Audit Type', 'Operation Status' | sort -Events | head 100",
-            "scopeFilters": {},
+            "scopeFilters": {
+              "Entity": {
+                "flags": {
+                  "IncludeDependents": true,
+                  "ScopeCompartmentId": "${compartment_id}"
+                },
+                "type": "Entity",
+                "values": []
+              },
+              "LogGroup": {
+                "flags": {
+                  "IncludeSubCompartments": true
+                },
+                "type": "LogGroup",
+                "values": [
+                  {
+                    "label": "Selected compartment",
+                    "value": "${compartment_id}"
+                  }
+                ]
+              },
+              "LogSet": {
+                "flags": {},
+                "type": "LogSet",
+                "values": []
+              },
+              "filters": [
+                {
+                  "flags": {
+                    "includeSubCompartments": true
+                  },
+                  "type": "LogGroup",
+                  "values": [
+                    {
+                      "label": "Selected compartment",
+                      "value": "${compartment_id}"
+                    }
+                  ]
+                },
+                {
+                  "flags": {
+                    "includeDependents": true,
+                    "scopeCompartmentId": "${compartment_id}"
+                  },
+                  "type": "Entity",
+                  "values": []
+                },
+                {
+                  "flags": {},
+                  "type": "LogSet",
+                  "values": []
+                }
+              ],
+              "isGlobal": false
+            },
             "showTitle": true,
             "timeSelection": {
               "timePeriod": "l7d"
@@ -1244,8 +2432,8 @@
             "visualizationType": "summary_table",
             "vizType": "lxSavedSearchWidgetType"
           },
-          "widgetTemplate": "visualizations/widgetTemplate.html",
-          "widgetVM": "visualizations/widget"
+          "widgetTemplate": "visualizations/chartWidgetTemplate.html",
+          "widgetVM": "jet-modules/dashboards/widgets/lxSavedSearchWidget"
         },
         {
           "compartmentId": "${compartment_id}",
@@ -1278,7 +2466,61 @@
           "uiConfig": {
             "enableWidgetInApp": true,
             "queryString": "'Log Source' = 'OCI Data Safe Database Audit' and 'Sensitive Activity' = 1 | stats count as Events by 'Data Safe Target Name', 'Operation', 'Object Owner' | sort -Events | head 100",
-            "scopeFilters": {},
+            "scopeFilters": {
+              "Entity": {
+                "flags": {
+                  "IncludeDependents": true,
+                  "ScopeCompartmentId": "${compartment_id}"
+                },
+                "type": "Entity",
+                "values": []
+              },
+              "LogGroup": {
+                "flags": {
+                  "IncludeSubCompartments": true
+                },
+                "type": "LogGroup",
+                "values": [
+                  {
+                    "label": "Selected compartment",
+                    "value": "${compartment_id}"
+                  }
+                ]
+              },
+              "LogSet": {
+                "flags": {},
+                "type": "LogSet",
+                "values": []
+              },
+              "filters": [
+                {
+                  "flags": {
+                    "includeSubCompartments": true
+                  },
+                  "type": "LogGroup",
+                  "values": [
+                    {
+                      "label": "Selected compartment",
+                      "value": "${compartment_id}"
+                    }
+                  ]
+                },
+                {
+                  "flags": {
+                    "includeDependents": true,
+                    "scopeCompartmentId": "${compartment_id}"
+                  },
+                  "type": "Entity",
+                  "values": []
+                },
+                {
+                  "flags": {},
+                  "type": "LogSet",
+                  "values": []
+                }
+              ],
+              "isGlobal": false
+            },
             "showTitle": true,
             "timeSelection": {
               "timePeriod": "l7d"
@@ -1287,8 +2529,8 @@
             "visualizationType": "summary_table",
             "vizType": "lxSavedSearchWidgetType"
           },
-          "widgetTemplate": "visualizations/widgetTemplate.html",
-          "widgetVM": "visualizations/widget"
+          "widgetTemplate": "visualizations/chartWidgetTemplate.html",
+          "widgetVM": "jet-modules/dashboards/widgets/lxSavedSearchWidget"
         },
         {
           "compartmentId": "${compartment_id}",
@@ -1321,7 +2563,61 @@
           "uiConfig": {
             "enableWidgetInApp": true,
             "queryString": "'Log Source' = 'OCI Data Safe Database Audit' and ('Event Name' like '%SQL%FIREWALL%' or 'Audit Policies' like '%SQL%FIREWALL%') | fields Time, 'Data Safe Target Name', 'Database User', 'Event Name', 'Audit Policies', 'SQL Text', 'Operation Status' | sort -Time",
-            "scopeFilters": {},
+            "scopeFilters": {
+              "Entity": {
+                "flags": {
+                  "IncludeDependents": true,
+                  "ScopeCompartmentId": "${compartment_id}"
+                },
+                "type": "Entity",
+                "values": []
+              },
+              "LogGroup": {
+                "flags": {
+                  "IncludeSubCompartments": true
+                },
+                "type": "LogGroup",
+                "values": [
+                  {
+                    "label": "Selected compartment",
+                    "value": "${compartment_id}"
+                  }
+                ]
+              },
+              "LogSet": {
+                "flags": {},
+                "type": "LogSet",
+                "values": []
+              },
+              "filters": [
+                {
+                  "flags": {
+                    "includeSubCompartments": true
+                  },
+                  "type": "LogGroup",
+                  "values": [
+                    {
+                      "label": "Selected compartment",
+                      "value": "${compartment_id}"
+                    }
+                  ]
+                },
+                {
+                  "flags": {
+                    "includeDependents": true,
+                    "scopeCompartmentId": "${compartment_id}"
+                  },
+                  "type": "Entity",
+                  "values": []
+                },
+                {
+                  "flags": {},
+                  "type": "LogSet",
+                  "values": []
+                }
+              ],
+              "isGlobal": false
+            },
             "showTitle": true,
             "timeSelection": {
               "timePeriod": "l7d"
@@ -1330,8 +2626,8 @@
             "visualizationType": "table",
             "vizType": "lxSavedSearchWidgetType"
           },
-          "widgetTemplate": "visualizations/widgetTemplate.html",
-          "widgetVM": "visualizations/widget"
+          "widgetTemplate": "visualizations/chartWidgetTemplate.html",
+          "widgetVM": "jet-modules/dashboards/widgets/lxSavedSearchWidget"
         }
       ],
       "screenImage": " ",
@@ -1702,7 +2998,61 @@
           "uiConfig": {
             "enableWidgetInApp": true,
             "queryString": "'Log Source' = 'OCI Data Safe Database Audit' | stats distinctcount('Data Safe Target Name') as Targets",
-            "scopeFilters": {},
+            "scopeFilters": {
+              "Entity": {
+                "flags": {
+                  "IncludeDependents": true,
+                  "ScopeCompartmentId": "${compartment_id}"
+                },
+                "type": "Entity",
+                "values": []
+              },
+              "LogGroup": {
+                "flags": {
+                  "IncludeSubCompartments": true
+                },
+                "type": "LogGroup",
+                "values": [
+                  {
+                    "label": "Selected compartment",
+                    "value": "${compartment_id}"
+                  }
+                ]
+              },
+              "LogSet": {
+                "flags": {},
+                "type": "LogSet",
+                "values": []
+              },
+              "filters": [
+                {
+                  "flags": {
+                    "includeSubCompartments": true
+                  },
+                  "type": "LogGroup",
+                  "values": [
+                    {
+                      "label": "Selected compartment",
+                      "value": "${compartment_id}"
+                    }
+                  ]
+                },
+                {
+                  "flags": {
+                    "includeDependents": true,
+                    "scopeCompartmentId": "${compartment_id}"
+                  },
+                  "type": "Entity",
+                  "values": []
+                },
+                {
+                  "flags": {},
+                  "type": "LogSet",
+                  "values": []
+                }
+              ],
+              "isGlobal": false
+            },
             "showTitle": true,
             "timeSelection": {
               "timePeriod": "l7d"
@@ -1713,8 +3063,8 @@
             "visualizationType": "tile",
             "vizType": "lxSavedSearchWidgetType"
           },
-          "widgetTemplate": "visualizations/widgetTemplate.html",
-          "widgetVM": "visualizations/widget"
+          "widgetTemplate": "visualizations/chartWidgetTemplate.html",
+          "widgetVM": "jet-modules/dashboards/widgets/lxSavedSearchWidget"
         },
         {
           "compartmentId": "${compartment_id}",
@@ -1747,7 +3097,61 @@
           "uiConfig": {
             "enableWidgetInApp": true,
             "queryString": "'Log Source' = 'OCI Data Safe Database Audit' | stats distinctcount('Database User') as Users",
-            "scopeFilters": {},
+            "scopeFilters": {
+              "Entity": {
+                "flags": {
+                  "IncludeDependents": true,
+                  "ScopeCompartmentId": "${compartment_id}"
+                },
+                "type": "Entity",
+                "values": []
+              },
+              "LogGroup": {
+                "flags": {
+                  "IncludeSubCompartments": true
+                },
+                "type": "LogGroup",
+                "values": [
+                  {
+                    "label": "Selected compartment",
+                    "value": "${compartment_id}"
+                  }
+                ]
+              },
+              "LogSet": {
+                "flags": {},
+                "type": "LogSet",
+                "values": []
+              },
+              "filters": [
+                {
+                  "flags": {
+                    "includeSubCompartments": true
+                  },
+                  "type": "LogGroup",
+                  "values": [
+                    {
+                      "label": "Selected compartment",
+                      "value": "${compartment_id}"
+                    }
+                  ]
+                },
+                {
+                  "flags": {
+                    "includeDependents": true,
+                    "scopeCompartmentId": "${compartment_id}"
+                  },
+                  "type": "Entity",
+                  "values": []
+                },
+                {
+                  "flags": {},
+                  "type": "LogSet",
+                  "values": []
+                }
+              ],
+              "isGlobal": false
+            },
             "showTitle": true,
             "timeSelection": {
               "timePeriod": "l7d"
@@ -1758,8 +3162,8 @@
             "visualizationType": "tile",
             "vizType": "lxSavedSearchWidgetType"
           },
-          "widgetTemplate": "visualizations/widgetTemplate.html",
-          "widgetVM": "visualizations/widget"
+          "widgetTemplate": "visualizations/chartWidgetTemplate.html",
+          "widgetVM": "jet-modules/dashboards/widgets/lxSavedSearchWidget"
         },
         {
           "compartmentId": "${compartment_id}",
@@ -1792,7 +3196,61 @@
           "uiConfig": {
             "enableWidgetInApp": true,
             "queryString": "'Log Source' = 'OCI Data Safe Database Audit' | stats distinctcount('Client Host') as 'Client Hosts'",
-            "scopeFilters": {},
+            "scopeFilters": {
+              "Entity": {
+                "flags": {
+                  "IncludeDependents": true,
+                  "ScopeCompartmentId": "${compartment_id}"
+                },
+                "type": "Entity",
+                "values": []
+              },
+              "LogGroup": {
+                "flags": {
+                  "IncludeSubCompartments": true
+                },
+                "type": "LogGroup",
+                "values": [
+                  {
+                    "label": "Selected compartment",
+                    "value": "${compartment_id}"
+                  }
+                ]
+              },
+              "LogSet": {
+                "flags": {},
+                "type": "LogSet",
+                "values": []
+              },
+              "filters": [
+                {
+                  "flags": {
+                    "includeSubCompartments": true
+                  },
+                  "type": "LogGroup",
+                  "values": [
+                    {
+                      "label": "Selected compartment",
+                      "value": "${compartment_id}"
+                    }
+                  ]
+                },
+                {
+                  "flags": {
+                    "includeDependents": true,
+                    "scopeCompartmentId": "${compartment_id}"
+                  },
+                  "type": "Entity",
+                  "values": []
+                },
+                {
+                  "flags": {},
+                  "type": "LogSet",
+                  "values": []
+                }
+              ],
+              "isGlobal": false
+            },
             "showTitle": true,
             "timeSelection": {
               "timePeriod": "l7d"
@@ -1803,8 +3261,8 @@
             "visualizationType": "tile",
             "vizType": "lxSavedSearchWidgetType"
           },
-          "widgetTemplate": "visualizations/widgetTemplate.html",
-          "widgetVM": "visualizations/widget"
+          "widgetTemplate": "visualizations/chartWidgetTemplate.html",
+          "widgetVM": "jet-modules/dashboards/widgets/lxSavedSearchWidget"
         },
         {
           "compartmentId": "${compartment_id}",
@@ -1837,7 +3295,61 @@
           "uiConfig": {
             "enableWidgetInApp": true,
             "queryString": "'Log Source' = 'OCI Data Safe Database Audit' and 'Operation' in ('CREATE','ALTER','DROP','TRUNCATE','RENAME','COMMENT','FLASHBACK') | stats count as DDL",
-            "scopeFilters": {},
+            "scopeFilters": {
+              "Entity": {
+                "flags": {
+                  "IncludeDependents": true,
+                  "ScopeCompartmentId": "${compartment_id}"
+                },
+                "type": "Entity",
+                "values": []
+              },
+              "LogGroup": {
+                "flags": {
+                  "IncludeSubCompartments": true
+                },
+                "type": "LogGroup",
+                "values": [
+                  {
+                    "label": "Selected compartment",
+                    "value": "${compartment_id}"
+                  }
+                ]
+              },
+              "LogSet": {
+                "flags": {},
+                "type": "LogSet",
+                "values": []
+              },
+              "filters": [
+                {
+                  "flags": {
+                    "includeSubCompartments": true
+                  },
+                  "type": "LogGroup",
+                  "values": [
+                    {
+                      "label": "Selected compartment",
+                      "value": "${compartment_id}"
+                    }
+                  ]
+                },
+                {
+                  "flags": {
+                    "includeDependents": true,
+                    "scopeCompartmentId": "${compartment_id}"
+                  },
+                  "type": "Entity",
+                  "values": []
+                },
+                {
+                  "flags": {},
+                  "type": "LogSet",
+                  "values": []
+                }
+              ],
+              "isGlobal": false
+            },
             "showTitle": true,
             "timeSelection": {
               "timePeriod": "l7d"
@@ -1848,8 +3360,8 @@
             "visualizationType": "tile",
             "vizType": "lxSavedSearchWidgetType"
           },
-          "widgetTemplate": "visualizations/widgetTemplate.html",
-          "widgetVM": "visualizations/widget"
+          "widgetTemplate": "visualizations/chartWidgetTemplate.html",
+          "widgetVM": "jet-modules/dashboards/widgets/lxSavedSearchWidget"
         },
         {
           "compartmentId": "${compartment_id}",
@@ -1882,7 +3394,61 @@
           "uiConfig": {
             "enableWidgetInApp": true,
             "queryString": "'Log Source' = 'OCI Data Safe Database Audit' and 'Operation' in ('CREATE USER','ALTER USER','DROP USER','GRANT','REVOKE','CREATE ROLE','DROP ROLE','SET ROLE') | stats count as Changes",
-            "scopeFilters": {},
+            "scopeFilters": {
+              "Entity": {
+                "flags": {
+                  "IncludeDependents": true,
+                  "ScopeCompartmentId": "${compartment_id}"
+                },
+                "type": "Entity",
+                "values": []
+              },
+              "LogGroup": {
+                "flags": {
+                  "IncludeSubCompartments": true
+                },
+                "type": "LogGroup",
+                "values": [
+                  {
+                    "label": "Selected compartment",
+                    "value": "${compartment_id}"
+                  }
+                ]
+              },
+              "LogSet": {
+                "flags": {},
+                "type": "LogSet",
+                "values": []
+              },
+              "filters": [
+                {
+                  "flags": {
+                    "includeSubCompartments": true
+                  },
+                  "type": "LogGroup",
+                  "values": [
+                    {
+                      "label": "Selected compartment",
+                      "value": "${compartment_id}"
+                    }
+                  ]
+                },
+                {
+                  "flags": {
+                    "includeDependents": true,
+                    "scopeCompartmentId": "${compartment_id}"
+                  },
+                  "type": "Entity",
+                  "values": []
+                },
+                {
+                  "flags": {},
+                  "type": "LogSet",
+                  "values": []
+                }
+              ],
+              "isGlobal": false
+            },
             "showTitle": true,
             "timeSelection": {
               "timePeriod": "l7d"
@@ -1893,8 +3459,8 @@
             "visualizationType": "tile",
             "vizType": "lxSavedSearchWidgetType"
           },
-          "widgetTemplate": "visualizations/widgetTemplate.html",
-          "widgetVM": "visualizations/widget"
+          "widgetTemplate": "visualizations/chartWidgetTemplate.html",
+          "widgetVM": "jet-modules/dashboards/widgets/lxSavedSearchWidget"
         },
         {
           "compartmentId": "${compartment_id}",
@@ -1927,7 +3493,61 @@
           "uiConfig": {
             "enableWidgetInApp": true,
             "queryString": "'Log Source' = 'OCI Data Safe Database Audit' and 'Operation' in ('SELECT','INSERT','UPDATE','DELETE','MERGE','CALL','EXECUTE') | stats count as DML",
-            "scopeFilters": {},
+            "scopeFilters": {
+              "Entity": {
+                "flags": {
+                  "IncludeDependents": true,
+                  "ScopeCompartmentId": "${compartment_id}"
+                },
+                "type": "Entity",
+                "values": []
+              },
+              "LogGroup": {
+                "flags": {
+                  "IncludeSubCompartments": true
+                },
+                "type": "LogGroup",
+                "values": [
+                  {
+                    "label": "Selected compartment",
+                    "value": "${compartment_id}"
+                  }
+                ]
+              },
+              "LogSet": {
+                "flags": {},
+                "type": "LogSet",
+                "values": []
+              },
+              "filters": [
+                {
+                  "flags": {
+                    "includeSubCompartments": true
+                  },
+                  "type": "LogGroup",
+                  "values": [
+                    {
+                      "label": "Selected compartment",
+                      "value": "${compartment_id}"
+                    }
+                  ]
+                },
+                {
+                  "flags": {
+                    "includeDependents": true,
+                    "scopeCompartmentId": "${compartment_id}"
+                  },
+                  "type": "Entity",
+                  "values": []
+                },
+                {
+                  "flags": {},
+                  "type": "LogSet",
+                  "values": []
+                }
+              ],
+              "isGlobal": false
+            },
             "showTitle": true,
             "timeSelection": {
               "timePeriod": "l7d"
@@ -1938,8 +3558,8 @@
             "visualizationType": "tile",
             "vizType": "lxSavedSearchWidgetType"
           },
-          "widgetTemplate": "visualizations/widgetTemplate.html",
-          "widgetVM": "visualizations/widget"
+          "widgetTemplate": "visualizations/chartWidgetTemplate.html",
+          "widgetVM": "jet-modules/dashboards/widgets/lxSavedSearchWidget"
         },
         {
           "compartmentId": "${compartment_id}",
@@ -1972,7 +3592,61 @@
           "uiConfig": {
             "enableWidgetInApp": true,
             "queryString": "'Log Source' = 'OCI Data Safe Database Audit' and 'Operation' in ('LOGIN','LOGON') and 'Operation Status' = 'FAILURE' | stats count as 'Failed Logins'",
-            "scopeFilters": {},
+            "scopeFilters": {
+              "Entity": {
+                "flags": {
+                  "IncludeDependents": true,
+                  "ScopeCompartmentId": "${compartment_id}"
+                },
+                "type": "Entity",
+                "values": []
+              },
+              "LogGroup": {
+                "flags": {
+                  "IncludeSubCompartments": true
+                },
+                "type": "LogGroup",
+                "values": [
+                  {
+                    "label": "Selected compartment",
+                    "value": "${compartment_id}"
+                  }
+                ]
+              },
+              "LogSet": {
+                "flags": {},
+                "type": "LogSet",
+                "values": []
+              },
+              "filters": [
+                {
+                  "flags": {
+                    "includeSubCompartments": true
+                  },
+                  "type": "LogGroup",
+                  "values": [
+                    {
+                      "label": "Selected compartment",
+                      "value": "${compartment_id}"
+                    }
+                  ]
+                },
+                {
+                  "flags": {
+                    "includeDependents": true,
+                    "scopeCompartmentId": "${compartment_id}"
+                  },
+                  "type": "Entity",
+                  "values": []
+                },
+                {
+                  "flags": {},
+                  "type": "LogSet",
+                  "values": []
+                }
+              ],
+              "isGlobal": false
+            },
             "showTitle": true,
             "timeSelection": {
               "timePeriod": "l7d"
@@ -1983,8 +3657,8 @@
             "visualizationType": "tile",
             "vizType": "lxSavedSearchWidgetType"
           },
-          "widgetTemplate": "visualizations/widgetTemplate.html",
-          "widgetVM": "visualizations/widget"
+          "widgetTemplate": "visualizations/chartWidgetTemplate.html",
+          "widgetVM": "jet-modules/dashboards/widgets/lxSavedSearchWidget"
         },
         {
           "compartmentId": "${compartment_id}",
@@ -2017,7 +3691,61 @@
           "uiConfig": {
             "enableWidgetInApp": true,
             "queryString": "'Log Source' = 'OCI Data Safe Database Audit' | stats count as Events",
-            "scopeFilters": {},
+            "scopeFilters": {
+              "Entity": {
+                "flags": {
+                  "IncludeDependents": true,
+                  "ScopeCompartmentId": "${compartment_id}"
+                },
+                "type": "Entity",
+                "values": []
+              },
+              "LogGroup": {
+                "flags": {
+                  "IncludeSubCompartments": true
+                },
+                "type": "LogGroup",
+                "values": [
+                  {
+                    "label": "Selected compartment",
+                    "value": "${compartment_id}"
+                  }
+                ]
+              },
+              "LogSet": {
+                "flags": {},
+                "type": "LogSet",
+                "values": []
+              },
+              "filters": [
+                {
+                  "flags": {
+                    "includeSubCompartments": true
+                  },
+                  "type": "LogGroup",
+                  "values": [
+                    {
+                      "label": "Selected compartment",
+                      "value": "${compartment_id}"
+                    }
+                  ]
+                },
+                {
+                  "flags": {
+                    "includeDependents": true,
+                    "scopeCompartmentId": "${compartment_id}"
+                  },
+                  "type": "Entity",
+                  "values": []
+                },
+                {
+                  "flags": {},
+                  "type": "LogSet",
+                  "values": []
+                }
+              ],
+              "isGlobal": false
+            },
             "showTitle": true,
             "timeSelection": {
               "timePeriod": "l7d"
@@ -2028,8 +3756,8 @@
             "visualizationType": "tile",
             "vizType": "lxSavedSearchWidgetType"
           },
-          "widgetTemplate": "visualizations/widgetTemplate.html",
-          "widgetVM": "visualizations/widget"
+          "widgetTemplate": "visualizations/chartWidgetTemplate.html",
+          "widgetVM": "jet-modules/dashboards/widgets/lxSavedSearchWidget"
         },
         {
           "compartmentId": "${compartment_id}",
@@ -2062,7 +3790,61 @@
           "uiConfig": {
             "enableWidgetInApp": true,
             "queryString": "'Log Source' = 'OCI Data Safe Database Audit' | stats count as Events by 'Data Safe Target Name' | sort -Events | head 10",
-            "scopeFilters": {},
+            "scopeFilters": {
+              "Entity": {
+                "flags": {
+                  "IncludeDependents": true,
+                  "ScopeCompartmentId": "${compartment_id}"
+                },
+                "type": "Entity",
+                "values": []
+              },
+              "LogGroup": {
+                "flags": {
+                  "IncludeSubCompartments": true
+                },
+                "type": "LogGroup",
+                "values": [
+                  {
+                    "label": "Selected compartment",
+                    "value": "${compartment_id}"
+                  }
+                ]
+              },
+              "LogSet": {
+                "flags": {},
+                "type": "LogSet",
+                "values": []
+              },
+              "filters": [
+                {
+                  "flags": {
+                    "includeSubCompartments": true
+                  },
+                  "type": "LogGroup",
+                  "values": [
+                    {
+                      "label": "Selected compartment",
+                      "value": "${compartment_id}"
+                    }
+                  ]
+                },
+                {
+                  "flags": {
+                    "includeDependents": true,
+                    "scopeCompartmentId": "${compartment_id}"
+                  },
+                  "type": "Entity",
+                  "values": []
+                },
+                {
+                  "flags": {},
+                  "type": "LogSet",
+                  "values": []
+                }
+              ],
+              "isGlobal": false
+            },
             "showTitle": true,
             "timeSelection": {
               "timePeriod": "l7d"
@@ -2074,8 +3856,8 @@
             "visualizationType": "hbar",
             "vizType": "lxSavedSearchWidgetType"
           },
-          "widgetTemplate": "visualizations/widgetTemplate.html",
-          "widgetVM": "visualizations/widget"
+          "widgetTemplate": "visualizations/chartWidgetTemplate.html",
+          "widgetVM": "jet-modules/dashboards/widgets/lxSavedSearchWidget"
         },
         {
           "compartmentId": "${compartment_id}",
@@ -2108,7 +3890,61 @@
           "uiConfig": {
             "enableWidgetInApp": true,
             "queryString": "'Log Source' = 'OCI Data Safe Database Audit' and 'Audit Policies' != null | stats count as Events by 'Audit Policies' | sort -Events | head 10",
-            "scopeFilters": {},
+            "scopeFilters": {
+              "Entity": {
+                "flags": {
+                  "IncludeDependents": true,
+                  "ScopeCompartmentId": "${compartment_id}"
+                },
+                "type": "Entity",
+                "values": []
+              },
+              "LogGroup": {
+                "flags": {
+                  "IncludeSubCompartments": true
+                },
+                "type": "LogGroup",
+                "values": [
+                  {
+                    "label": "Selected compartment",
+                    "value": "${compartment_id}"
+                  }
+                ]
+              },
+              "LogSet": {
+                "flags": {},
+                "type": "LogSet",
+                "values": []
+              },
+              "filters": [
+                {
+                  "flags": {
+                    "includeSubCompartments": true
+                  },
+                  "type": "LogGroup",
+                  "values": [
+                    {
+                      "label": "Selected compartment",
+                      "value": "${compartment_id}"
+                    }
+                  ]
+                },
+                {
+                  "flags": {
+                    "includeDependents": true,
+                    "scopeCompartmentId": "${compartment_id}"
+                  },
+                  "type": "Entity",
+                  "values": []
+                },
+                {
+                  "flags": {},
+                  "type": "LogSet",
+                  "values": []
+                }
+              ],
+              "isGlobal": false
+            },
             "showTitle": true,
             "timeSelection": {
               "timePeriod": "l7d"
@@ -2120,8 +3956,8 @@
             "visualizationType": "hbar",
             "vizType": "lxSavedSearchWidgetType"
           },
-          "widgetTemplate": "visualizations/widgetTemplate.html",
-          "widgetVM": "visualizations/widget"
+          "widgetTemplate": "visualizations/chartWidgetTemplate.html",
+          "widgetVM": "jet-modules/dashboards/widgets/lxSavedSearchWidget"
         },
         {
           "compartmentId": "${compartment_id}",
@@ -2154,7 +3990,61 @@
           "uiConfig": {
             "enableWidgetInApp": true,
             "queryString": "'Log Source' = 'OCI Data Safe Database Audit' and 'Object Owner' != null | stats count as Events by 'Object Owner' | sort -Events | head 10",
-            "scopeFilters": {},
+            "scopeFilters": {
+              "Entity": {
+                "flags": {
+                  "IncludeDependents": true,
+                  "ScopeCompartmentId": "${compartment_id}"
+                },
+                "type": "Entity",
+                "values": []
+              },
+              "LogGroup": {
+                "flags": {
+                  "IncludeSubCompartments": true
+                },
+                "type": "LogGroup",
+                "values": [
+                  {
+                    "label": "Selected compartment",
+                    "value": "${compartment_id}"
+                  }
+                ]
+              },
+              "LogSet": {
+                "flags": {},
+                "type": "LogSet",
+                "values": []
+              },
+              "filters": [
+                {
+                  "flags": {
+                    "includeSubCompartments": true
+                  },
+                  "type": "LogGroup",
+                  "values": [
+                    {
+                      "label": "Selected compartment",
+                      "value": "${compartment_id}"
+                    }
+                  ]
+                },
+                {
+                  "flags": {
+                    "includeDependents": true,
+                    "scopeCompartmentId": "${compartment_id}"
+                  },
+                  "type": "Entity",
+                  "values": []
+                },
+                {
+                  "flags": {},
+                  "type": "LogSet",
+                  "values": []
+                }
+              ],
+              "isGlobal": false
+            },
             "showTitle": true,
             "timeSelection": {
               "timePeriod": "l7d"
@@ -2166,8 +4056,8 @@
             "visualizationType": "hbar",
             "vizType": "lxSavedSearchWidgetType"
           },
-          "widgetTemplate": "visualizations/widgetTemplate.html",
-          "widgetVM": "visualizations/widget"
+          "widgetTemplate": "visualizations/chartWidgetTemplate.html",
+          "widgetVM": "jet-modules/dashboards/widgets/lxSavedSearchWidget"
         },
         {
           "compartmentId": "${compartment_id}",
@@ -2200,7 +4090,61 @@
           "uiConfig": {
             "enableWidgetInApp": true,
             "queryString": "'Log Source' = 'OCI Data Safe Database Audit' and 'Object Name' != null | stats count as Events by 'Object Owner', 'Object Name', 'Object Type' | sort -Events | head 10",
-            "scopeFilters": {},
+            "scopeFilters": {
+              "Entity": {
+                "flags": {
+                  "IncludeDependents": true,
+                  "ScopeCompartmentId": "${compartment_id}"
+                },
+                "type": "Entity",
+                "values": []
+              },
+              "LogGroup": {
+                "flags": {
+                  "IncludeSubCompartments": true
+                },
+                "type": "LogGroup",
+                "values": [
+                  {
+                    "label": "Selected compartment",
+                    "value": "${compartment_id}"
+                  }
+                ]
+              },
+              "LogSet": {
+                "flags": {},
+                "type": "LogSet",
+                "values": []
+              },
+              "filters": [
+                {
+                  "flags": {
+                    "includeSubCompartments": true
+                  },
+                  "type": "LogGroup",
+                  "values": [
+                    {
+                      "label": "Selected compartment",
+                      "value": "${compartment_id}"
+                    }
+                  ]
+                },
+                {
+                  "flags": {
+                    "includeDependents": true,
+                    "scopeCompartmentId": "${compartment_id}"
+                  },
+                  "type": "Entity",
+                  "values": []
+                },
+                {
+                  "flags": {},
+                  "type": "LogSet",
+                  "values": []
+                }
+              ],
+              "isGlobal": false
+            },
             "showTitle": true,
             "timeSelection": {
               "timePeriod": "l7d"
@@ -2209,8 +4153,8 @@
             "visualizationType": "summary_table",
             "vizType": "lxSavedSearchWidgetType"
           },
-          "widgetTemplate": "visualizations/widgetTemplate.html",
-          "widgetVM": "visualizations/widget"
+          "widgetTemplate": "visualizations/chartWidgetTemplate.html",
+          "widgetVM": "jet-modules/dashboards/widgets/lxSavedSearchWidget"
         },
         {
           "compartmentId": "${compartment_id}",
@@ -2243,7 +4187,61 @@
           "uiConfig": {
             "enableWidgetInApp": true,
             "queryString": "'Log Source' = 'OCI Data Safe Database Audit' and 'Database User' != null | stats count as Events by 'Database User' | sort -Events | head 10",
-            "scopeFilters": {},
+            "scopeFilters": {
+              "Entity": {
+                "flags": {
+                  "IncludeDependents": true,
+                  "ScopeCompartmentId": "${compartment_id}"
+                },
+                "type": "Entity",
+                "values": []
+              },
+              "LogGroup": {
+                "flags": {
+                  "IncludeSubCompartments": true
+                },
+                "type": "LogGroup",
+                "values": [
+                  {
+                    "label": "Selected compartment",
+                    "value": "${compartment_id}"
+                  }
+                ]
+              },
+              "LogSet": {
+                "flags": {},
+                "type": "LogSet",
+                "values": []
+              },
+              "filters": [
+                {
+                  "flags": {
+                    "includeSubCompartments": true
+                  },
+                  "type": "LogGroup",
+                  "values": [
+                    {
+                      "label": "Selected compartment",
+                      "value": "${compartment_id}"
+                    }
+                  ]
+                },
+                {
+                  "flags": {
+                    "includeDependents": true,
+                    "scopeCompartmentId": "${compartment_id}"
+                  },
+                  "type": "Entity",
+                  "values": []
+                },
+                {
+                  "flags": {},
+                  "type": "LogSet",
+                  "values": []
+                }
+              ],
+              "isGlobal": false
+            },
             "showTitle": true,
             "timeSelection": {
               "timePeriod": "l7d"
@@ -2255,8 +4253,8 @@
             "visualizationType": "hbar",
             "vizType": "lxSavedSearchWidgetType"
           },
-          "widgetTemplate": "visualizations/widgetTemplate.html",
-          "widgetVM": "visualizations/widget"
+          "widgetTemplate": "visualizations/chartWidgetTemplate.html",
+          "widgetVM": "jet-modules/dashboards/widgets/lxSavedSearchWidget"
         },
         {
           "compartmentId": "${compartment_id}",
@@ -2289,7 +4287,61 @@
           "uiConfig": {
             "enableWidgetInApp": true,
             "queryString": "'Log Source' = 'OCI Data Safe Database Audit' and 'Client Host' != null | stats count as Events by 'Client Host' | sort -Events | head 10",
-            "scopeFilters": {},
+            "scopeFilters": {
+              "Entity": {
+                "flags": {
+                  "IncludeDependents": true,
+                  "ScopeCompartmentId": "${compartment_id}"
+                },
+                "type": "Entity",
+                "values": []
+              },
+              "LogGroup": {
+                "flags": {
+                  "IncludeSubCompartments": true
+                },
+                "type": "LogGroup",
+                "values": [
+                  {
+                    "label": "Selected compartment",
+                    "value": "${compartment_id}"
+                  }
+                ]
+              },
+              "LogSet": {
+                "flags": {},
+                "type": "LogSet",
+                "values": []
+              },
+              "filters": [
+                {
+                  "flags": {
+                    "includeSubCompartments": true
+                  },
+                  "type": "LogGroup",
+                  "values": [
+                    {
+                      "label": "Selected compartment",
+                      "value": "${compartment_id}"
+                    }
+                  ]
+                },
+                {
+                  "flags": {
+                    "includeDependents": true,
+                    "scopeCompartmentId": "${compartment_id}"
+                  },
+                  "type": "Entity",
+                  "values": []
+                },
+                {
+                  "flags": {},
+                  "type": "LogSet",
+                  "values": []
+                }
+              ],
+              "isGlobal": false
+            },
             "showTitle": true,
             "timeSelection": {
               "timePeriod": "l7d"
@@ -2301,8 +4353,8 @@
             "visualizationType": "hbar",
             "vizType": "lxSavedSearchWidgetType"
           },
-          "widgetTemplate": "visualizations/widgetTemplate.html",
-          "widgetVM": "visualizations/widget"
+          "widgetTemplate": "visualizations/chartWidgetTemplate.html",
+          "widgetVM": "jet-modules/dashboards/widgets/lxSavedSearchWidget"
         }
       ],
       "screenImage": " ",
@@ -2655,7 +4707,61 @@
           "uiConfig": {
             "enableWidgetInApp": true,
             "queryString": "'Log Source' = 'OCI Data Safe Database Audit' and 'Database User' != null | stats count as Events by 'Database User', 'Operation', 'Operation Status' | sort -Events | head 50",
-            "scopeFilters": {},
+            "scopeFilters": {
+              "Entity": {
+                "flags": {
+                  "IncludeDependents": true,
+                  "ScopeCompartmentId": "${compartment_id}"
+                },
+                "type": "Entity",
+                "values": []
+              },
+              "LogGroup": {
+                "flags": {
+                  "IncludeSubCompartments": true
+                },
+                "type": "LogGroup",
+                "values": [
+                  {
+                    "label": "Selected compartment",
+                    "value": "${compartment_id}"
+                  }
+                ]
+              },
+              "LogSet": {
+                "flags": {},
+                "type": "LogSet",
+                "values": []
+              },
+              "filters": [
+                {
+                  "flags": {
+                    "includeSubCompartments": true
+                  },
+                  "type": "LogGroup",
+                  "values": [
+                    {
+                      "label": "Selected compartment",
+                      "value": "${compartment_id}"
+                    }
+                  ]
+                },
+                {
+                  "flags": {
+                    "includeDependents": true,
+                    "scopeCompartmentId": "${compartment_id}"
+                  },
+                  "type": "Entity",
+                  "values": []
+                },
+                {
+                  "flags": {},
+                  "type": "LogSet",
+                  "values": []
+                }
+              ],
+              "isGlobal": false
+            },
             "showTitle": true,
             "timeSelection": {
               "timePeriod": "l7d"
@@ -2664,8 +4770,8 @@
             "visualizationType": "summary_table",
             "vizType": "lxSavedSearchWidgetType"
           },
-          "widgetTemplate": "visualizations/widgetTemplate.html",
-          "widgetVM": "visualizations/widget"
+          "widgetTemplate": "visualizations/chartWidgetTemplate.html",
+          "widgetVM": "jet-modules/dashboards/widgets/lxSavedSearchWidget"
         },
         {
           "compartmentId": "${compartment_id}",
@@ -2698,7 +4804,61 @@
           "uiConfig": {
             "enableWidgetInApp": true,
             "queryString": "'Log Source' = 'OCI Data Safe Database Audit' and 'Operation' in ('LOGIN','LOGON') and 'Operation Status' = 'FAILURE' | stats count as Failures by 'Database User', 'Data Safe Target Name' | sort -Failures | head 25",
-            "scopeFilters": {},
+            "scopeFilters": {
+              "Entity": {
+                "flags": {
+                  "IncludeDependents": true,
+                  "ScopeCompartmentId": "${compartment_id}"
+                },
+                "type": "Entity",
+                "values": []
+              },
+              "LogGroup": {
+                "flags": {
+                  "IncludeSubCompartments": true
+                },
+                "type": "LogGroup",
+                "values": [
+                  {
+                    "label": "Selected compartment",
+                    "value": "${compartment_id}"
+                  }
+                ]
+              },
+              "LogSet": {
+                "flags": {},
+                "type": "LogSet",
+                "values": []
+              },
+              "filters": [
+                {
+                  "flags": {
+                    "includeSubCompartments": true
+                  },
+                  "type": "LogGroup",
+                  "values": [
+                    {
+                      "label": "Selected compartment",
+                      "value": "${compartment_id}"
+                    }
+                  ]
+                },
+                {
+                  "flags": {
+                    "includeDependents": true,
+                    "scopeCompartmentId": "${compartment_id}"
+                  },
+                  "type": "Entity",
+                  "values": []
+                },
+                {
+                  "flags": {},
+                  "type": "LogSet",
+                  "values": []
+                }
+              ],
+              "isGlobal": false
+            },
             "showTitle": true,
             "timeSelection": {
               "timePeriod": "l7d"
@@ -2707,8 +4867,8 @@
             "visualizationType": "summary_table",
             "vizType": "lxSavedSearchWidgetType"
           },
-          "widgetTemplate": "visualizations/widgetTemplate.html",
-          "widgetVM": "visualizations/widget"
+          "widgetTemplate": "visualizations/chartWidgetTemplate.html",
+          "widgetVM": "jet-modules/dashboards/widgets/lxSavedSearchWidget"
         },
         {
           "compartmentId": "${compartment_id}",
@@ -2741,7 +4901,61 @@
           "uiConfig": {
             "enableWidgetInApp": true,
             "queryString": "'Log Source' = 'OCI Data Safe Database Audit' and 'Operation' in ('LOGIN','LOGON') | timestats span = 1h count as Logins by 'Operation Status'",
-            "scopeFilters": {},
+            "scopeFilters": {
+              "Entity": {
+                "flags": {
+                  "IncludeDependents": true,
+                  "ScopeCompartmentId": "${compartment_id}"
+                },
+                "type": "Entity",
+                "values": []
+              },
+              "LogGroup": {
+                "flags": {
+                  "IncludeSubCompartments": true
+                },
+                "type": "LogGroup",
+                "values": [
+                  {
+                    "label": "Selected compartment",
+                    "value": "${compartment_id}"
+                  }
+                ]
+              },
+              "LogSet": {
+                "flags": {},
+                "type": "LogSet",
+                "values": []
+              },
+              "filters": [
+                {
+                  "flags": {
+                    "includeSubCompartments": true
+                  },
+                  "type": "LogGroup",
+                  "values": [
+                    {
+                      "label": "Selected compartment",
+                      "value": "${compartment_id}"
+                    }
+                  ]
+                },
+                {
+                  "flags": {
+                    "includeDependents": true,
+                    "scopeCompartmentId": "${compartment_id}"
+                  },
+                  "type": "Entity",
+                  "values": []
+                },
+                {
+                  "flags": {},
+                  "type": "LogSet",
+                  "values": []
+                }
+              ],
+              "isGlobal": false
+            },
             "showTitle": true,
             "timeSelection": {
               "timePeriod": "l7d"
@@ -2754,8 +4968,8 @@
             "visualizationType": "line",
             "vizType": "lxSavedSearchWidgetType"
           },
-          "widgetTemplate": "visualizations/widgetTemplate.html",
-          "widgetVM": "visualizations/widget"
+          "widgetTemplate": "visualizations/chartWidgetTemplate.html",
+          "widgetVM": "jet-modules/dashboards/widgets/lxSavedSearchWidget"
         },
         {
           "compartmentId": "${compartment_id}",
@@ -2788,7 +5002,61 @@
           "uiConfig": {
             "enableWidgetInApp": true,
             "queryString": "'Log Source' = 'OCI Data Safe Database Audit' and 'Operation' in ('CREATE USER','ALTER USER','DROP USER','GRANT','REVOKE','CREATE ROLE','DROP ROLE','SET ROLE') | fields Time, 'Data Safe Target Name', 'Database User', 'Operation', 'Operation Status', 'Object Name', 'Client Program' | sort -Time",
-            "scopeFilters": {},
+            "scopeFilters": {
+              "Entity": {
+                "flags": {
+                  "IncludeDependents": true,
+                  "ScopeCompartmentId": "${compartment_id}"
+                },
+                "type": "Entity",
+                "values": []
+              },
+              "LogGroup": {
+                "flags": {
+                  "IncludeSubCompartments": true
+                },
+                "type": "LogGroup",
+                "values": [
+                  {
+                    "label": "Selected compartment",
+                    "value": "${compartment_id}"
+                  }
+                ]
+              },
+              "LogSet": {
+                "flags": {},
+                "type": "LogSet",
+                "values": []
+              },
+              "filters": [
+                {
+                  "flags": {
+                    "includeSubCompartments": true
+                  },
+                  "type": "LogGroup",
+                  "values": [
+                    {
+                      "label": "Selected compartment",
+                      "value": "${compartment_id}"
+                    }
+                  ]
+                },
+                {
+                  "flags": {
+                    "includeDependents": true,
+                    "scopeCompartmentId": "${compartment_id}"
+                  },
+                  "type": "Entity",
+                  "values": []
+                },
+                {
+                  "flags": {},
+                  "type": "LogSet",
+                  "values": []
+                }
+              ],
+              "isGlobal": false
+            },
             "showTitle": true,
             "timeSelection": {
               "timePeriod": "l7d"
@@ -2797,8 +5065,8 @@
             "visualizationType": "table",
             "vizType": "lxSavedSearchWidgetType"
           },
-          "widgetTemplate": "visualizations/widgetTemplate.html",
-          "widgetVM": "visualizations/widget"
+          "widgetTemplate": "visualizations/chartWidgetTemplate.html",
+          "widgetVM": "jet-modules/dashboards/widgets/lxSavedSearchWidget"
         },
         {
           "compartmentId": "${compartment_id}",
@@ -2831,7 +5099,61 @@
           "uiConfig": {
             "enableWidgetInApp": true,
             "queryString": "'Log Source' = 'OCI Data Safe Database Audit' and 'Admin User' = 1 | stats count as Events by 'Database User', 'Operation' | sort -Events | head 25",
-            "scopeFilters": {},
+            "scopeFilters": {
+              "Entity": {
+                "flags": {
+                  "IncludeDependents": true,
+                  "ScopeCompartmentId": "${compartment_id}"
+                },
+                "type": "Entity",
+                "values": []
+              },
+              "LogGroup": {
+                "flags": {
+                  "IncludeSubCompartments": true
+                },
+                "type": "LogGroup",
+                "values": [
+                  {
+                    "label": "Selected compartment",
+                    "value": "${compartment_id}"
+                  }
+                ]
+              },
+              "LogSet": {
+                "flags": {},
+                "type": "LogSet",
+                "values": []
+              },
+              "filters": [
+                {
+                  "flags": {
+                    "includeSubCompartments": true
+                  },
+                  "type": "LogGroup",
+                  "values": [
+                    {
+                      "label": "Selected compartment",
+                      "value": "${compartment_id}"
+                    }
+                  ]
+                },
+                {
+                  "flags": {
+                    "includeDependents": true,
+                    "scopeCompartmentId": "${compartment_id}"
+                  },
+                  "type": "Entity",
+                  "values": []
+                },
+                {
+                  "flags": {},
+                  "type": "LogSet",
+                  "values": []
+                }
+              ],
+              "isGlobal": false
+            },
             "showTitle": true,
             "timeSelection": {
               "timePeriod": "l7d"
@@ -2840,8 +5162,8 @@
             "visualizationType": "summary_table",
             "vizType": "lxSavedSearchWidgetType"
           },
-          "widgetTemplate": "visualizations/widgetTemplate.html",
-          "widgetVM": "visualizations/widget"
+          "widgetTemplate": "visualizations/chartWidgetTemplate.html",
+          "widgetVM": "jet-modules/dashboards/widgets/lxSavedSearchWidget"
         },
         {
           "compartmentId": "${compartment_id}",
@@ -2874,7 +5196,61 @@
           "uiConfig": {
             "enableWidgetInApp": true,
             "queryString": "'Log Source' = 'OCI Data Safe Database Audit' and 'Client Program' != null | stats count as Events by 'Client Program' | sort -Events | head 10",
-            "scopeFilters": {},
+            "scopeFilters": {
+              "Entity": {
+                "flags": {
+                  "IncludeDependents": true,
+                  "ScopeCompartmentId": "${compartment_id}"
+                },
+                "type": "Entity",
+                "values": []
+              },
+              "LogGroup": {
+                "flags": {
+                  "IncludeSubCompartments": true
+                },
+                "type": "LogGroup",
+                "values": [
+                  {
+                    "label": "Selected compartment",
+                    "value": "${compartment_id}"
+                  }
+                ]
+              },
+              "LogSet": {
+                "flags": {},
+                "type": "LogSet",
+                "values": []
+              },
+              "filters": [
+                {
+                  "flags": {
+                    "includeSubCompartments": true
+                  },
+                  "type": "LogGroup",
+                  "values": [
+                    {
+                      "label": "Selected compartment",
+                      "value": "${compartment_id}"
+                    }
+                  ]
+                },
+                {
+                  "flags": {
+                    "includeDependents": true,
+                    "scopeCompartmentId": "${compartment_id}"
+                  },
+                  "type": "Entity",
+                  "values": []
+                },
+                {
+                  "flags": {},
+                  "type": "LogSet",
+                  "values": []
+                }
+              ],
+              "isGlobal": false
+            },
             "showTitle": true,
             "timeSelection": {
               "timePeriod": "l7d"
@@ -2886,8 +5262,8 @@
             "visualizationType": "hbar",
             "vizType": "lxSavedSearchWidgetType"
           },
-          "widgetTemplate": "visualizations/widgetTemplate.html",
-          "widgetVM": "visualizations/widget"
+          "widgetTemplate": "visualizations/chartWidgetTemplate.html",
+          "widgetVM": "jet-modules/dashboards/widgets/lxSavedSearchWidget"
         }
       ],
       "screenImage": " ",
@@ -3096,7 +5472,61 @@
           "uiConfig": {
             "enableWidgetInApp": true,
             "queryString": "'Log Source' = 'OCI Data Safe Database Audit' and 'Operation' in ('CREATE','ALTER','DROP','TRUNCATE','RENAME','COMMENT','FLASHBACK') | timestats span = 1h count as DDL by 'Operation'",
-            "scopeFilters": {},
+            "scopeFilters": {
+              "Entity": {
+                "flags": {
+                  "IncludeDependents": true,
+                  "ScopeCompartmentId": "${compartment_id}"
+                },
+                "type": "Entity",
+                "values": []
+              },
+              "LogGroup": {
+                "flags": {
+                  "IncludeSubCompartments": true
+                },
+                "type": "LogGroup",
+                "values": [
+                  {
+                    "label": "Selected compartment",
+                    "value": "${compartment_id}"
+                  }
+                ]
+              },
+              "LogSet": {
+                "flags": {},
+                "type": "LogSet",
+                "values": []
+              },
+              "filters": [
+                {
+                  "flags": {
+                    "includeSubCompartments": true
+                  },
+                  "type": "LogGroup",
+                  "values": [
+                    {
+                      "label": "Selected compartment",
+                      "value": "${compartment_id}"
+                    }
+                  ]
+                },
+                {
+                  "flags": {
+                    "includeDependents": true,
+                    "scopeCompartmentId": "${compartment_id}"
+                  },
+                  "type": "Entity",
+                  "values": []
+                },
+                {
+                  "flags": {},
+                  "type": "LogSet",
+                  "values": []
+                }
+              ],
+              "isGlobal": false
+            },
             "showTitle": true,
             "timeSelection": {
               "timePeriod": "l7d"
@@ -3109,8 +5539,8 @@
             "visualizationType": "line",
             "vizType": "lxSavedSearchWidgetType"
           },
-          "widgetTemplate": "visualizations/widgetTemplate.html",
-          "widgetVM": "visualizations/widget"
+          "widgetTemplate": "visualizations/chartWidgetTemplate.html",
+          "widgetVM": "jet-modules/dashboards/widgets/lxSavedSearchWidget"
         },
         {
           "compartmentId": "${compartment_id}",
@@ -3143,7 +5573,61 @@
           "uiConfig": {
             "enableWidgetInApp": true,
             "queryString": "'Log Source' = 'OCI Data Safe Database Audit' and 'Operation' in ('SELECT','INSERT','UPDATE','DELETE','MERGE','CALL','EXECUTE') | timestats span = 1h count as DML by 'Operation'",
-            "scopeFilters": {},
+            "scopeFilters": {
+              "Entity": {
+                "flags": {
+                  "IncludeDependents": true,
+                  "ScopeCompartmentId": "${compartment_id}"
+                },
+                "type": "Entity",
+                "values": []
+              },
+              "LogGroup": {
+                "flags": {
+                  "IncludeSubCompartments": true
+                },
+                "type": "LogGroup",
+                "values": [
+                  {
+                    "label": "Selected compartment",
+                    "value": "${compartment_id}"
+                  }
+                ]
+              },
+              "LogSet": {
+                "flags": {},
+                "type": "LogSet",
+                "values": []
+              },
+              "filters": [
+                {
+                  "flags": {
+                    "includeSubCompartments": true
+                  },
+                  "type": "LogGroup",
+                  "values": [
+                    {
+                      "label": "Selected compartment",
+                      "value": "${compartment_id}"
+                    }
+                  ]
+                },
+                {
+                  "flags": {
+                    "includeDependents": true,
+                    "scopeCompartmentId": "${compartment_id}"
+                  },
+                  "type": "Entity",
+                  "values": []
+                },
+                {
+                  "flags": {},
+                  "type": "LogSet",
+                  "values": []
+                }
+              ],
+              "isGlobal": false
+            },
             "showTitle": true,
             "timeSelection": {
               "timePeriod": "l7d"
@@ -3156,8 +5640,8 @@
             "visualizationType": "line",
             "vizType": "lxSavedSearchWidgetType"
           },
-          "widgetTemplate": "visualizations/widgetTemplate.html",
-          "widgetVM": "visualizations/widget"
+          "widgetTemplate": "visualizations/chartWidgetTemplate.html",
+          "widgetVM": "jet-modules/dashboards/widgets/lxSavedSearchWidget"
         },
         {
           "compartmentId": "${compartment_id}",
@@ -3190,7 +5674,61 @@
           "uiConfig": {
             "enableWidgetInApp": true,
             "queryString": "'Log Source' = 'OCI Data Safe Database Audit' and 'Object Owner' != null | stats count as Events by 'Object Owner' | sort -Events | head 10",
-            "scopeFilters": {},
+            "scopeFilters": {
+              "Entity": {
+                "flags": {
+                  "IncludeDependents": true,
+                  "ScopeCompartmentId": "${compartment_id}"
+                },
+                "type": "Entity",
+                "values": []
+              },
+              "LogGroup": {
+                "flags": {
+                  "IncludeSubCompartments": true
+                },
+                "type": "LogGroup",
+                "values": [
+                  {
+                    "label": "Selected compartment",
+                    "value": "${compartment_id}"
+                  }
+                ]
+              },
+              "LogSet": {
+                "flags": {},
+                "type": "LogSet",
+                "values": []
+              },
+              "filters": [
+                {
+                  "flags": {
+                    "includeSubCompartments": true
+                  },
+                  "type": "LogGroup",
+                  "values": [
+                    {
+                      "label": "Selected compartment",
+                      "value": "${compartment_id}"
+                    }
+                  ]
+                },
+                {
+                  "flags": {
+                    "includeDependents": true,
+                    "scopeCompartmentId": "${compartment_id}"
+                  },
+                  "type": "Entity",
+                  "values": []
+                },
+                {
+                  "flags": {},
+                  "type": "LogSet",
+                  "values": []
+                }
+              ],
+              "isGlobal": false
+            },
             "showTitle": true,
             "timeSelection": {
               "timePeriod": "l7d"
@@ -3202,8 +5740,8 @@
             "visualizationType": "hbar",
             "vizType": "lxSavedSearchWidgetType"
           },
-          "widgetTemplate": "visualizations/widgetTemplate.html",
-          "widgetVM": "visualizations/widget"
+          "widgetTemplate": "visualizations/chartWidgetTemplate.html",
+          "widgetVM": "jet-modules/dashboards/widgets/lxSavedSearchWidget"
         },
         {
           "compartmentId": "${compartment_id}",
@@ -3236,7 +5774,61 @@
           "uiConfig": {
             "enableWidgetInApp": true,
             "queryString": "'Log Source' = 'OCI Data Safe Database Audit' and 'Object Name' != null | stats count as Events by 'Object Owner', 'Object Name', 'Object Type' | sort -Events | head 10",
-            "scopeFilters": {},
+            "scopeFilters": {
+              "Entity": {
+                "flags": {
+                  "IncludeDependents": true,
+                  "ScopeCompartmentId": "${compartment_id}"
+                },
+                "type": "Entity",
+                "values": []
+              },
+              "LogGroup": {
+                "flags": {
+                  "IncludeSubCompartments": true
+                },
+                "type": "LogGroup",
+                "values": [
+                  {
+                    "label": "Selected compartment",
+                    "value": "${compartment_id}"
+                  }
+                ]
+              },
+              "LogSet": {
+                "flags": {},
+                "type": "LogSet",
+                "values": []
+              },
+              "filters": [
+                {
+                  "flags": {
+                    "includeSubCompartments": true
+                  },
+                  "type": "LogGroup",
+                  "values": [
+                    {
+                      "label": "Selected compartment",
+                      "value": "${compartment_id}"
+                    }
+                  ]
+                },
+                {
+                  "flags": {
+                    "includeDependents": true,
+                    "scopeCompartmentId": "${compartment_id}"
+                  },
+                  "type": "Entity",
+                  "values": []
+                },
+                {
+                  "flags": {},
+                  "type": "LogSet",
+                  "values": []
+                }
+              ],
+              "isGlobal": false
+            },
             "showTitle": true,
             "timeSelection": {
               "timePeriod": "l7d"
@@ -3245,8 +5837,8 @@
             "visualizationType": "summary_table",
             "vizType": "lxSavedSearchWidgetType"
           },
-          "widgetTemplate": "visualizations/widgetTemplate.html",
-          "widgetVM": "visualizations/widget"
+          "widgetTemplate": "visualizations/chartWidgetTemplate.html",
+          "widgetVM": "jet-modules/dashboards/widgets/lxSavedSearchWidget"
         },
         {
           "compartmentId": "${compartment_id}",
@@ -3279,7 +5871,61 @@
           "uiConfig": {
             "enableWidgetInApp": true,
             "queryString": "'Log Source' = 'OCI Data Safe Database Audit' and 'Sensitive Activity' = 1 | fields Time, 'Data Safe Target Name', 'Database User', 'Operation', 'Operation Status', 'Object Owner', 'Object Name', 'Client Program' | sort -Time",
-            "scopeFilters": {},
+            "scopeFilters": {
+              "Entity": {
+                "flags": {
+                  "IncludeDependents": true,
+                  "ScopeCompartmentId": "${compartment_id}"
+                },
+                "type": "Entity",
+                "values": []
+              },
+              "LogGroup": {
+                "flags": {
+                  "IncludeSubCompartments": true
+                },
+                "type": "LogGroup",
+                "values": [
+                  {
+                    "label": "Selected compartment",
+                    "value": "${compartment_id}"
+                  }
+                ]
+              },
+              "LogSet": {
+                "flags": {},
+                "type": "LogSet",
+                "values": []
+              },
+              "filters": [
+                {
+                  "flags": {
+                    "includeSubCompartments": true
+                  },
+                  "type": "LogGroup",
+                  "values": [
+                    {
+                      "label": "Selected compartment",
+                      "value": "${compartment_id}"
+                    }
+                  ]
+                },
+                {
+                  "flags": {
+                    "includeDependents": true,
+                    "scopeCompartmentId": "${compartment_id}"
+                  },
+                  "type": "Entity",
+                  "values": []
+                },
+                {
+                  "flags": {},
+                  "type": "LogSet",
+                  "values": []
+                }
+              ],
+              "isGlobal": false
+            },
             "showTitle": true,
             "timeSelection": {
               "timePeriod": "l7d"
@@ -3288,8 +5934,8 @@
             "visualizationType": "table",
             "vizType": "lxSavedSearchWidgetType"
           },
-          "widgetTemplate": "visualizations/widgetTemplate.html",
-          "widgetVM": "visualizations/widget"
+          "widgetTemplate": "visualizations/chartWidgetTemplate.html",
+          "widgetVM": "jet-modules/dashboards/widgets/lxSavedSearchWidget"
         },
         {
           "compartmentId": "${compartment_id}",
@@ -3322,7 +5968,61 @@
           "uiConfig": {
             "enableWidgetInApp": true,
             "queryString": "'Log Source' = 'OCI Data Safe Database Audit' and 'Operation Status' = 'FAILURE' | stats count as Events by 'Error Code', 'Error Message', 'Operation' | sort -Events | head 50",
-            "scopeFilters": {},
+            "scopeFilters": {
+              "Entity": {
+                "flags": {
+                  "IncludeDependents": true,
+                  "ScopeCompartmentId": "${compartment_id}"
+                },
+                "type": "Entity",
+                "values": []
+              },
+              "LogGroup": {
+                "flags": {
+                  "IncludeSubCompartments": true
+                },
+                "type": "LogGroup",
+                "values": [
+                  {
+                    "label": "Selected compartment",
+                    "value": "${compartment_id}"
+                  }
+                ]
+              },
+              "LogSet": {
+                "flags": {},
+                "type": "LogSet",
+                "values": []
+              },
+              "filters": [
+                {
+                  "flags": {
+                    "includeSubCompartments": true
+                  },
+                  "type": "LogGroup",
+                  "values": [
+                    {
+                      "label": "Selected compartment",
+                      "value": "${compartment_id}"
+                    }
+                  ]
+                },
+                {
+                  "flags": {
+                    "includeDependents": true,
+                    "scopeCompartmentId": "${compartment_id}"
+                  },
+                  "type": "Entity",
+                  "values": []
+                },
+                {
+                  "flags": {},
+                  "type": "LogSet",
+                  "values": []
+                }
+              ],
+              "isGlobal": false
+            },
             "showTitle": true,
             "timeSelection": {
               "timePeriod": "l7d"
@@ -3331,8 +6031,8 @@
             "visualizationType": "summary_table",
             "vizType": "lxSavedSearchWidgetType"
           },
-          "widgetTemplate": "visualizations/widgetTemplate.html",
-          "widgetVM": "visualizations/widget"
+          "widgetTemplate": "visualizations/chartWidgetTemplate.html",
+          "widgetVM": "jet-modules/dashboards/widgets/lxSavedSearchWidget"
         }
       ],
       "screenImage": " ",
@@ -3541,7 +6241,61 @@
           "uiConfig": {
             "enableWidgetInApp": true,
             "queryString": "'Log Source' = 'OCI Data Safe Database Audit' and 'Client IP' != null | stats count as Events by 'Client IP' | sort -Events | head 10",
-            "scopeFilters": {},
+            "scopeFilters": {
+              "Entity": {
+                "flags": {
+                  "IncludeDependents": true,
+                  "ScopeCompartmentId": "${compartment_id}"
+                },
+                "type": "Entity",
+                "values": []
+              },
+              "LogGroup": {
+                "flags": {
+                  "IncludeSubCompartments": true
+                },
+                "type": "LogGroup",
+                "values": [
+                  {
+                    "label": "Selected compartment",
+                    "value": "${compartment_id}"
+                  }
+                ]
+              },
+              "LogSet": {
+                "flags": {},
+                "type": "LogSet",
+                "values": []
+              },
+              "filters": [
+                {
+                  "flags": {
+                    "includeSubCompartments": true
+                  },
+                  "type": "LogGroup",
+                  "values": [
+                    {
+                      "label": "Selected compartment",
+                      "value": "${compartment_id}"
+                    }
+                  ]
+                },
+                {
+                  "flags": {
+                    "includeDependents": true,
+                    "scopeCompartmentId": "${compartment_id}"
+                  },
+                  "type": "Entity",
+                  "values": []
+                },
+                {
+                  "flags": {},
+                  "type": "LogSet",
+                  "values": []
+                }
+              ],
+              "isGlobal": false
+            },
             "showTitle": true,
             "timeSelection": {
               "timePeriod": "l7d"
@@ -3553,8 +6307,8 @@
             "visualizationType": "hbar",
             "vizType": "lxSavedSearchWidgetType"
           },
-          "widgetTemplate": "visualizations/widgetTemplate.html",
-          "widgetVM": "visualizations/widget"
+          "widgetTemplate": "visualizations/chartWidgetTemplate.html",
+          "widgetVM": "jet-modules/dashboards/widgets/lxSavedSearchWidget"
         },
         {
           "compartmentId": "${compartment_id}",
@@ -3587,7 +6341,61 @@
           "uiConfig": {
             "enableWidgetInApp": true,
             "queryString": "'Log Source' = 'OCI Data Safe Database Audit' and 'Client Host' != null | stats count as Events by 'Client Host' | sort -Events | head 10",
-            "scopeFilters": {},
+            "scopeFilters": {
+              "Entity": {
+                "flags": {
+                  "IncludeDependents": true,
+                  "ScopeCompartmentId": "${compartment_id}"
+                },
+                "type": "Entity",
+                "values": []
+              },
+              "LogGroup": {
+                "flags": {
+                  "IncludeSubCompartments": true
+                },
+                "type": "LogGroup",
+                "values": [
+                  {
+                    "label": "Selected compartment",
+                    "value": "${compartment_id}"
+                  }
+                ]
+              },
+              "LogSet": {
+                "flags": {},
+                "type": "LogSet",
+                "values": []
+              },
+              "filters": [
+                {
+                  "flags": {
+                    "includeSubCompartments": true
+                  },
+                  "type": "LogGroup",
+                  "values": [
+                    {
+                      "label": "Selected compartment",
+                      "value": "${compartment_id}"
+                    }
+                  ]
+                },
+                {
+                  "flags": {
+                    "includeDependents": true,
+                    "scopeCompartmentId": "${compartment_id}"
+                  },
+                  "type": "Entity",
+                  "values": []
+                },
+                {
+                  "flags": {},
+                  "type": "LogSet",
+                  "values": []
+                }
+              ],
+              "isGlobal": false
+            },
             "showTitle": true,
             "timeSelection": {
               "timePeriod": "l7d"
@@ -3599,8 +6407,8 @@
             "visualizationType": "hbar",
             "vizType": "lxSavedSearchWidgetType"
           },
-          "widgetTemplate": "visualizations/widgetTemplate.html",
-          "widgetVM": "visualizations/widget"
+          "widgetTemplate": "visualizations/chartWidgetTemplate.html",
+          "widgetVM": "jet-modules/dashboards/widgets/lxSavedSearchWidget"
         },
         {
           "compartmentId": "${compartment_id}",
@@ -3633,7 +6441,61 @@
           "uiConfig": {
             "enableWidgetInApp": true,
             "queryString": "'Log Source' = 'OCI Data Safe Database Audit' and 'Client Program' != null | stats count as Events by 'Client Program' | sort -Events | head 10",
-            "scopeFilters": {},
+            "scopeFilters": {
+              "Entity": {
+                "flags": {
+                  "IncludeDependents": true,
+                  "ScopeCompartmentId": "${compartment_id}"
+                },
+                "type": "Entity",
+                "values": []
+              },
+              "LogGroup": {
+                "flags": {
+                  "IncludeSubCompartments": true
+                },
+                "type": "LogGroup",
+                "values": [
+                  {
+                    "label": "Selected compartment",
+                    "value": "${compartment_id}"
+                  }
+                ]
+              },
+              "LogSet": {
+                "flags": {},
+                "type": "LogSet",
+                "values": []
+              },
+              "filters": [
+                {
+                  "flags": {
+                    "includeSubCompartments": true
+                  },
+                  "type": "LogGroup",
+                  "values": [
+                    {
+                      "label": "Selected compartment",
+                      "value": "${compartment_id}"
+                    }
+                  ]
+                },
+                {
+                  "flags": {
+                    "includeDependents": true,
+                    "scopeCompartmentId": "${compartment_id}"
+                  },
+                  "type": "Entity",
+                  "values": []
+                },
+                {
+                  "flags": {},
+                  "type": "LogSet",
+                  "values": []
+                }
+              ],
+              "isGlobal": false
+            },
             "showTitle": true,
             "timeSelection": {
               "timePeriod": "l7d"
@@ -3645,8 +6507,8 @@
             "visualizationType": "hbar",
             "vizType": "lxSavedSearchWidgetType"
           },
-          "widgetTemplate": "visualizations/widgetTemplate.html",
-          "widgetVM": "visualizations/widget"
+          "widgetTemplate": "visualizations/chartWidgetTemplate.html",
+          "widgetVM": "jet-modules/dashboards/widgets/lxSavedSearchWidget"
         },
         {
           "compartmentId": "${compartment_id}",
@@ -3679,7 +6541,61 @@
           "uiConfig": {
             "enableWidgetInApp": true,
             "queryString": "'Log Source' = 'OCI Data Safe Database Audit' and 'OS User' != null | stats count as Events by 'OS User' | sort -Events | head 10",
-            "scopeFilters": {},
+            "scopeFilters": {
+              "Entity": {
+                "flags": {
+                  "IncludeDependents": true,
+                  "ScopeCompartmentId": "${compartment_id}"
+                },
+                "type": "Entity",
+                "values": []
+              },
+              "LogGroup": {
+                "flags": {
+                  "IncludeSubCompartments": true
+                },
+                "type": "LogGroup",
+                "values": [
+                  {
+                    "label": "Selected compartment",
+                    "value": "${compartment_id}"
+                  }
+                ]
+              },
+              "LogSet": {
+                "flags": {},
+                "type": "LogSet",
+                "values": []
+              },
+              "filters": [
+                {
+                  "flags": {
+                    "includeSubCompartments": true
+                  },
+                  "type": "LogGroup",
+                  "values": [
+                    {
+                      "label": "Selected compartment",
+                      "value": "${compartment_id}"
+                    }
+                  ]
+                },
+                {
+                  "flags": {
+                    "includeDependents": true,
+                    "scopeCompartmentId": "${compartment_id}"
+                  },
+                  "type": "Entity",
+                  "values": []
+                },
+                {
+                  "flags": {},
+                  "type": "LogSet",
+                  "values": []
+                }
+              ],
+              "isGlobal": false
+            },
             "showTitle": true,
             "timeSelection": {
               "timePeriod": "l7d"
@@ -3691,8 +6607,8 @@
             "visualizationType": "hbar",
             "vizType": "lxSavedSearchWidgetType"
           },
-          "widgetTemplate": "visualizations/widgetTemplate.html",
-          "widgetVM": "visualizations/widget"
+          "widgetTemplate": "visualizations/chartWidgetTemplate.html",
+          "widgetVM": "jet-modules/dashboards/widgets/lxSavedSearchWidget"
         },
         {
           "compartmentId": "${compartment_id}",
@@ -3725,7 +6641,61 @@
           "uiConfig": {
             "enableWidgetInApp": true,
             "queryString": "'Log Source' = 'OCI Data Safe Database Audit' | stats count as Events by 'Client IP', 'Client Host', 'Database User', 'Data Safe Target Name' | sort -Events | head 50",
-            "scopeFilters": {},
+            "scopeFilters": {
+              "Entity": {
+                "flags": {
+                  "IncludeDependents": true,
+                  "ScopeCompartmentId": "${compartment_id}"
+                },
+                "type": "Entity",
+                "values": []
+              },
+              "LogGroup": {
+                "flags": {
+                  "IncludeSubCompartments": true
+                },
+                "type": "LogGroup",
+                "values": [
+                  {
+                    "label": "Selected compartment",
+                    "value": "${compartment_id}"
+                  }
+                ]
+              },
+              "LogSet": {
+                "flags": {},
+                "type": "LogSet",
+                "values": []
+              },
+              "filters": [
+                {
+                  "flags": {
+                    "includeSubCompartments": true
+                  },
+                  "type": "LogGroup",
+                  "values": [
+                    {
+                      "label": "Selected compartment",
+                      "value": "${compartment_id}"
+                    }
+                  ]
+                },
+                {
+                  "flags": {
+                    "includeDependents": true,
+                    "scopeCompartmentId": "${compartment_id}"
+                  },
+                  "type": "Entity",
+                  "values": []
+                },
+                {
+                  "flags": {},
+                  "type": "LogSet",
+                  "values": []
+                }
+              ],
+              "isGlobal": false
+            },
             "showTitle": true,
             "timeSelection": {
               "timePeriod": "l7d"
@@ -3734,8 +6704,8 @@
             "visualizationType": "summary_table",
             "vizType": "lxSavedSearchWidgetType"
           },
-          "widgetTemplate": "visualizations/widgetTemplate.html",
-          "widgetVM": "visualizations/widget"
+          "widgetTemplate": "visualizations/chartWidgetTemplate.html",
+          "widgetVM": "jet-modules/dashboards/widgets/lxSavedSearchWidget"
         },
         {
           "compartmentId": "${compartment_id}",
@@ -3768,7 +6738,61 @@
           "uiConfig": {
             "enableWidgetInApp": true,
             "queryString": "'Log Source' = 'OCI Data Safe Database Audit' and 'Client Program' != null | timestats span = 1h count as Events by 'Client Program'",
-            "scopeFilters": {},
+            "scopeFilters": {
+              "Entity": {
+                "flags": {
+                  "IncludeDependents": true,
+                  "ScopeCompartmentId": "${compartment_id}"
+                },
+                "type": "Entity",
+                "values": []
+              },
+              "LogGroup": {
+                "flags": {
+                  "IncludeSubCompartments": true
+                },
+                "type": "LogGroup",
+                "values": [
+                  {
+                    "label": "Selected compartment",
+                    "value": "${compartment_id}"
+                  }
+                ]
+              },
+              "LogSet": {
+                "flags": {},
+                "type": "LogSet",
+                "values": []
+              },
+              "filters": [
+                {
+                  "flags": {
+                    "includeSubCompartments": true
+                  },
+                  "type": "LogGroup",
+                  "values": [
+                    {
+                      "label": "Selected compartment",
+                      "value": "${compartment_id}"
+                    }
+                  ]
+                },
+                {
+                  "flags": {
+                    "includeDependents": true,
+                    "scopeCompartmentId": "${compartment_id}"
+                  },
+                  "type": "Entity",
+                  "values": []
+                },
+                {
+                  "flags": {},
+                  "type": "LogSet",
+                  "values": []
+                }
+              ],
+              "isGlobal": false
+            },
             "showTitle": true,
             "timeSelection": {
               "timePeriod": "l7d"
@@ -3781,8 +6805,8 @@
             "visualizationType": "line",
             "vizType": "lxSavedSearchWidgetType"
           },
-          "widgetTemplate": "visualizations/widgetTemplate.html",
-          "widgetVM": "visualizations/widget"
+          "widgetTemplate": "visualizations/chartWidgetTemplate.html",
+          "widgetVM": "jet-modules/dashboards/widgets/lxSavedSearchWidget"
         }
       ],
       "screenImage": " ",
@@ -3991,7 +7015,61 @@
           "uiConfig": {
             "enableWidgetInApp": true,
             "queryString": "'Log Source' = 'OCI Data Safe Database Audit' and 'Operation Status' = 'FAILURE' | fields Time, 'Data Safe Target Name', 'Database User', 'Operation', 'Error Code', 'Error Message', 'Client IP', 'Client Program', 'Object Name' | sort -Time",
-            "scopeFilters": {},
+            "scopeFilters": {
+              "Entity": {
+                "flags": {
+                  "IncludeDependents": true,
+                  "ScopeCompartmentId": "${compartment_id}"
+                },
+                "type": "Entity",
+                "values": []
+              },
+              "LogGroup": {
+                "flags": {
+                  "IncludeSubCompartments": true
+                },
+                "type": "LogGroup",
+                "values": [
+                  {
+                    "label": "Selected compartment",
+                    "value": "${compartment_id}"
+                  }
+                ]
+              },
+              "LogSet": {
+                "flags": {},
+                "type": "LogSet",
+                "values": []
+              },
+              "filters": [
+                {
+                  "flags": {
+                    "includeSubCompartments": true
+                  },
+                  "type": "LogGroup",
+                  "values": [
+                    {
+                      "label": "Selected compartment",
+                      "value": "${compartment_id}"
+                    }
+                  ]
+                },
+                {
+                  "flags": {
+                    "includeDependents": true,
+                    "scopeCompartmentId": "${compartment_id}"
+                  },
+                  "type": "Entity",
+                  "values": []
+                },
+                {
+                  "flags": {},
+                  "type": "LogSet",
+                  "values": []
+                }
+              ],
+              "isGlobal": false
+            },
             "showTitle": true,
             "timeSelection": {
               "timePeriod": "l7d"
@@ -4000,8 +7078,8 @@
             "visualizationType": "table",
             "vizType": "lxSavedSearchWidgetType"
           },
-          "widgetTemplate": "visualizations/widgetTemplate.html",
-          "widgetVM": "visualizations/widget"
+          "widgetTemplate": "visualizations/chartWidgetTemplate.html",
+          "widgetVM": "jet-modules/dashboards/widgets/lxSavedSearchWidget"
         },
         {
           "compartmentId": "${compartment_id}",
@@ -4034,7 +7112,61 @@
           "uiConfig": {
             "enableWidgetInApp": true,
             "queryString": "'Log Source' = 'OCI Data Safe Database Audit' and 'Admin User' = 1 | fields Time, 'Data Safe Target Name', 'Database User', 'Operation', 'Operation Status', 'Client IP', 'Client Program', 'Object Owner', 'Object Name' | sort -Time",
-            "scopeFilters": {},
+            "scopeFilters": {
+              "Entity": {
+                "flags": {
+                  "IncludeDependents": true,
+                  "ScopeCompartmentId": "${compartment_id}"
+                },
+                "type": "Entity",
+                "values": []
+              },
+              "LogGroup": {
+                "flags": {
+                  "IncludeSubCompartments": true
+                },
+                "type": "LogGroup",
+                "values": [
+                  {
+                    "label": "Selected compartment",
+                    "value": "${compartment_id}"
+                  }
+                ]
+              },
+              "LogSet": {
+                "flags": {},
+                "type": "LogSet",
+                "values": []
+              },
+              "filters": [
+                {
+                  "flags": {
+                    "includeSubCompartments": true
+                  },
+                  "type": "LogGroup",
+                  "values": [
+                    {
+                      "label": "Selected compartment",
+                      "value": "${compartment_id}"
+                    }
+                  ]
+                },
+                {
+                  "flags": {
+                    "includeDependents": true,
+                    "scopeCompartmentId": "${compartment_id}"
+                  },
+                  "type": "Entity",
+                  "values": []
+                },
+                {
+                  "flags": {},
+                  "type": "LogSet",
+                  "values": []
+                }
+              ],
+              "isGlobal": false
+            },
             "showTitle": true,
             "timeSelection": {
               "timePeriod": "l7d"
@@ -4043,8 +7175,8 @@
             "visualizationType": "table",
             "vizType": "lxSavedSearchWidgetType"
           },
-          "widgetTemplate": "visualizations/widgetTemplate.html",
-          "widgetVM": "visualizations/widget"
+          "widgetTemplate": "visualizations/chartWidgetTemplate.html",
+          "widgetVM": "jet-modules/dashboards/widgets/lxSavedSearchWidget"
         },
         {
           "compartmentId": "${compartment_id}",
@@ -4077,7 +7209,61 @@
           "uiConfig": {
             "enableWidgetInApp": true,
             "queryString": "'Log Source' = 'OCI Data Safe Database Audit' and 'Sensitive Activity' = 1 | fields Time, 'Data Safe Target Name', 'Database User', 'Operation', 'Operation Status', 'Object Owner', 'Object Name', 'Client Program' | sort -Time",
-            "scopeFilters": {},
+            "scopeFilters": {
+              "Entity": {
+                "flags": {
+                  "IncludeDependents": true,
+                  "ScopeCompartmentId": "${compartment_id}"
+                },
+                "type": "Entity",
+                "values": []
+              },
+              "LogGroup": {
+                "flags": {
+                  "IncludeSubCompartments": true
+                },
+                "type": "LogGroup",
+                "values": [
+                  {
+                    "label": "Selected compartment",
+                    "value": "${compartment_id}"
+                  }
+                ]
+              },
+              "LogSet": {
+                "flags": {},
+                "type": "LogSet",
+                "values": []
+              },
+              "filters": [
+                {
+                  "flags": {
+                    "includeSubCompartments": true
+                  },
+                  "type": "LogGroup",
+                  "values": [
+                    {
+                      "label": "Selected compartment",
+                      "value": "${compartment_id}"
+                    }
+                  ]
+                },
+                {
+                  "flags": {
+                    "includeDependents": true,
+                    "scopeCompartmentId": "${compartment_id}"
+                  },
+                  "type": "Entity",
+                  "values": []
+                },
+                {
+                  "flags": {},
+                  "type": "LogSet",
+                  "values": []
+                }
+              ],
+              "isGlobal": false
+            },
             "showTitle": true,
             "timeSelection": {
               "timePeriod": "l7d"
@@ -4086,8 +7272,8 @@
             "visualizationType": "table",
             "vizType": "lxSavedSearchWidgetType"
           },
-          "widgetTemplate": "visualizations/widgetTemplate.html",
-          "widgetVM": "visualizations/widget"
+          "widgetTemplate": "visualizations/chartWidgetTemplate.html",
+          "widgetVM": "jet-modules/dashboards/widgets/lxSavedSearchWidget"
         },
         {
           "compartmentId": "${compartment_id}",
@@ -4120,7 +7306,61 @@
           "uiConfig": {
             "enableWidgetInApp": true,
             "queryString": "'Log Source' = 'OCI Data Safe Database Audit' and 'Operation Status' = 'FAILURE' | stats count as Events by 'Error Code', 'Error Message', 'Operation' | sort -Events | head 50",
-            "scopeFilters": {},
+            "scopeFilters": {
+              "Entity": {
+                "flags": {
+                  "IncludeDependents": true,
+                  "ScopeCompartmentId": "${compartment_id}"
+                },
+                "type": "Entity",
+                "values": []
+              },
+              "LogGroup": {
+                "flags": {
+                  "IncludeSubCompartments": true
+                },
+                "type": "LogGroup",
+                "values": [
+                  {
+                    "label": "Selected compartment",
+                    "value": "${compartment_id}"
+                  }
+                ]
+              },
+              "LogSet": {
+                "flags": {},
+                "type": "LogSet",
+                "values": []
+              },
+              "filters": [
+                {
+                  "flags": {
+                    "includeSubCompartments": true
+                  },
+                  "type": "LogGroup",
+                  "values": [
+                    {
+                      "label": "Selected compartment",
+                      "value": "${compartment_id}"
+                    }
+                  ]
+                },
+                {
+                  "flags": {
+                    "includeDependents": true,
+                    "scopeCompartmentId": "${compartment_id}"
+                  },
+                  "type": "Entity",
+                  "values": []
+                },
+                {
+                  "flags": {},
+                  "type": "LogSet",
+                  "values": []
+                }
+              ],
+              "isGlobal": false
+            },
             "showTitle": true,
             "timeSelection": {
               "timePeriod": "l7d"
@@ -4129,8 +7369,8 @@
             "visualizationType": "summary_table",
             "vizType": "lxSavedSearchWidgetType"
           },
-          "widgetTemplate": "visualizations/widgetTemplate.html",
-          "widgetVM": "visualizations/widget"
+          "widgetTemplate": "visualizations/chartWidgetTemplate.html",
+          "widgetVM": "jet-modules/dashboards/widgets/lxSavedSearchWidget"
         },
         {
           "compartmentId": "${compartment_id}",
@@ -4163,7 +7403,61 @@
           "uiConfig": {
             "enableWidgetInApp": true,
             "queryString": "'Log Source' = 'OCI Data Safe Database Audit' | fields Time, 'Data Safe Target Name', 'Database User', 'Operation', 'Operation Status', 'Event Category', 'Client IP', 'Client Program', 'Object Owner', 'Object Name' | sort -Time",
-            "scopeFilters": {},
+            "scopeFilters": {
+              "Entity": {
+                "flags": {
+                  "IncludeDependents": true,
+                  "ScopeCompartmentId": "${compartment_id}"
+                },
+                "type": "Entity",
+                "values": []
+              },
+              "LogGroup": {
+                "flags": {
+                  "IncludeSubCompartments": true
+                },
+                "type": "LogGroup",
+                "values": [
+                  {
+                    "label": "Selected compartment",
+                    "value": "${compartment_id}"
+                  }
+                ]
+              },
+              "LogSet": {
+                "flags": {},
+                "type": "LogSet",
+                "values": []
+              },
+              "filters": [
+                {
+                  "flags": {
+                    "includeSubCompartments": true
+                  },
+                  "type": "LogGroup",
+                  "values": [
+                    {
+                      "label": "Selected compartment",
+                      "value": "${compartment_id}"
+                    }
+                  ]
+                },
+                {
+                  "flags": {
+                    "includeDependents": true,
+                    "scopeCompartmentId": "${compartment_id}"
+                  },
+                  "type": "Entity",
+                  "values": []
+                },
+                {
+                  "flags": {},
+                  "type": "LogSet",
+                  "values": []
+                }
+              ],
+              "isGlobal": false
+            },
             "showTitle": true,
             "timeSelection": {
               "timePeriod": "l7d"
@@ -4172,8 +7466,8 @@
             "visualizationType": "table",
             "vizType": "lxSavedSearchWidgetType"
           },
-          "widgetTemplate": "visualizations/widgetTemplate.html",
-          "widgetVM": "visualizations/widget"
+          "widgetTemplate": "visualizations/chartWidgetTemplate.html",
+          "widgetVM": "jet-modules/dashboards/widgets/lxSavedSearchWidget"
         }
       ],
       "screenImage": " ",
@@ -4364,7 +7658,61 @@
           "uiConfig": {
             "enableWidgetInApp": true,
             "queryString": "'Log Source' = 'OCI Data Safe Database Audit' and 'Operation' in ('LOGIN','LOGON') and 'Operation Status' = 'FAILURE' | stats count as 'Failed Logins' by 'Data Safe Target Name', 'Database User' | sort -'Failed Logins'",
-            "scopeFilters": {},
+            "scopeFilters": {
+              "Entity": {
+                "flags": {
+                  "IncludeDependents": true,
+                  "ScopeCompartmentId": "${compartment_id}"
+                },
+                "type": "Entity",
+                "values": []
+              },
+              "LogGroup": {
+                "flags": {
+                  "IncludeSubCompartments": true
+                },
+                "type": "LogGroup",
+                "values": [
+                  {
+                    "label": "Selected compartment",
+                    "value": "${compartment_id}"
+                  }
+                ]
+              },
+              "LogSet": {
+                "flags": {},
+                "type": "LogSet",
+                "values": []
+              },
+              "filters": [
+                {
+                  "flags": {
+                    "includeSubCompartments": true
+                  },
+                  "type": "LogGroup",
+                  "values": [
+                    {
+                      "label": "Selected compartment",
+                      "value": "${compartment_id}"
+                    }
+                  ]
+                },
+                {
+                  "flags": {
+                    "includeDependents": true,
+                    "scopeCompartmentId": "${compartment_id}"
+                  },
+                  "type": "Entity",
+                  "values": []
+                },
+                {
+                  "flags": {},
+                  "type": "LogSet",
+                  "values": []
+                }
+              ],
+              "isGlobal": false
+            },
             "showTitle": true,
             "timeSelection": {
               "timePeriod": "l7d"
@@ -4373,8 +7721,8 @@
             "visualizationType": "summary_table",
             "vizType": "lxSavedSearchWidgetType"
           },
-          "widgetTemplate": "visualizations/widgetTemplate.html",
-          "widgetVM": "visualizations/widget"
+          "widgetTemplate": "visualizations/chartWidgetTemplate.html",
+          "widgetVM": "jet-modules/dashboards/widgets/lxSavedSearchWidget"
         },
         {
           "compartmentId": "${compartment_id}",
@@ -4407,7 +7755,61 @@
           "uiConfig": {
             "enableWidgetInApp": true,
             "queryString": "'Log Source' = 'OCI Data Safe Database Audit' and 'Operation' in ('GRANT','REVOKE','CREATE ROLE','ALTER ROLE','DROP ROLE') | stats count as 'Changes' by 'Data Safe Target Name', 'Database User', 'Operation' | sort -'Changes'",
-            "scopeFilters": {},
+            "scopeFilters": {
+              "Entity": {
+                "flags": {
+                  "IncludeDependents": true,
+                  "ScopeCompartmentId": "${compartment_id}"
+                },
+                "type": "Entity",
+                "values": []
+              },
+              "LogGroup": {
+                "flags": {
+                  "IncludeSubCompartments": true
+                },
+                "type": "LogGroup",
+                "values": [
+                  {
+                    "label": "Selected compartment",
+                    "value": "${compartment_id}"
+                  }
+                ]
+              },
+              "LogSet": {
+                "flags": {},
+                "type": "LogSet",
+                "values": []
+              },
+              "filters": [
+                {
+                  "flags": {
+                    "includeSubCompartments": true
+                  },
+                  "type": "LogGroup",
+                  "values": [
+                    {
+                      "label": "Selected compartment",
+                      "value": "${compartment_id}"
+                    }
+                  ]
+                },
+                {
+                  "flags": {
+                    "includeDependents": true,
+                    "scopeCompartmentId": "${compartment_id}"
+                  },
+                  "type": "Entity",
+                  "values": []
+                },
+                {
+                  "flags": {},
+                  "type": "LogSet",
+                  "values": []
+                }
+              ],
+              "isGlobal": false
+            },
             "showTitle": true,
             "timeSelection": {
               "timePeriod": "l7d"
@@ -4416,8 +7818,8 @@
             "visualizationType": "summary_table",
             "vizType": "lxSavedSearchWidgetType"
           },
-          "widgetTemplate": "visualizations/widgetTemplate.html",
-          "widgetVM": "visualizations/widget"
+          "widgetTemplate": "visualizations/chartWidgetTemplate.html",
+          "widgetVM": "jet-modules/dashboards/widgets/lxSavedSearchWidget"
         },
         {
           "compartmentId": "${compartment_id}",
@@ -4450,7 +7852,61 @@
           "uiConfig": {
             "enableWidgetInApp": true,
             "queryString": "'Log Source' = 'OCI Data Safe Database Audit' and ('Operation' like '*AUDIT*' or 'Object Type' like '*AUDIT*') | stats count as 'Changes' by 'Data Safe Target Name', 'Database User', 'Operation' | sort -'Changes'",
-            "scopeFilters": {},
+            "scopeFilters": {
+              "Entity": {
+                "flags": {
+                  "IncludeDependents": true,
+                  "ScopeCompartmentId": "${compartment_id}"
+                },
+                "type": "Entity",
+                "values": []
+              },
+              "LogGroup": {
+                "flags": {
+                  "IncludeSubCompartments": true
+                },
+                "type": "LogGroup",
+                "values": [
+                  {
+                    "label": "Selected compartment",
+                    "value": "${compartment_id}"
+                  }
+                ]
+              },
+              "LogSet": {
+                "flags": {},
+                "type": "LogSet",
+                "values": []
+              },
+              "filters": [
+                {
+                  "flags": {
+                    "includeSubCompartments": true
+                  },
+                  "type": "LogGroup",
+                  "values": [
+                    {
+                      "label": "Selected compartment",
+                      "value": "${compartment_id}"
+                    }
+                  ]
+                },
+                {
+                  "flags": {
+                    "includeDependents": true,
+                    "scopeCompartmentId": "${compartment_id}"
+                  },
+                  "type": "Entity",
+                  "values": []
+                },
+                {
+                  "flags": {},
+                  "type": "LogSet",
+                  "values": []
+                }
+              ],
+              "isGlobal": false
+            },
             "showTitle": true,
             "timeSelection": {
               "timePeriod": "l7d"
@@ -4459,8 +7915,8 @@
             "visualizationType": "summary_table",
             "vizType": "lxSavedSearchWidgetType"
           },
-          "widgetTemplate": "visualizations/widgetTemplate.html",
-          "widgetVM": "visualizations/widget"
+          "widgetTemplate": "visualizations/chartWidgetTemplate.html",
+          "widgetVM": "jet-modules/dashboards/widgets/lxSavedSearchWidget"
         },
         {
           "compartmentId": "${compartment_id}",
@@ -4493,7 +7949,61 @@
           "uiConfig": {
             "enableWidgetInApp": true,
             "queryString": "'Log Source' = 'OCI Data Safe Database Audit' and ('Event Name' like '*FIREWALL*' or 'Action Taken' like '*BLOCK*') | stats count as 'Violations' by 'Data Safe Target Name', 'Database User', 'Action Taken' | sort -'Violations'",
-            "scopeFilters": {},
+            "scopeFilters": {
+              "Entity": {
+                "flags": {
+                  "IncludeDependents": true,
+                  "ScopeCompartmentId": "${compartment_id}"
+                },
+                "type": "Entity",
+                "values": []
+              },
+              "LogGroup": {
+                "flags": {
+                  "IncludeSubCompartments": true
+                },
+                "type": "LogGroup",
+                "values": [
+                  {
+                    "label": "Selected compartment",
+                    "value": "${compartment_id}"
+                  }
+                ]
+              },
+              "LogSet": {
+                "flags": {},
+                "type": "LogSet",
+                "values": []
+              },
+              "filters": [
+                {
+                  "flags": {
+                    "includeSubCompartments": true
+                  },
+                  "type": "LogGroup",
+                  "values": [
+                    {
+                      "label": "Selected compartment",
+                      "value": "${compartment_id}"
+                    }
+                  ]
+                },
+                {
+                  "flags": {
+                    "includeDependents": true,
+                    "scopeCompartmentId": "${compartment_id}"
+                  },
+                  "type": "Entity",
+                  "values": []
+                },
+                {
+                  "flags": {},
+                  "type": "LogSet",
+                  "values": []
+                }
+              ],
+              "isGlobal": false
+            },
             "showTitle": true,
             "timeSelection": {
               "timePeriod": "l7d"
@@ -4502,8 +8012,8 @@
             "visualizationType": "summary_table",
             "vizType": "lxSavedSearchWidgetType"
           },
-          "widgetTemplate": "visualizations/widgetTemplate.html",
-          "widgetVM": "visualizations/widget"
+          "widgetTemplate": "visualizations/chartWidgetTemplate.html",
+          "widgetVM": "jet-modules/dashboards/widgets/lxSavedSearchWidget"
         },
         {
           "compartmentId": "${compartment_id}",
@@ -4536,7 +8046,61 @@
           "uiConfig": {
             "enableWidgetInApp": true,
             "queryString": "'Log Source' = 'OCI Data Safe Database Audit' and 'Sensitive Activity' = 1 | stats count as 'Events' by 'Data Safe Target Name', 'Database User', 'Object Owner', 'Object Name' | sort -'Events'",
-            "scopeFilters": {},
+            "scopeFilters": {
+              "Entity": {
+                "flags": {
+                  "IncludeDependents": true,
+                  "ScopeCompartmentId": "${compartment_id}"
+                },
+                "type": "Entity",
+                "values": []
+              },
+              "LogGroup": {
+                "flags": {
+                  "IncludeSubCompartments": true
+                },
+                "type": "LogGroup",
+                "values": [
+                  {
+                    "label": "Selected compartment",
+                    "value": "${compartment_id}"
+                  }
+                ]
+              },
+              "LogSet": {
+                "flags": {},
+                "type": "LogSet",
+                "values": []
+              },
+              "filters": [
+                {
+                  "flags": {
+                    "includeSubCompartments": true
+                  },
+                  "type": "LogGroup",
+                  "values": [
+                    {
+                      "label": "Selected compartment",
+                      "value": "${compartment_id}"
+                    }
+                  ]
+                },
+                {
+                  "flags": {
+                    "includeDependents": true,
+                    "scopeCompartmentId": "${compartment_id}"
+                  },
+                  "type": "Entity",
+                  "values": []
+                },
+                {
+                  "flags": {},
+                  "type": "LogSet",
+                  "values": []
+                }
+              ],
+              "isGlobal": false
+            },
             "showTitle": true,
             "timeSelection": {
               "timePeriod": "l7d"
@@ -4545,8 +8109,8 @@
             "visualizationType": "summary_table",
             "vizType": "lxSavedSearchWidgetType"
           },
-          "widgetTemplate": "visualizations/widgetTemplate.html",
-          "widgetVM": "visualizations/widget"
+          "widgetTemplate": "visualizations/chartWidgetTemplate.html",
+          "widgetVM": "jet-modules/dashboards/widgets/lxSavedSearchWidget"
         },
         {
           "compartmentId": "${compartment_id}",
@@ -4579,7 +8143,61 @@
           "uiConfig": {
             "enableWidgetInApp": true,
             "queryString": "'Log Source' = 'OCI Data Safe Database Audit' and 'Operation' in ('SELECT','EXPORT') | stats count as 'Events' by 'Data Safe Target Name', 'Database User', 'Client Program' | sort -'Events'",
-            "scopeFilters": {},
+            "scopeFilters": {
+              "Entity": {
+                "flags": {
+                  "IncludeDependents": true,
+                  "ScopeCompartmentId": "${compartment_id}"
+                },
+                "type": "Entity",
+                "values": []
+              },
+              "LogGroup": {
+                "flags": {
+                  "IncludeSubCompartments": true
+                },
+                "type": "LogGroup",
+                "values": [
+                  {
+                    "label": "Selected compartment",
+                    "value": "${compartment_id}"
+                  }
+                ]
+              },
+              "LogSet": {
+                "flags": {},
+                "type": "LogSet",
+                "values": []
+              },
+              "filters": [
+                {
+                  "flags": {
+                    "includeSubCompartments": true
+                  },
+                  "type": "LogGroup",
+                  "values": [
+                    {
+                      "label": "Selected compartment",
+                      "value": "${compartment_id}"
+                    }
+                  ]
+                },
+                {
+                  "flags": {
+                    "includeDependents": true,
+                    "scopeCompartmentId": "${compartment_id}"
+                  },
+                  "type": "Entity",
+                  "values": []
+                },
+                {
+                  "flags": {},
+                  "type": "LogSet",
+                  "values": []
+                }
+              ],
+              "isGlobal": false
+            },
             "showTitle": true,
             "timeSelection": {
               "timePeriod": "l7d"
@@ -4588,8 +8206,8 @@
             "visualizationType": "summary_table",
             "vizType": "lxSavedSearchWidgetType"
           },
-          "widgetTemplate": "visualizations/widgetTemplate.html",
-          "widgetVM": "visualizations/widget"
+          "widgetTemplate": "visualizations/chartWidgetTemplate.html",
+          "widgetVM": "jet-modules/dashboards/widgets/lxSavedSearchWidget"
         },
         {
           "compartmentId": "${compartment_id}",
@@ -4622,7 +8240,61 @@
           "uiConfig": {
             "enableWidgetInApp": true,
             "queryString": "'Log Source' = 'OCI Data Safe Database Audit' and 'Operation Status' = 'FAILURE' | stats count as 'Errors' by 'Data Safe Target Name', 'Error Code', 'Operation' | sort -'Errors'",
-            "scopeFilters": {},
+            "scopeFilters": {
+              "Entity": {
+                "flags": {
+                  "IncludeDependents": true,
+                  "ScopeCompartmentId": "${compartment_id}"
+                },
+                "type": "Entity",
+                "values": []
+              },
+              "LogGroup": {
+                "flags": {
+                  "IncludeSubCompartments": true
+                },
+                "type": "LogGroup",
+                "values": [
+                  {
+                    "label": "Selected compartment",
+                    "value": "${compartment_id}"
+                  }
+                ]
+              },
+              "LogSet": {
+                "flags": {},
+                "type": "LogSet",
+                "values": []
+              },
+              "filters": [
+                {
+                  "flags": {
+                    "includeSubCompartments": true
+                  },
+                  "type": "LogGroup",
+                  "values": [
+                    {
+                      "label": "Selected compartment",
+                      "value": "${compartment_id}"
+                    }
+                  ]
+                },
+                {
+                  "flags": {
+                    "includeDependents": true,
+                    "scopeCompartmentId": "${compartment_id}"
+                  },
+                  "type": "Entity",
+                  "values": []
+                },
+                {
+                  "flags": {},
+                  "type": "LogSet",
+                  "values": []
+                }
+              ],
+              "isGlobal": false
+            },
             "showTitle": true,
             "timeSelection": {
               "timePeriod": "l7d"
@@ -4631,8 +8303,8 @@
             "visualizationType": "summary_table",
             "vizType": "lxSavedSearchWidgetType"
           },
-          "widgetTemplate": "visualizations/widgetTemplate.html",
-          "widgetVM": "visualizations/widget"
+          "widgetTemplate": "visualizations/chartWidgetTemplate.html",
+          "widgetVM": "jet-modules/dashboards/widgets/lxSavedSearchWidget"
         },
         {
           "compartmentId": "${compartment_id}",
@@ -4665,7 +8337,61 @@
           "uiConfig": {
             "enableWidgetInApp": true,
             "queryString": "'Log Source' = 'OCI Data Safe Database Audit' and 'Admin User' = 1 | stats count as 'Admin Events' by 'Data Safe Target Name', 'Database User', 'Operation' | sort -'Admin Events'",
-            "scopeFilters": {},
+            "scopeFilters": {
+              "Entity": {
+                "flags": {
+                  "IncludeDependents": true,
+                  "ScopeCompartmentId": "${compartment_id}"
+                },
+                "type": "Entity",
+                "values": []
+              },
+              "LogGroup": {
+                "flags": {
+                  "IncludeSubCompartments": true
+                },
+                "type": "LogGroup",
+                "values": [
+                  {
+                    "label": "Selected compartment",
+                    "value": "${compartment_id}"
+                  }
+                ]
+              },
+              "LogSet": {
+                "flags": {},
+                "type": "LogSet",
+                "values": []
+              },
+              "filters": [
+                {
+                  "flags": {
+                    "includeSubCompartments": true
+                  },
+                  "type": "LogGroup",
+                  "values": [
+                    {
+                      "label": "Selected compartment",
+                      "value": "${compartment_id}"
+                    }
+                  ]
+                },
+                {
+                  "flags": {
+                    "includeDependents": true,
+                    "scopeCompartmentId": "${compartment_id}"
+                  },
+                  "type": "Entity",
+                  "values": []
+                },
+                {
+                  "flags": {},
+                  "type": "LogSet",
+                  "values": []
+                }
+              ],
+              "isGlobal": false
+            },
             "showTitle": true,
             "timeSelection": {
               "timePeriod": "l7d"
@@ -4674,8 +8400,8 @@
             "visualizationType": "summary_table",
             "vizType": "lxSavedSearchWidgetType"
           },
-          "widgetTemplate": "visualizations/widgetTemplate.html",
-          "widgetVM": "visualizations/widget"
+          "widgetTemplate": "visualizations/chartWidgetTemplate.html",
+          "widgetVM": "jet-modules/dashboards/widgets/lxSavedSearchWidget"
         }
       ],
       "screenImage": " ",

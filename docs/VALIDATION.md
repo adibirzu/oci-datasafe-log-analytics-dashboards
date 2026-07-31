@@ -19,6 +19,18 @@ A production acceptance run must prove:
 9. all eight Monitoring alarms exist;
 10. a follow-up Terraform plan shows no unexpected drift.
 
+## Privacy-safe render evidence
+
+The repository includes one manually reviewed aggregate-only rendering:
+
+![Activity Overview live render](images/datasafe-activity-overview-live.png)
+
+It is evidence for the dashboard rendering path, not a substitute for the
+machine-verifiable acceptance run. Public images must omit console chrome,
+tenant identifiers, resource names, filters containing live values, and
+row-level results. Follow [KB-004](KB.md#kb-004--public-screenshot-evidence-can-leak-tenant-context)
+before adding or replacing an image.
+
 Run the gate with explicit customer context:
 
 ```bash

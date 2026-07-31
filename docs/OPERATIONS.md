@@ -70,9 +70,11 @@ uses `in tenancy`; otherwise it is restricted to the selected compartment ID.
    `Data Safe Target Name`, `Database User`, and `Operation`. A positive event
    count with zero dimensions means the source matched but the JSON parser did
    not map OCI Logging's `logContent.data` wrapper.
-3. Fetch the dashboard and verify embedded saved searches have empty
-   `scopeFilters`. Dashboard parameters own scope; never put a compartment OCID
-   into a `LogGroup` values list.
+3. Fetch the dashboard and verify every embedded saved search has complete
+   `LogGroup`, `Entity`, `LogSet`, `filters`, and `isGlobal` scope entries.
+   Deployment substitutes the selected customer compartment before dashboard
+   parameters apply user overrides. An empty scope object causes the current
+   Log Analytics widget to fail before query execution.
 4. Verify exactly one dashboard exists for each of the eight suite names.
    `scripts/deploy_dashboards.py --cleanup-duplicates` retains the newest copy
    after a successful import.

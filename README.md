@@ -75,6 +75,19 @@ See [docs/DASHBOARD_COVERAGE.md](docs/DASHBOARD_COVERAGE.md) for the exact
 source-to-widget mapping.
 See [docs/FIELD_CONTRACT.md](docs/FIELD_CONTRACT.md) for the complete
 audit-event-to-Log-Analytics field contract and privacy exceptions.
+See [docs/KB.md](docs/KB.md) for verified renderer, scope, scheduling, and
+evidence-handling failure modes.
+
+### Live-render validation
+
+![OCI Data Safe audit Activity Overview rendered with aggregate data](docs/images/datasafe-activity-overview-live.png)
+
+This cropped validation view proves that the saved searches render aggregate
+Log Analytics data instead of empty or error tiles. Console chrome, OCIDs,
+regions, database and target names, principals, IP addresses, filters, and
+row-level drilldowns are intentionally excluded. Live validation also requires
+all canonical queries, dashboards, scheduled detections, and alarms to pass;
+the image alone is not end-to-end evidence.
 
 ## Prerequisites
 
@@ -188,7 +201,7 @@ PYTHONPATH=src python scripts/deploy_detections.py \
   --profile <OCI_PROFILE> \
   --compartment-id <SOLUTION_COMPARTMENT_OCID> \
   --deployment-name <DEPLOYMENT_NAME> \
-  --log-group-id <LOG_ANALYTICS_LOG_GROUP_OCID> \
+  --scope-compartment-id <SOLUTION_COMPARTMENT_OCID> \
   --interval PT5M
 ```
 
