@@ -19,6 +19,13 @@ A production acceptance run must prove:
 9. all eight Monitoring alarms exist;
 10. a follow-up Terraform plan shows no unexpected drift.
 
+`scripts/e2e.py` directly proves items 3, 5, 6, and 7 and verifies the expected
+counts for items 8 and 9. It does not inspect OCI Logging records, Connector Hub
+run history, scheduled-task lifecycle/last-run health, alarm enabled state, or
+Terraform drift. Items 4, 8, 9, and 10 therefore require the service-level
+checks in `docs/OPERATIONS.md` in addition to the automated gate. Resource
+presence is not health evidence.
+
 ## Privacy-safe render evidence
 
 The repository includes one manually reviewed aggregate-only rendering:

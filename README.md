@@ -187,9 +187,10 @@ PYTHONPATH=src python3 scripts/deploy_all.py \
 
 The wrapper applies the exact saved plan, repairs the two-phase Log Analytics
 source/parser contract, reconciles detection searches and schedules, imports
-the dashboard suite with duplicate cleanup, runs live
-data/field/dashboard/detection acceptance, and finishes with strict redacted
-discovery. Resource Manager uses the same generated root Terraform package
+the dashboard suite with duplicate cleanup, invokes the newly deployed
+Function, requires a positive export, runs live data/query/dashboard/inventory
+acceptance, and finishes with strict redacted discovery. Resource Manager uses
+the same generated root Terraform package
 through the Deploy to OCI button; the SDK detection phase remains an explicit
 post-apply operation.
 
@@ -280,6 +281,7 @@ customer database content.
 
 ## Operations and security
 
+- [GitHub Wiki: End-to-End Deployment and Validation](https://github.com/adibirzu/oci-datasafe-log-analytics-dashboards/wiki/End-to-End-Deployment-and-Validation)
 - [docs/OPERATIONS.md](docs/OPERATIONS.md)
 - [docs/SECURITY.md](docs/SECURITY.md)
 - [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)

@@ -103,6 +103,28 @@ DML-write, and data-access categories as applicable, plus populated object
 owner/name/type fields. An intentionally unused category must be marked
 not-applicable instead of silently passing.
 
+## KB-006 — E2E passes using data from an older Function deployment
+
+**Applies to:** Local one-run deployment and production acceptance.
+
+**Symptom:** Log Analytics rows, queries, dashboards, searches, and alarms pass
+inventory checks even though the Function deployed in the current run was
+never invoked.
+
+**Cause:** A source query cannot distinguish newly exported data from
+pre-existing rows. Running `scripts/e2e.py` without both
+`--invoke-function-id` and `--require-function-export` validates available
+data, not the current Function-to-Logging path.
+
+**Resolution:** Resolve the Function ID from the applied Terraform state,
+invoke that exact Function synchronously, and require a positive schema-v2
+export before querying Log Analytics.
+
+**Verification:** The invocation reports a positive export and the subsequent
+Log Analytics query returns schema-v2 rows. Separately inspect OCI Logging,
+Connector Hub delivery, scheduled-task health, alarm enabled state, and
+Terraform drift; the automated E2E inventory does not prove those states.
+
 ## Required component evidence
 
 Every production change must either add a new KB entry or state that no new

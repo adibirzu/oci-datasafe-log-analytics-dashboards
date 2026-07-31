@@ -64,6 +64,8 @@ Run the repository verification gate, then perform the authorized live gate:
 1. Rebuild the canonical bundle; never hand-edit it.
 2. Parse every generated query.
 3. Confirm a real Log Analytics row and expected dimensions.
+   When validating a deployment, invoke the Function created by that exact
+   apply and require a positive export; pre-existing rows are insufficient.
 4. Reconcile the exact dashboard inventory and prove zero duplicates.
 5. Open representative dashboards and prove no new `localName`, `fromOpaque`,
    scope, or refresh errors in the browser console.

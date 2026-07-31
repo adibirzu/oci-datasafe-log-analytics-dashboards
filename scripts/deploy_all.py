@@ -75,6 +75,21 @@ def main() -> int:
         return 0
 
     run(["terraform", "-chdir=terraform", "apply", "-auto-approve", plan.name])
+    function_id = run(
+        [
+            "terraform",
+            "-chdir=terraform",
+            "output",
+            "-raw",
+            "function_id",
+        ],
+        capture=True,
+    ).stdout.strip()
+    if not function_id.startswith("ocid1.fnfunc."):
+        raise RuntimeError(
+            "deploy_all --apply requires deploy_function=true and a Function output "
+            "for live export acceptance"
+        )
     run(
         [
             sys.executable,
@@ -124,6 +139,9 @@ def main() -> int:
             args.deployment_name,
             "--lookback-minutes",
             str(args.lookback_minutes),
+            "--invoke-function-id",
+            function_id,
+            "--require-function-export",
         ]
     )
     run(
