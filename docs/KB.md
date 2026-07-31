@@ -70,6 +70,39 @@ drilldowns. Review the final pixels manually and run the repository leak gate.
 **Verification:** A human review confirms that only dashboard labels, aggregate
 counts, and charts remain.
 
+## KB-005 — DDL, DML, schema, and object widgets all show no results
+
+**Applies to:** Data & Schema and Audit Insights dashboards.
+
+**Symptom:** Login or all-activity widgets contain data, while DDL/DML trends
+and top schema/object widgets are empty.
+
+**Cause:** The dashboard cannot manufacture audit events. If Data Safe is
+collecting only login policies, the exported events have no DDL/DML operation
+and no object owner, object name, or object type. A wider time range does not
+resolve a policy-coverage gap.
+
+**Resolution:**
+
+- Enable and provision Data Safe's Database Schema Changes basic policy on the
+  intended targets for DDL coverage.
+- Define and enable appropriately scoped unified audit policies for DML writes
+  (`INSERT`, `UPDATE`, `DELETE`, `MERGE`) and separately for data access
+  (`SELECT`, `READ`, `EXECUTE`) where required. Avoid fleet-wide high-volume
+  SELECT auditing without sizing, exclusions, and retention planning.
+- Confirm the target audit trail is active, generate an authorized test action,
+  wait for Data Safe collection and Function export, then validate the
+  resulting Log Analytics row.
+
+Data Safe's audit-event `Operation` is the generic action (`CREATE`, `ALTER`,
+`DROP`); `Event Name` carries the specific action such as `CREATE TABLE`.
+Queries must not require `Operation = 'CREATE TABLE'`.
+
+**Verification:** Require positive, independently reported counts for DDL,
+DML-write, and data-access categories as applicable, plus populated object
+owner/name/type fields. An intentionally unused category must be marked
+not-applicable instead of silently passing.
+
 ## Required component evidence
 
 Every production change must either add a new KB entry or state that no new

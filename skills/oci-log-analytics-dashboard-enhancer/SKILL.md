@@ -40,6 +40,23 @@ Management Dashboard renderer.
 - Preserve target, database, operation, user, severity, and time fields needed
   for dashboard filters and drilldowns without exposing their live values.
 
+## DDL/DML audit-coverage contract
+
+- Treat `Operation` as the generic Data Safe action: `CREATE`, `ALTER`, `DROP`,
+  `TRUNCATE`, `RENAME`, `COMMENT`, `FLASHBACK`, `INSERT`, `UPDATE`, `DELETE`,
+  `MERGE`, `SELECT`, `READ`, or `EXECUTE`.
+- Use `Event Name` for specific DDL commands such as `CREATE TABLE`; do not put
+  object-specific action names in the `Operation` filter.
+- Keep DML writes separate from data access. `SELECT`, `READ`, and `EXECUTE`
+  must not be presented as data modification.
+- Before accepting Data & Schema, compare source totals with DDL, DML-write,
+  data-access, object-owner, object-name, object-type, and audit-policy
+  coverage. Login-only input is a policy prerequisite failure, not a query or
+  renderer success.
+- Never enable broad DML or SELECT auditing automatically. Policy provisioning
+  is a customer-approved Data Safe/database mutation and requires volume,
+  exclusion, retention, and performance review.
+
 ## Required verification
 
 Run the repository verification gate, then perform the authorized live gate:

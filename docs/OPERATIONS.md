@@ -78,7 +78,12 @@ uses `in tenancy`; otherwise it is restricted to the selected compartment ID.
 4. Verify exactly one dashboard exists for each of the eight suite names.
    `scripts/deploy_dashboards.py --cleanup-duplicates` retains the newest copy
    after a successful import.
-5. Confirm the Log Group Compartment filter selects the solution compartment
+5. For the Data & Schema view, compare the source total with independent DDL,
+   DML-write, data-access, object-owner, object-name, object-type, and
+   audit-policy coverage. If the source contains only login activity, follow
+   [KB-005](KB.md#kb-005--ddl-dml-schema-and-object-widgets-all-show-no-results);
+   changing the dashboard time range cannot repair missing audit policies.
+6. Confirm the Log Group Compartment filter selects the solution compartment
    and the time range covers the latest export.
 
 The live E2E gate enforces a positive source count, populated customer
