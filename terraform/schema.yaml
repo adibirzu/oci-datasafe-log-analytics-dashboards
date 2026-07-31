@@ -1,7 +1,7 @@
 title: "OCI Data Safe to Log Analytics"
-description: "Deploy the Data Safe audit exporter Function, OCI Logging route, Log Analytics fields/parser/source, and seven dashboard tabs."
+description: "Deploy the Data Safe audit exporter, Logging route, fields/parser/source, unified dashboards, detection IAM and alarms, and baseline-drift notifications."
 schemaVersion: 1.1.0
-version: "2.1.0"
+version: "2.2.0"
 locale: "en"
 
 variableGroups:
@@ -26,6 +26,15 @@ variableGroups:
       - log_analytics_log_group_ocid
       - deploy_log_analytics_content
       - deploy_dashboards
+
+  - title: "Detections and notifications"
+    variables:
+      - enable_detections
+      - detection_interval
+      - enable_alarms
+      - create_notification_topic
+      - notification_topic_ocids
+      - enable_datasafe_drift_events
 
   - title: "Security and deployment"
     variables:
@@ -139,7 +148,53 @@ variables:
   deploy_dashboards:
     type: boolean
     title: "Deploy dashboards"
-    description: "Imports all seven tabs and their generated saved searches with same-name replacement."
+    description: "Imports all dashboard tabs and their generated saved searches with same-name replacement."
+    default: true
+    required: false
+
+  enable_detections:
+    type: boolean
+    title: "Prepare scheduled detection policies and alarms"
+    description: "Creates IAM and alarm resources. Reconcile saved searches and scheduled tasks with the documented post-apply SDK command."
+    default: true
+    required: false
+
+  detection_interval:
+    type: enum
+    title: "Detection evaluation interval"
+    enum:
+      - "PT5M"
+      - "PT10M"
+      - "PT15M"
+      - "PT30M"
+      - "PT1H"
+    default: "PT5M"
+    required: true
+
+  enable_alarms:
+    type: boolean
+    title: "Create Monitoring alarms"
+    default: true
+    required: false
+
+  create_notification_topic:
+    type: boolean
+    title: "Create database-risk Notifications topic"
+    default: true
+    required: false
+
+  notification_topic_ocids:
+    type: array
+    title: "Existing Notifications topic OCIDs"
+    items:
+      type: string
+    default: []
+    required: false
+
+  enable_datasafe_drift_events:
+    type: boolean
+    title: "Route native Data Safe baseline drift events"
+    description: "Routes Security Assessment and User Assessment baseline drift events to Notifications."
     default: true
     required: false
 

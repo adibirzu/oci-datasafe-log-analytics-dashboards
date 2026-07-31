@@ -43,3 +43,28 @@ Every record also includes `schema_version=2.0`. The portable content bundle
 contains 43 reader-facing Log Analytics fields (including Schema Version),
 the JSON parser, and the canonical source. Built-in Log Analytics fields are
 reused rather than duplicated.
+
+## Semantic and privacy contract
+
+Fields follow four rules:
+
+1. Preserve the literal OCI Data Safe SDK property as the stable wire key.
+2. Use a readable Log Analytics display name, without tenant-specific aliases.
+3. Keep identifiers as strings; never coerce OCIDs, database identifiers,
+   usernames, error codes, or classifier values into misleading types.
+4. Minimize sensitive content: SQL text and parameters are opt-in, client IP is
+   pseudonymized by default, and tags are excluded.
+
+| Data class | Examples | Default handling |
+|---|---|---|
+| OCI identifiers | compartment, target, trail IDs | Runtime customer values only; never committed or emitted in evidence |
+| Database identity | database user, target user, OS user | Exported for audit purpose; access-controlled in Logging and Log Analytics |
+| Network identity | client IP, host, terminal | IP pseudonymized; other values retained for investigation |
+| Database object | owner, name, type, policy | Retained for audit and drilldown |
+| Potential content | SQL text, bind parameters, contexts | SQL and binds disabled; structured contexts serialized deterministically |
+| Detection classifiers | admin, common, sensitive, Data Safe activity | Numeric `0` or `1`, suitable for filtering and metrics |
+| Time | audit event and collection time | RFC 3339 UTC string; OCI Logging entry time uses audit time when available |
+
+The display-field vocabulary maps directly to Data Safe rather than inventing
+generic placeholders. Integrations can map it to OCSF Database Activity or an
+enterprise canonical model downstream without changing the source parser.

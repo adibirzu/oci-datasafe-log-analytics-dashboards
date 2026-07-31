@@ -13,7 +13,7 @@ from .runtime import profile_clients
 
 def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--profile", default="cap")
+    parser.add_argument("--profile", required=True)
     args = parser.parse_args()
     config = ExportConfig.from_env()
     data_safe, logging_client, object_storage, namespace = profile_clients(args.profile)

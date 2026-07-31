@@ -73,7 +73,7 @@ uses `in tenancy`; otherwise it is restricted to the selected compartment ID.
 3. Fetch the dashboard and verify embedded saved searches have empty
    `scopeFilters`. Dashboard parameters own scope; never put a compartment OCID
    into a `LogGroup` values list.
-4. Verify exactly one dashboard exists for each of the seven suite names.
+4. Verify exactly one dashboard exists for each of the eight suite names.
    `scripts/deploy_dashboards.py --cleanup-duplicates` retains the newest copy
    after a successful import.
 5. Confirm the Log Group Compartment filter selects the solution compartment
@@ -96,13 +96,6 @@ deployment, create a separate cursor object name for a controlled backfill.
 Connector Hub's Logging-source retention is 24 hours; historical data must be
 re-exported through the function so it becomes new OCI Logging content.
 
-## Synthetic downstream E2E
-
-When the Data Safe source is unavailable, an operator may validate only the
-downstream Logging-to-dashboard path with `scripts/send_synthetic_event.py`.
-The command requires `--acknowledge-synthetic`, uses visibly synthetic values,
-and must never be reported as proof that Data Safe collection is working.
-
 ## Upgrade
 
 1. Run local `make verify`.
@@ -121,7 +114,7 @@ and must never be reported as proof that Data Safe collection is working.
   updates the parser with its ETag, and upserts the existing source.
 - Terraform imports `terraform/content/oci-datasafe-log-analytics-content.zip`
   with overwrite enabled.
-- Dashboard import sets same-name replacement, so the seven suite dashboards
+- Dashboard import sets same-name replacement, so the eight suite dashboards
   and their saved searches are updated rather than duplicated.
 - The Connector Hub connector is a normal Terraform resource; repeated plans
   preserve it unless the reviewed configuration changes.

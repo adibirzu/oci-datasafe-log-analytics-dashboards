@@ -12,7 +12,7 @@ SPEC.loader.exec_module(MODULE)
 
 def test_dashboard_suite_recreates_data_safe_landing_and_insights():
     bundle = MODULE.build_bundle()
-    assert len(bundle["dashboards"]) == 7
+    assert len(bundle["dashboards"]) == 8
     labels = [item["label"] for item in bundle["suite"]["navigation"]]
     assert labels == [
         "Activity Overview",
@@ -22,6 +22,7 @@ def test_dashboard_suite_recreates_data_safe_landing_and_insights():
         "Data & Schema",
         "Client & Network",
         "Investigation",
+        "Detection & Baseline",
     ]
     titles = {
         tile["displayName"] for dashboard in bundle["dashboards"] for tile in dashboard["tiles"]
@@ -34,6 +35,7 @@ def test_dashboard_suite_recreates_data_safe_landing_and_insights():
         "Database Vault Activity Report",
         "SQL Firewall Audited Violations Report",
     } <= titles
+    assert {"Failed Login Detections", "Privilege & Entitlement Changes"} <= titles
 
 
 def test_all_tiles_are_in_bounds_and_non_overlapping():

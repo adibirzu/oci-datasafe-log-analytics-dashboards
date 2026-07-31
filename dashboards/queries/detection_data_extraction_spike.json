@@ -1,0 +1,1 @@
+{"title":"Data Extraction Activity","description":"SELECT and export activity used by the extraction-volume alarm.","query":"'Log Source' = 'OCI Data Safe Database Audit' and 'Operation' in ('SELECT','EXPORT') | stats count as 'Events' by 'Data Safe Target Name', 'Database User', 'Client Program' | sort -'Events'","visualization":"summary_table","layout":{"width":6,"height":5}}

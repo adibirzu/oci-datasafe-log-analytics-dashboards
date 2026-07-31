@@ -36,6 +36,11 @@ def main() -> int:
     )
     parser.add_argument("--apply", action="store_true")
     parser.add_argument("--lookback-minutes", type=int, default=1440)
+    parser.add_argument(
+        "--detection-interval",
+        choices=["PT5M", "PT10M", "PT15M", "PT30M", "PT1H"],
+        default="PT5M",
+    )
     args = parser.parse_args()
     if not args.tfvars.is_file():
         parser.error("--tfvars must name an existing untracked variables file")
@@ -70,6 +75,16 @@ def main() -> int:
         return 0
 
     run(["terraform", "-chdir=terraform", "apply", "-auto-approve", plan.name])
+    log_group_id = run(
+        [
+            "terraform",
+            "-chdir=terraform",
+            "output",
+            "-raw",
+            "log_analytics_log_group_id",
+        ],
+        capture=True,
+    ).stdout.strip()
     run(
         [
             sys.executable,
@@ -78,6 +93,22 @@ def main() -> int:
             args.profile,
             "--compartment-id",
             args.solution_compartment_id,
+        ]
+    )
+    run(
+        [
+            sys.executable,
+            "scripts/deploy_detections.py",
+            "--profile",
+            args.profile,
+            "--compartment-id",
+            args.solution_compartment_id,
+            "--deployment-name",
+            args.deployment_name,
+            "--log-group-id",
+            log_group_id,
+            "--interval",
+            args.detection_interval,
         ]
     )
     run(
@@ -99,6 +130,8 @@ def main() -> int:
             args.profile,
             "--compartment-id",
             args.solution_compartment_id,
+            "--deployment-name",
+            args.deployment_name,
             "--lookback-minutes",
             str(args.lookback_minutes),
         ]

@@ -51,3 +51,13 @@ output "log_analytics_content" {
     sources = oci_log_analytics_log_analytics_import_custom_content.audit[0].source_names
   }, null)
 }
+
+output "alarm_ids" {
+  value     = { for key, item in oci_monitoring_alarm.detection : key => item.id }
+  sensitive = true
+}
+
+output "notification_topic_id" {
+  value     = try(oci_ons_notification_topic.database_risk[0].topic_id, null)
+  sensitive = true
+}

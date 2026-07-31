@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Live cap-profile E2E validation with redacted evidence."""
+"""Live customer-context E2E validation with redacted evidence."""
 
 from __future__ import annotations
 
@@ -44,8 +44,9 @@ def aggregate_count(rows: list[object], field: str = "Events") -> int:
 
 def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--profile", default="cap")
+    parser.add_argument("--profile", required=True)
     parser.add_argument("--compartment-id", required=True)
+    parser.add_argument("--deployment-name", default="datasafe-audit")
     parser.add_argument("--invoke-function-id")
     parser.add_argument(
         "--require-function-export",
@@ -63,6 +64,7 @@ def main() -> int:
     config = oci.config.from_file(profile_name=args.profile)
     la = oci.log_analytics.LogAnalyticsClient(config)
     md = oci.management_dashboard.DashxApisClient(config)
+    monitoring = oci.monitoring.MonitoringClient(config)
     namespace = la.list_namespaces(config["tenancy"]).data.items[0].namespace_name
 
     run([sys.executable, "scripts/build_dashboard_bundle.py", "--check"])
@@ -185,11 +187,28 @@ def main() -> int:
         name: int(field_row.get(name) or 0)
         for name in ("Targets", "Users", "Operations")
     }
+    scheduled_tasks = oci.pagination.list_call_get_all_results(
+        la.list_scheduled_tasks,
+        namespace,
+        compartment_id=args.compartment_id,
+        task_type="SAVED_SEARCH",
+    ).data
+    detection_task_count = sum(
+        (item.display_name or "").startswith(f"{args.deployment_name} - ")
+        for item in scheduled_tasks
+    )
+    alarms = oci.pagination.list_call_get_all_results(
+        monitoring.list_alarms,
+        compartment_id=args.compartment_id,
+    ).data
+    detection_alarm_count = sum(
+        (item.display_name or "").startswith(f"{args.deployment_name} | ")
+        for item in alarms
+    )
     report = {
         "schemaVersion": "1.0",
         "generatedAt": datetime.now(UTC).isoformat().replace("+00:00", "Z"),
-        "profile": args.profile,
-        "region": config["region"],
+        "contextVerified": bool(config.get("tenancy") and config.get("region")),
         "checks": {
             "dashboard_bundle_current": True,
             "query_count": len(list(QUERY_DIR.glob("*.json"))),
@@ -203,12 +222,16 @@ def main() -> int:
             "dashboard_duplicate_count": sum(
                 max(0, count - 1) for count in deployed_counts.values()
             ),
+            "detection_task_count": detection_task_count,
+            "detection_alarm_count": detection_alarm_count,
         },
         "ready": not parse_failures
         and (not args.require_function_export or (invocation_exported or 0) > 0)
         and source_event_count > 0
         and all(count > 0 for count in populated_dimensions.values())
-        and all(count == 1 for count in deployed_counts.values()),
+        and all(count == 1 for count in deployed_counts.values())
+        and detection_task_count == 8
+        and detection_alarm_count == 8,
     }
     evidence_path.parent.mkdir(parents=True, exist_ok=True)
     evidence_path.write_text(json.dumps(report, indent=2) + "\n")

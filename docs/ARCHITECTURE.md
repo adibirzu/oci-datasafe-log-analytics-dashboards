@@ -14,7 +14,10 @@
 5. Connector Hub continuously transfers that log to a Log Analytics log group.
 6. The custom `OCI Data Safe Database Audit` source maps JSON properties to
    real Log Analytics display fields.
-7. Fifty-two generated saved searches power seven Management Dashboards.
+7. Sixty generated saved searches power eight Management Dashboards.
+8. Eight scheduled searches emit database-risk metrics to Monitoring; alarms
+   notify customer-owned topics, while native Data Safe events carry
+   assessment-baseline drift.
 
 ## Why `timeCollected` is the cursor
 
@@ -44,7 +47,7 @@ Connector Hub replay.
 
 OCI Management Dashboards currently documents individual custom dashboards and
 global scope/time filters. This repository therefore deploys a supported suite
-of seven consistently prefixed dashboards, each tagged with a stable logical tab
+of eight consistently prefixed dashboards, each tagged with a stable logical tab
 identifier. The generated bundle includes ordered navigation metadata for
 future consumers.
 
@@ -63,7 +66,16 @@ does not emit undocumented SET payloads.
 - Optional dedicated Log Analytics log group
 - Versioned Log Analytics fields/parser/source import
 - Same-name Management Dashboard import
+- Detection alarms, notification topic, and native Data Safe drift-event
+  routing
+
 - Dynamic groups and policies when enabled
+
+The one-run deploy script reconciles exact-name detection saved searches and
+Log Analytics scheduled tasks with the OCI SDK because the current Terraform
+provider omits the API's required `savedSearchDuration` property. The destroy
+script removes only the eight catalogued searches and schedules with the exact
+deployment-name prefix before applying the reviewed Terraform destroy plan.
 
 An existing Log Analytics log group can be supplied, or the stack can create a
 dedicated group. The portable content package owns only the solution's fields,

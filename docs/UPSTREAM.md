@@ -25,4 +25,4 @@ Logging** reference architecture.
 - Provisions the Log Analytics JSON field/parser/source contract.
 - Generates and validates a multi-dashboard set that recreates Data Safe
   Activity Auditing and Audit Insights views.
-- Adds local, synthetic, live parser, ingestion, dashboard, and E2E gates.
+- Adds local, live parser, ingestion, dashboard, detection, and E2E gates.

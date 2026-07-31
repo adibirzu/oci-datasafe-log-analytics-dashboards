@@ -137,7 +137,7 @@ def discover(
 
 def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--profile", default="cap")
+    parser.add_argument("--profile", required=True)
     parser.add_argument("--data-safe-compartment-id", required=True)
     parser.add_argument("--solution-compartment-id", required=True)
     parser.add_argument("--deployment-name", default="datasafe-audit")
