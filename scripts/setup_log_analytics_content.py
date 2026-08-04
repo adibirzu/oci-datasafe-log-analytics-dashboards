@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import json
 import subprocess
+import sys
 import tempfile
 from pathlib import Path
 
@@ -17,7 +18,11 @@ from oci.log_analytics.models import (
     UpsertLogAnalyticsParserDetails,
 )
 
-from oci_datasafe_exporter.normalize import FIELD_ALIASES
+PROJECT_SRC = Path(__file__).resolve().parents[1] / "src"
+if str(PROJECT_SRC) not in sys.path:
+    sys.path.insert(0, str(PROJECT_SRC))
+
+from oci_datasafe_exporter.normalize import FIELD_ALIASES  # noqa: E402
 
 SOURCE_DISPLAY = "OCI Data Safe Database Audit"
 SOURCE_INTERNAL = "com.oraclecloud.logging.custom.datasafe.audit"
@@ -47,6 +52,7 @@ EVENT_EXAMPLE = {
     "common_user": 0,
     "sensitive_activity": 1,
     "ds_activity": 0,
+    "export_run_id": "00000000000000000000000000000000",
     "schema_version": "2.0",
 }
 EXAMPLE = {
@@ -200,9 +206,7 @@ def ensure_source(profile: str, namespace: str, compartment_id: str, client) -> 
                 capture_output=True,
                 text=True,
             )
-            etag = client.get_source(
-                namespace, SOURCE_INTERNAL, compartment_id
-            ).headers.get("etag")
+            etag = client.get_source(namespace, SOURCE_INTERNAL, compartment_id).headers.get("etag")
         subprocess.run(  # noqa: S603
             [
                 *command,
@@ -219,7 +223,7 @@ def ensure_source(profile: str, namespace: str, compartment_id: str, client) -> 
 
 def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--profile", default="cap")
+    parser.add_argument("--profile", required=True)
     parser.add_argument("--compartment-id", required=True)
     parser.add_argument("--dry-run", action="store_true")
     args = parser.parse_args()

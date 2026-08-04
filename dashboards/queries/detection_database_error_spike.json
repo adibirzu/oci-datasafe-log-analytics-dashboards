@@ -1,0 +1,1 @@
+{"title":"Database Error Detections","description":"Failed database operations and error codes by target.","query":"'Log Source' = 'OCI Data Safe Database Audit' and 'Operation Status' = 'FAILURE' | stats count as 'Errors' by 'Data Safe Target Name', 'Error Code', 'Operation' | sort -'Errors'","visualization":"summary_table","layout":{"width":6,"height":5}}

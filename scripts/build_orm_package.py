@@ -27,12 +27,11 @@ def package_files() -> dict[str, bytes]:
         files[path.name] = path.read_bytes()
     for name in ("schema.yaml", ".terraform.lock.hcl"):
         files[name] = (TERRAFORM / name).read_bytes()
+    files["detections.json"] = (TERRAFORM / "detections.json").read_bytes()
     files["content/oci-datasafe-log-analytics-content.zip"] = (
         TERRAFORM / "content" / "oci-datasafe-log-analytics-content.zip"
     ).read_bytes()
-    files["dashboard_bundle.json"] = (
-        ROOT / "dashboards" / "generated_bundle.json"
-    ).read_bytes()
+    files["dashboard_bundle.json"] = (ROOT / "dashboards" / "generated_bundle.json").read_bytes()
     return files
 
 

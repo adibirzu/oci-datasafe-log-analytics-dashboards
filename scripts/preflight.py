@@ -12,7 +12,7 @@ import oci
 
 def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--profile", default="cap")
+    parser.add_argument("--profile", required=True)
     parser.add_argument("--data-safe-compartment-id")
     parser.add_argument("--solution-compartment-id")
     args = parser.parse_args()
@@ -53,9 +53,7 @@ def main() -> int:
             compartment_id=solution_compartment_id,
         ).data
     report = {
-        "profile": args.profile,
-        "region": config["region"],
-        "tenancy": tenancy.name,
+        "context_verified": bool(tenancy.name and config["region"]),
         "checks": {
             "authentication": True,
             "active_data_safe_targets": sum(

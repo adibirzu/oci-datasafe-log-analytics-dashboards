@@ -42,6 +42,11 @@ class ExportConfig:
     include_command_parameters: bool = False
     hash_client_ip: bool = True
     client_ip_hash_salt: str = ""
+    reconcile_detections: bool = False
+    log_analytics_namespace: str = ""
+    solution_compartment_id: str = ""
+    deployment_name: str = ""
+    detection_interval: str = "PT5M"
 
     @classmethod
     def from_env(cls) -> ExportConfig:
@@ -58,6 +63,22 @@ class ExportConfig:
         salt = os.getenv("CLIENT_IP_HASH_SALT", "")
         if hash_client_ip and len(salt) < 16:
             raise ValueError("CLIENT_IP_HASH_SALT must contain at least 16 characters")
+
+        reconcile_detections = _bool("RECONCILE_DETECTIONS", False)
+        detection_config = {
+            "LOG_ANALYTICS_NAMESPACE": os.getenv("LOG_ANALYTICS_NAMESPACE", ""),
+            "SOLUTION_COMPARTMENT_ID": os.getenv("SOLUTION_COMPARTMENT_ID", ""),
+            "DEPLOYMENT_NAME": os.getenv("DEPLOYMENT_NAME", ""),
+        }
+        if reconcile_detections:
+            missing_detection = [
+                name for name, value in detection_config.items() if not value.strip()
+            ]
+            if missing_detection:
+                raise ValueError(
+                    "missing detection reconciliation configuration: "
+                    + ", ".join(missing_detection)
+                )
 
         return cls(
             data_safe_compartment_id=required["DATA_SAFE_COMPARTMENT_ID"],
@@ -76,4 +97,9 @@ class ExportConfig:
             include_command_parameters=_bool("INCLUDE_COMMAND_PARAMETERS", False),
             hash_client_ip=hash_client_ip,
             client_ip_hash_salt=salt,
+            reconcile_detections=reconcile_detections,
+            log_analytics_namespace=detection_config["LOG_ANALYTICS_NAMESPACE"],
+            solution_compartment_id=detection_config["SOLUTION_COMPARTMENT_ID"],
+            deployment_name=detection_config["DEPLOYMENT_NAME"],
+            detection_interval=os.getenv("DETECTION_INTERVAL", "PT5M"),
         )

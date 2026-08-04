@@ -110,11 +110,16 @@ resource "oci_functions_function" "audit" {
     INCLUDE_COMMAND_PARAMETERS = tostring(var.include_command_parameters)
     HASH_CLIENT_IP             = tostring(var.hash_client_ip)
     CLIENT_IP_HASH_SALT        = random_password.client_ip_salt.result
+    RECONCILE_DETECTIONS       = tostring(var.enable_detections)
+    LOG_ANALYTICS_NAMESPACE    = local.log_analytics_namespace
+    SOLUTION_COMPARTMENT_ID    = var.compartment_ocid
+    DEPLOYMENT_NAME            = var.deployment_name
+    DETECTION_INTERVAL         = var.detection_interval
   }
   lifecycle {
     precondition {
-      condition     = var.function_image != null && length(var.function_image) > 10
-      error_message = "function_image is required when deploy_function is true."
+      condition     = var.function_image != null && can(regex("^[^@]+:[^/:]+$", var.function_image))
+      error_message = "function_image must be an OCIR image with a unique tag; OCI Functions does not accept a digest reference."
     }
   }
 }

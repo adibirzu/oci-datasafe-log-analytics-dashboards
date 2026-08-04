@@ -21,9 +21,26 @@ The function can:
 - manage objects only in the named cursor bucket;
 - read the Object Storage namespace.
 
+When `enable_detections=true`, it additionally manages only solution-owned
+Management Dashboard saved searches and Log Analytics scheduled tasks in the
+selected solution compartment. This lets the Resource Manager path reconcile
+the provider-missing scheduled-task action field without a local profile,
+workstation credential, or provisioner. Disable detections to omit these two
+permissions. OCI scopes scheduled-task use and saved-search management at
+tenancy level; the reconciler still owns only its exact deployment-prefixed
+searches and schedules.
+
 Resource Scheduler can invoke functions in the solution compartment. Connector
 Hub can read Logging content in the solution compartment and write only the
 specified Log Analytics log group.
+
+Log Analytics scheduled tasks own only their saved searches and can emit
+custom metrics. Monitoring alarms send only to customer-supplied or
+customer-created Notifications topics. The deployment never creates external
+subscriptions, recipients, webhook credentials, or cross-tenancy destinations.
+The detection-task dynamic group is restricted to scheduled tasks in the
+solution compartment and receives query, saved-search, log-group, lookup, and
+metric permissions required by Oracle's scheduled-task policy contract.
 
 Review tenancy-level policy creation before apply. Set
 `create_iam_resources=false` only when equivalent owner-managed policies
@@ -34,6 +51,9 @@ already exist.
 - Keep Terraform state in an encrypted, access-controlled backend.
 - Do not commit `terraform.tfvars`, state, plans, E2E evidence, or OCI CLI
   configuration.
+- Run `python scripts/tenant_leak_check.py` before packaging. Release bundles
+  are recursively scanned for literal OCIDs, addresses, internal profile
+  defaults, internal regions, and synthetic runtime records.
 - Use immutable OCIR image tags and repository scanning.
 - Restrict access to OCI Logging and Log Analytics because normalized audit
   records still contain database identities and activity.

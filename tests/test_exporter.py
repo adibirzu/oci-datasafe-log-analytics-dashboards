@@ -91,7 +91,8 @@ def test_exporter_uses_scim_cursor_deduplicates_and_advances_after_logging():
         store,
         now=lambda: datetime(2026, 7, 30, 12, 0, tzinfo=UTC),
     )
-    result = exporter.run()
+    export_run_id = "0" * 32
+    result = exporter.run(export_run_id)
     assert "timeCollected gt" in data_safe.calls[0]["scim_query"]
     assert len(data_safe.calls) == 5
     assert any("adminUser eq 1" in call["scim_query"] for call in data_safe.calls)
@@ -108,5 +109,6 @@ def test_exporter_uses_scim_cursor_deduplicates_and_advances_after_logging():
     assert '"common_user":0' in payload
     assert '"sensitive_activity":1' in payload
     assert '"ds_activity":0' in payload
+    assert f'"export_run_id":"{export_run_id}"' in payload
     assert store.saved[1] == "etag"
     assert "new" in store.saved[0].recent_event_ids

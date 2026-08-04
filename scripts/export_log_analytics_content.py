@@ -6,12 +6,20 @@ from __future__ import annotations
 import argparse
 import io
 import re
+import sys
 import zipfile
 from pathlib import Path
 
 import oci
 from oci.log_analytics.models import ExportContent
-from setup_log_analytics_content import (
+
+SCRIPT_DIR = Path(__file__).resolve().parent
+PROJECT_SRC = SCRIPT_DIR.parent / "src"
+for import_path in (SCRIPT_DIR, PROJECT_SRC):
+    if str(import_path) not in sys.path:
+        sys.path.insert(0, str(import_path))
+
+from setup_log_analytics_content import (  # noqa: E402
     PARSER_NAME,
     SOURCE_DISPLAY,
     SOURCE_INTERNAL,
@@ -19,7 +27,8 @@ from setup_log_analytics_content import (
     namespace_for,
 )
 
-from oci_datasafe_exporter.normalize import FIELD_ALIASES
+from oci_datasafe_exporter.normalize import FIELD_ALIASES  # noqa: E402
+from oci_datasafe_exporter.oci_response import response_bytes  # noqa: E402
 
 
 def _portable_zip(payload: bytes) -> bytes:
@@ -54,15 +63,13 @@ def _source_name(client, namespace: str, compartment_id: str) -> str:
     )
     matches = [source for source in response.data if source.name == SOURCE_INTERNAL]
     if len(matches) != 1:
-        raise RuntimeError(
-            f"expected exactly one {SOURCE_DISPLAY!r} source, found {len(matches)}"
-        )
+        raise RuntimeError(f"expected exactly one {SOURCE_DISPLAY!r} source, found {len(matches)}")
     return matches[0].name
 
 
 def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--profile", default="cap")
+    parser.add_argument("--profile", required=True)
     parser.add_argument("--compartment-id", required=True)
     parser.add_argument(
         "--output",
@@ -84,15 +91,12 @@ def main() -> int:
         source_names=[_source_name(client, namespace, args.compartment_id)],
     )
     response = client.export_custom_content(namespace, details)
-    payload = response.data.content if hasattr(response.data, "content") else response.data
-    if not isinstance(payload, bytes) or not payload.startswith(b"PK"):
+    payload = response_bytes(response.data)
+    if not payload.startswith(b"PK"):
         raise RuntimeError("Log Analytics export did not return a ZIP payload")
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_bytes(_portable_zip(payload))
-    print(
-        f"exported {len(display_names)} fields, one parser, and one source "
-        f"to {args.output}"
-    )
+    print(f"exported {len(display_names)} fields, one parser, and one source to {args.output}")
     return 0
 
 

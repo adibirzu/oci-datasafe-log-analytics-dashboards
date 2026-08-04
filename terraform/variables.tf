@@ -1,7 +1,52 @@
 variable "oci_profile" {
   description = "OCI CLI profile used only by local Terraform. Resource Manager ignores this value."
   type        = string
-  default     = "cap"
+  default     = "DEFAULT"
+}
+
+variable "enable_detections" {
+  type        = bool
+  default     = true
+  description = "Prepare IAM and alarms for SDK-reconciled Log Analytics detection schedules."
+}
+
+variable "detection_interval" {
+  type        = string
+  default     = "PT5M"
+  description = "ISO-8601 interval for scheduled detections (minimum PT5M)."
+  validation {
+    condition     = contains(["PT5M", "PT10M", "PT15M", "PT30M", "PT1H"], var.detection_interval)
+    error_message = "detection_interval must be PT5M, PT10M, PT15M, PT30M, or PT1H."
+  }
+}
+
+variable "enable_alarms" {
+  type        = bool
+  default     = true
+  description = "Create OCI Monitoring alarms for all scheduled database-risk metrics."
+}
+
+variable "create_notification_topic" {
+  type        = bool
+  default     = true
+  description = "Create a dedicated Notifications topic used by alarms and Data Safe drift events."
+}
+
+variable "notification_topic_ocids" {
+  type        = list(string)
+  default     = []
+  sensitive   = true
+  description = "Existing Notifications topic OCIDs. The created topic is added when create_notification_topic is true."
+  validation {
+    condition     = alltrue([for id in var.notification_topic_ocids : can(regex("^ocid1\\.onstopic\\.", id))])
+    error_message = "Every notification_topic_ocids entry must be an OCI Notifications topic OCID."
+  }
+}
+
+variable "enable_datasafe_drift_events" {
+  type        = bool
+  default     = true
+  description = "Route native Data Safe security- and user-assessment baseline drift events to Notifications."
 }
 
 variable "use_oci_profile" {
@@ -42,7 +87,7 @@ variable "function_subnet_ocid" {
 }
 
 variable "function_image" {
-  description = "Immutable OCIR image URL including a digest or unique tag."
+  description = "OCIR image URL with a unique immutable tag; OCI Functions does not accept a digest reference here."
   type        = string
   default     = null
   nullable    = true

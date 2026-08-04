@@ -75,6 +75,17 @@
         "failed_activity_detail", "admin_activity_detail",
         "sensitive_activity_detail", "database_errors", "recent_activity"
       ]
+    },
+    {
+      "id": "detection-baseline",
+      "label": "Detection & Baseline",
+      "description": "Unified triage for scheduled database-risk detections; native Security Assessment and User Assessment drift notifications link operators back to Data Safe.",
+      "widgets": [
+        "detection_failed_login_spike", "detection_privilege_change",
+        "detection_audit_control_change", "detection_sql_firewall_violation",
+        "detection_sensitive_data_access", "detection_data_extraction_spike",
+        "detection_database_error_spike", "detection_admin_activity"
+      ]
     }
   ]
 }

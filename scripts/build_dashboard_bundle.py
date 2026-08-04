@@ -16,6 +16,54 @@ SUPPORTED = {"tile", "line", "bar", "hbar", "summary_table", "table"}
 PLACEHOLDER_PATTERNS = ("{{", "REPLACE_ME", "GOES HERE")
 
 
+def _scope_filters(compartment: str) -> dict:
+    log_group_value = {
+        "label": "Selected compartment",
+        "value": compartment,
+    }
+    return {
+        "LogGroup": {
+            "flags": {"IncludeSubCompartments": True},
+            "type": "LogGroup",
+            "values": [log_group_value],
+        },
+        "Entity": {
+            "flags": {
+                "IncludeDependents": True,
+                "ScopeCompartmentId": compartment,
+            },
+            "type": "Entity",
+            "values": [],
+        },
+        "LogSet": {
+            "flags": {},
+            "type": "LogSet",
+            "values": [],
+        },
+        "filters": [
+            {
+                "flags": {"includeSubCompartments": True},
+                "type": "LogGroup",
+                "values": [log_group_value],
+            },
+            {
+                "flags": {
+                    "includeDependents": True,
+                    "scopeCompartmentId": compartment,
+                },
+                "type": "Entity",
+                "values": [],
+            },
+            {
+                "flags": {},
+                "type": "LogSet",
+                "values": [],
+            },
+        ],
+        "isGlobal": False,
+    }
+
+
 def _saved_search(search_id: str, query: dict, compartment: str, period: str) -> dict:
     return {
         "id": search_id,
@@ -31,9 +79,9 @@ def _saved_search(search_id: str, query: dict, compartment: str, period: str) ->
         "uiConfig": {
             "enableWidgetInApp": True,
             "queryString": query["query"],
-            # Scope is supplied by dashboard parameters. A compartment OCID is
-            # not a LogGroup value; putting it here empties every widget.
-            "scopeFilters": {},
+            # The Log Analytics widget must deserialize a complete scope
+            # before dashboard parameter overrides are applied.
+            "scopeFilters": _scope_filters(compartment),
             "showTitle": True,
             "timeSelection": {"timePeriod": period},
             "visualizationOptions": query.get("options", {}),
@@ -43,8 +91,12 @@ def _saved_search(search_id: str, query: dict, compartment: str, period: str) ->
         "dataConfig": [],
         "screenImage": " ",
         "metadataVersion": "2.0",
-        "widgetTemplate": "visualizations/widgetTemplate.html",
-        "widgetVM": "visualizations/widget",
+        # These are the current Log Analytics widget component contracts.
+        # The legacy visualizations/widget pair imports successfully but the
+        # OCI console fails before query execution with an Oracle JET
+        # `localName` error, leaving every widget blank.
+        "widgetTemplate": "visualizations/chartWidgetTemplate.html",
+        "widgetVM": "jet-modules/dashboards/widgets/lxSavedSearchWidget",
         "parametersConfig": [],
         "featuresConfig": {
             "crossService": {"shared": False},
@@ -117,9 +169,7 @@ def _place(queries: list[tuple[str, dict]]) -> list[dict]:
                 "state": "DEFAULT",
                 "drilldownConfig": [],
                 "parametersMap": {
-                    "log-analytics-entity": (
-                        "$(dashboard.params.log-analytics-entity-filter)"
-                    ),
+                    "log-analytics-entity": ("$(dashboard.params.log-analytics-entity-filter)"),
                     "log-analytics-log-group-compartment": (
                         "$(dashboard.params.log-analytics-loggroup-filter)"
                     ),

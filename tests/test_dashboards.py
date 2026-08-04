@@ -12,7 +12,7 @@ SPEC.loader.exec_module(MODULE)
 
 def test_dashboard_suite_recreates_data_safe_landing_and_insights():
     bundle = MODULE.build_bundle()
-    assert len(bundle["dashboards"]) == 7
+    assert len(bundle["dashboards"]) == 8
     labels = [item["label"] for item in bundle["suite"]["navigation"]]
     assert labels == [
         "Activity Overview",
@@ -22,6 +22,7 @@ def test_dashboard_suite_recreates_data_safe_landing_and_insights():
         "Data & Schema",
         "Client & Network",
         "Investigation",
+        "Detection & Baseline",
     ]
     titles = {
         tile["displayName"] for dashboard in bundle["dashboards"] for tile in dashboard["tiles"]
@@ -34,6 +35,13 @@ def test_dashboard_suite_recreates_data_safe_landing_and_insights():
         "Database Vault Activity Report",
         "SQL Firewall Audited Violations Report",
     } <= titles
+    assert {"Failed Login Detections", "Privilege & Entitlement Changes"} <= titles
+
+
+def test_discovery_expects_the_full_eight_dashboard_suite():
+    discover_source = (ROOT / "scripts" / "discover.py").read_text()
+    assert "EXPECTED_DASHBOARD_COUNT = 8" in discover_source
+    assert 'checks["dashboard_unique_names"] == EXPECTED_DASHBOARD_COUNT' in discover_source
 
 
 def test_all_tiles_are_in_bounds_and_non_overlapping():
@@ -55,17 +63,37 @@ def test_committed_bundle_is_current():
 
 def test_dashboard_scope_uses_runtime_parameters_not_invalid_log_group_ocids():
     for dashboard in MODULE.build_bundle()["dashboards"]:
-        parameters = {
-            item["paramName"]: item for item in dashboard["parametersConfig"]
-        }
-        assert parameters["log-analytics-loggroup-filter"]["defaultValue"] == (
-            "${compartment_id}"
-        )
+        parameters = {item["paramName"]: item for item in dashboard["parametersConfig"]}
+        assert parameters["log-analytics-loggroup-filter"]["defaultValue"] == ("${compartment_id}")
         assert parameters["time"]["defaultValue"] == "l7d"
         assert "log-analytics-entity-filter" in parameters
         for saved_search in dashboard["savedSearches"]:
-            assert saved_search["uiConfig"]["scopeFilters"] == {}
+            scope = saved_search["uiConfig"]["scopeFilters"]
+            assert scope["LogGroup"]["values"] == [
+                {
+                    "label": "Selected compartment",
+                    "value": "${compartment_id}",
+                }
+            ]
+            assert scope["LogGroup"]["flags"]["IncludeSubCompartments"] is True
+            assert scope["Entity"]["flags"]["ScopeCompartmentId"] == ("${compartment_id}")
+            assert scope["filters"][0]["type"] == "LogGroup"
+            assert scope["isGlobal"] is False
         for tile in dashboard["tiles"]:
             assert tile["parametersMap"]["log-analytics-entity"] == (
                 "$(dashboard.params.log-analytics-entity-filter)"
             )
+
+
+def test_saved_searches_use_current_log_analytics_widget_contract():
+    searches = [
+        search
+        for dashboard in MODULE.build_bundle()["dashboards"]
+        for search in dashboard["savedSearches"]
+    ]
+    assert {search["widgetTemplate"] for search in searches} == {
+        "visualizations/chartWidgetTemplate.html"
+    }
+    assert {search["widgetVM"] for search in searches} == {
+        "jet-modules/dashboards/widgets/lxSavedSearchWidget"
+    }

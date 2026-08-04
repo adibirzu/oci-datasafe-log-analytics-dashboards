@@ -3,7 +3,7 @@
 Production-oriented reference implementation for exporting Oracle Database audit
 events from **OCI Data Safe** into **OCI Logging**, routing them to **Oracle Log
 Analytics**, and recreating the Data Safe Activity Auditing and Audit Insights
-visualizations as a seven-view OCI Management Dashboard suite.
+visualizations as an eight-view OCI Management Dashboard suite.
 
 [![Deploy to Oracle Cloud](https://oci-resourcemanager-plugin.plugins.oci.oraclecloud.com/latest/deploy-to-oracle-cloud.svg)](https://cloud.oracle.com/resourcemanager/stacks/create?zipUrl=https://github.com/adibirzu/oci-datasafe-log-analytics-dashboards/releases/latest/download/oci-datasafe-log-analytics-stack.zip)
 
@@ -23,9 +23,11 @@ security controls, and E2E validation. See [docs/UPSTREAM.md](docs/UPSTREAM.md).
 - OCI Logging custom log and Connector Hub route to Oracle Log Analytics.
 - Idempotent deployment of 43 Log Analytics fields, one JSON parser, and one
   custom source.
-- 52 generated saved searches across seven named dashboard views:
+- 60 generated saved searches across eight named dashboard views:
   Activity Overview, Predefined Reports, Audit Insights, Identity & Access,
-  Data & Schema, Client & Network, and Investigation.
+  Data & Schema, Client & Network, Investigation, and Detection & Baseline.
+- Eight catalogued Log Analytics detection rules, eight Monitoring alarms, and
+  native Data Safe Security/User Assessment baseline-drift notifications.
 - All 15 predefined Data Safe Activity Auditing reports, plus additional
   investigation, error, identity, client, and network analytics.
 - Terraform for Logging, Object Storage, Functions, Resource Scheduler,
@@ -51,6 +53,9 @@ flowchart LR
     LA --> D5["Data & Schema"]
     LA --> D6["Client & Network"]
     LA --> D7["Investigation"]
+    LA --> D8["Detection & Baseline"]
+    LA --> DET["Scheduled detections"]
+    DET --> MON["Monitoring alarms"]
 ```
 
 Connector Hub continuously supports OCI Logging as a source and Logging
@@ -70,6 +75,19 @@ See [docs/DASHBOARD_COVERAGE.md](docs/DASHBOARD_COVERAGE.md) for the exact
 source-to-widget mapping.
 See [docs/FIELD_CONTRACT.md](docs/FIELD_CONTRACT.md) for the complete
 audit-event-to-Log-Analytics field contract and privacy exceptions.
+See [docs/KB.md](docs/KB.md) for verified renderer, scope, scheduling, and
+evidence-handling failure modes.
+
+### Live-render validation
+
+![OCI Data Safe audit Activity Overview rendered with aggregate data](docs/images/datasafe-activity-overview-live.png)
+
+This cropped validation view proves that the saved searches render aggregate
+Log Analytics data instead of empty or error tiles. Console chrome, OCIDs,
+regions, database and target names, principals, IP addresses, filters, and
+row-level drilldowns are intentionally excluded. Live validation also requires
+all canonical queries, dashboards, scheduled detections, and alarms to pass;
+the image alone is not end-to-end evidence.
 
 ## Prerequisites
 
@@ -99,7 +117,7 @@ make verify
 Read-only OCI readiness (source and solution compartments may differ):
 
 ```bash
-python scripts/preflight.py --profile cap \
+python scripts/preflight.py --profile <OCI_PROFILE> \
   --data-safe-compartment-id '<DATA_SAFE_COMPARTMENT_OCID>' \
   --solution-compartment-id '<SOLUTION_COMPARTMENT_OCID>'
 ```
@@ -117,7 +135,8 @@ docker build --platform linux/arm64 \
 docker push '<REGION_KEY>.ocir.io/<NAMESPACE>/<REPOSITORY>:<IMMUTABLE_TAG>'
 ```
 
-Use a unique immutable tag or digest for every release.
+Use a unique immutable tag for every release. OCI Functions requires that tag
+form and does not accept an image digest reference.
 
 ## Deploy to OCI
 
@@ -128,9 +147,12 @@ contains root-level Terraform, `schema.yaml`, the portable Log Analytics
 content ZIP, and the generated dashboard bundle.
 
 The stack creates or reuses the Log Analytics log group, imports fields,
-parser, and source with overwrite semantics, and imports dashboards with
-same-name replacement. It therefore updates this solution's content instead
-of creating duplicate fields, parsers, sources, or dashboards.
+parser, and source with overwrite semantics, imports dashboards with same-name
+replacement, and provisions detection IAM, alarms, and drift-event routing. It
+therefore updates this solution's content instead of creating duplicate
+fields, parsers, sources, or dashboards. Run `scripts/deploy_all.py` for the
+complete one-run flow that also reconciles the SDK-owned saved searches and
+scheduled tasks; Resource Manager cannot execute that post-apply SDK phase.
 
 Dashboard scope is supplied by reusable Log Group Compartment, Entity, and Time
 Range filters. Embedded searches do not hard-code a LogGroup value. Table and
@@ -155,7 +177,7 @@ variables file. Without `--apply`, it stops after producing and summarizing the
 reviewed plan:
 
 ```bash
-PYTHONPATH=src python3 scripts/deploy_all.py \
+python3 scripts/deploy_all.py \
   --profile <OCI_PROFILE> \
   --data-safe-compartment-id <DATA_SAFE_COMPARTMENT_OCID> \
   --solution-compartment-id <SOLUTION_COMPARTMENT_OCID> \
@@ -165,15 +187,34 @@ PYTHONPATH=src python3 scripts/deploy_all.py \
 ```
 
 The wrapper applies the exact saved plan, repairs the two-phase Log Analytics
-source/parser contract, imports the dashboard suite with duplicate cleanup,
-runs live data/field/dashboard acceptance, and finishes with strict redacted
-discovery. Resource Manager uses the same generated root package through the
-Deploy to OCI button.
+source/parser contract, reconciles detection searches and schedules, imports
+the dashboard suite with duplicate cleanup, invokes the newly deployed
+Function, requires a positive export, runs live data/query/dashboard/inventory
+acceptance, and finishes with strict redacted discovery. Resource Manager uses
+the same generated root Terraform package through the Deploy to OCI button.
+When detections are enabled, the packaged Function reconciles the same
+saved-search and scheduled-task contract on its first scheduled or synchronous
+invocation; no workstation profile or post-apply provisioner is required.
+
+For an operator-initiated repair or an immediate reconciliation before the
+first schedule runs, use:
+
+```bash
+python scripts/deploy_detections.py \
+  --profile <OCI_PROFILE> \
+  --compartment-id <SOLUTION_COMPARTMENT_OCID> \
+  --deployment-name <DEPLOYMENT_NAME> \
+  --scope-compartment-id <SOLUTION_COMPARTMENT_OCID> \
+  --interval PT5M
+```
+
+This command is idempotent and touches only the eight exact-name searches and
+deployment-prefixed schedules in the catalog.
 
 Read-only inventory and drift diagnosis:
 
 ```bash
-PYTHONPATH=src python3 scripts/discover.py \
+python3 scripts/discover.py \
   --profile <OCI_PROFILE> \
   --data-safe-compartment-id <DATA_SAFE_COMPARTMENT_OCID> \
   --solution-compartment-id <SOLUTION_COMPARTMENT_OCID> \
@@ -185,41 +226,83 @@ Terraform owns the Log Analytics content and dashboard imports. The scripts
 remain available for focused repair or validation:
 
 ```bash
-PYTHONPATH=src python scripts/setup_log_analytics_content.py \
-  --profile cap \
+python scripts/setup_log_analytics_content.py \
+  --profile <OCI_PROFILE> \
   --compartment-id '<COMPARTMENT_OCID>'
 
-PYTHONPATH=src python scripts/deploy_dashboards.py \
-  --profile cap \
+python scripts/deploy_dashboards.py \
+  --profile <OCI_PROFILE> \
   --compartment-id '<COMPARTMENT_OCID>'
 ```
 
 ## Live E2E
 
 Invoke the exporter, wait for Connector Hub ingestion, parse every query, and
-verify all seven dashboards:
+verify all eight dashboards and the detection/alarm inventory:
 
 ```bash
-PYTHONPATH=src python scripts/e2e.py \
-  --profile cap \
+python scripts/e2e.py \
+  --profile <OCI_PROFILE> \
   --compartment-id '<COMPARTMENT_OCID>' \
   --invoke-function-id '<FUNCTION_OCID>' \
   --require-function-export \
   --deploy-dashboards
 ```
 
-The receipt is written under ignored `evidence/live/`. E2E success requires a
-real schema-v2 Log Analytics row, a positive Function export count when
+The verifier allows up to ten minutes by default for the asynchronous
+Logging-to-Log-Analytics Connector Hub path. Override `--poll-seconds` only
+when the target's measured ingestion latency justifies a different bound.
+
+The receipt is written under ignored `evidence/live/`. E2E validation is
+read-only unless `--deploy-dashboards` or `--reconcile-content` is explicitly
+supplied. The latter repairs the Log Analytics field/parser/source contract;
+use it only after reviewing the target context. E2E success requires a real
+schema-v2 Log Analytics row, a positive Function export count when
 `--require-function-export` is used, and, when deployment is requested, all
 dashboards to be present. Query syntax success or HTTP 200 alone is not treated
 as end-to-end proof.
 
+With `enable_detections=true`, both deployment paths are unattended: direct
+deployment invokes the same Function during E2E, and Resource Manager's first
+scheduled Function invocation reconciles the detection saved searches and
+tasks. No local OCI profile, provisioner, or tenant value is packaged in the
+Resource Manager archive.
+
+## Scoped destroy
+
+Destroy always creates and displays an exact Terraform destroy plan first.
+Applying it requires an explicit deployment-name confirmation and then verifies
+that Terraform state is empty and all eight exact-name suite dashboards are
+absent:
+
+```bash
+python scripts/destroy_all.py \
+  --profile <OCI_PROFILE> \
+  --solution-compartment-id <SOLUTION_COMPARTMENT_OCID> \
+  --deployment-name <DEPLOYMENT_NAME> \
+  --tfvars <UNTRACKED_TFVARS_PATH>
+
+python scripts/destroy_all.py \
+  --profile <OCI_PROFILE> \
+  --solution-compartment-id <SOLUTION_COMPARTMENT_OCID> \
+  --deployment-name <DEPLOYMENT_NAME> \
+  --tfvars <UNTRACKED_TFVARS_PATH> \
+  --apply --confirm <DEPLOYMENT_NAME>
+```
+
+The cleanup matches only canonical suite names. It does not delete shared Log
+Analytics fields, unrelated sources, external Notifications topics, or any
+customer database content.
+
 ## Operations and security
 
+- [GitHub Wiki: End-to-End Deployment and Validation](https://github.com/adibirzu/oci-datasafe-log-analytics-dashboards/wiki/End-to-End-Deployment-and-Validation)
 - [docs/OPERATIONS.md](docs/OPERATIONS.md)
 - [docs/SECURITY.md](docs/SECURITY.md)
 - [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)
-- [docs/CAP_E2E.md](docs/CAP_E2E.md)
+- [docs/VALIDATION.md](docs/VALIDATION.md)
+- [docs/DETECTIONS.md](docs/DETECTIONS.md)
+- [docs/DAM_MARKET_COVERAGE.md](docs/DAM_MARKET_COVERAGE.md)
 
 ## Official references
 

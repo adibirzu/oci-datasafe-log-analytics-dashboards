@@ -1,0 +1,58 @@
+{
+  "failed_login_spike": {
+    "title": "Failed Login Spike",
+    "description": "Repeated failed database authentication attempts.",
+    "severity": "CRITICAL",
+    "threshold": 10,
+    "query": "'Log Source' = 'OCI Data Safe Database Audit' and 'Operation' in ('LOGIN','LOGON') and 'Operation Status' = 'FAILURE' | stats count as DetectionCount"
+  },
+  "privilege_change": {
+    "title": "Privilege or Entitlement Change",
+    "description": "Database grants, revocations, or role changes.",
+    "severity": "CRITICAL",
+    "threshold": 0,
+    "query": "'Log Source' = 'OCI Data Safe Database Audit' and 'Operation' in ('GRANT','REVOKE','CREATE ROLE','ALTER ROLE','DROP ROLE') | stats count as DetectionCount"
+  },
+  "audit_control_change": {
+    "title": "Audit Control Change",
+    "description": "Changes to audit policies or audit configuration.",
+    "severity": "CRITICAL",
+    "threshold": 0,
+    "query": "'Log Source' = 'OCI Data Safe Database Audit' and ('Operation' like '*AUDIT*' or 'Object Type' like '*AUDIT*') | stats count as DetectionCount"
+  },
+  "sql_firewall_violation": {
+    "title": "SQL Firewall Violation",
+    "description": "SQL activity rejected or reported by SQL Firewall.",
+    "severity": "CRITICAL",
+    "threshold": 0,
+    "query": "'Log Source' = 'OCI Data Safe Database Audit' and ('Event Name' like '*FIREWALL*' or 'Action Taken' like '*BLOCK*') | stats count as DetectionCount"
+  },
+  "sensitive_data_access": {
+    "title": "Sensitive Data Access",
+    "description": "Activity classified by Data Safe as sensitive.",
+    "severity": "WARNING",
+    "threshold": 0,
+    "query": "'Log Source' = 'OCI Data Safe Database Audit' and 'Sensitive Activity' = 1 | stats count as DetectionCount"
+  },
+  "data_extraction_spike": {
+    "title": "Data Extraction Spike",
+    "description": "High SELECT or export activity in one detection interval.",
+    "severity": "WARNING",
+    "threshold": 1000,
+    "query": "'Log Source' = 'OCI Data Safe Database Audit' and 'Operation' in ('SELECT','EXPORT') | stats count as DetectionCount"
+  },
+  "database_error_spike": {
+    "title": "Database Error Spike",
+    "description": "Elevated failed operations or database errors.",
+    "severity": "WARNING",
+    "threshold": 25,
+    "query": "'Log Source' = 'OCI Data Safe Database Audit' and 'Operation Status' = 'FAILURE' | stats count as DetectionCount"
+  },
+  "off_hours_admin_activity": {
+    "title": "Administrative Activity",
+    "description": "Administrative database activity; tune the alarm threshold for the customer's approved baseline.",
+    "severity": "WARNING",
+    "threshold": 20,
+    "query": "'Log Source' = 'OCI Data Safe Database Audit' and 'Admin User' = 1 | stats count as DetectionCount"
+  }
+}

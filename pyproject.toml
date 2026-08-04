@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "oci-datasafe-log-analytics-dashboards"
-version = "2.1.0"
+version = "2.2.0"
 description = "Export OCI Data Safe audit events to OCI Logging and Log Analytics dashboards"
 readme = "README.md"
 requires-python = ">=3.11"
@@ -28,7 +28,7 @@ where = ["src"]
 [tool.pytest.ini_options]
 addopts = "-q --strict-markers"
 testpaths = ["tests"]
-pythonpath = ["src"]
+pythonpath = [".", "src"]
 
 [tool.ruff]
 line-length = 100

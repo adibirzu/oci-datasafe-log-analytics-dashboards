@@ -1,4 +1,4 @@
-oci_profile                  = "cap"
+oci_profile                  = "<OCI_CLI_PROFILE>"
 use_oci_profile              = true
 tenancy_ocid                 = "<TENANCY_OCID>"
 compartment_ocid             = "<COMPARTMENT_OCID>"
@@ -9,5 +9,9 @@ function_image               = "<REGION_KEY>.ocir.io/<NAMESPACE>/<REPOSITORY>:<I
 log_analytics_log_group_ocid = "<LOG_ANALYTICS_LOG_GROUP_OCID>"
 create_log_analytics_log_group = false
 schedule_interval            = "TWELVE_HOURS"
+enable_detections            = true
+enable_alarms                = true
+create_notification_topic    = true
+enable_datasafe_drift_events = true
 # For a profile-backed local E2E when OCIR credentials are unavailable:
 # deploy_function = false

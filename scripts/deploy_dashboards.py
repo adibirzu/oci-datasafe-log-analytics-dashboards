@@ -27,7 +27,7 @@ def replace_compartment(value, compartment_id: str):
 
 def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--profile", default="cap")
+    parser.add_argument("--profile", required=True)
     parser.add_argument("--compartment-id", required=True)
     parser.add_argument("--dry-run", action="store_true")
     parser.add_argument(
