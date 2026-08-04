@@ -14,7 +14,7 @@ dependencies = ["oci>=2.181.1,<3"]
 [project.optional-dependencies]
 function = ["fdk>=0.1.93,<1"]
 dev = [
-  "pytest>=8.4,<9",
+  "pytest>=9.0.3,<10",
   "pytest-cov>=6.2,<7",
   "ruff>=0.12,<1",
 ]
