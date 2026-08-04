@@ -5,15 +5,26 @@ from __future__ import annotations
 
 import argparse
 import json
+import sys
 from collections import Counter
+from pathlib import Path
 
 import oci
-from setup_log_analytics_content import (
+
+SCRIPT_DIR = Path(__file__).resolve().parent
+PROJECT_SRC = SCRIPT_DIR.parent / "src"
+for import_path in (SCRIPT_DIR, PROJECT_SRC):
+    if str(import_path) not in sys.path:
+        sys.path.insert(0, str(import_path))
+
+from setup_log_analytics_content import (  # noqa: E402
     PARSER_NAME,
     SOURCE_DISPLAY,
     SOURCE_INTERNAL,
     namespace_for,
 )
+
+EXPECTED_DASHBOARD_COUNT = 8
 
 
 def _all(call, *args, **kwargs):
@@ -117,14 +128,12 @@ def discover(
         and checks["source_display_name_correct"]
         and checks["source_parser_attached"]
         and checks["parser_present"]
-        and checks["dashboard_unique_names"] == 7
+        and checks["dashboard_unique_names"] == EXPECTED_DASHBOARD_COUNT
         and checks["dashboard_duplicate_count"] == 0
         and checks["connector_active"]
     )
     return {
         "schemaVersion": "1.0",
-        "profile": profile,
-        "region": config["region"],
         "checks": checks,
         "inventory": {
             "target_lifecycle_states": dict(sorted(target_states.items())),
@@ -153,5 +162,17 @@ def main() -> int:
     return 2 if args.strict and not report["ready"] else 0
 
 
+def safe_main() -> int:
+    """Keep OCI failures from leaking service metadata to operator output."""
+    try:
+        return main()
+    except oci.exceptions.ServiceError:
+        print(json.dumps({"status": "error", "reason": "oci_service_error"}))
+        return 2
+    except Exception:  # noqa: BLE001
+        print(json.dumps({"status": "error", "reason": "runtime_error"}))
+        return 1
+
+
 if __name__ == "__main__":
-    raise SystemExit(main())
+    raise SystemExit(safe_main())

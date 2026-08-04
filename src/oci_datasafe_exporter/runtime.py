@@ -19,6 +19,15 @@ def resource_principal_clients() -> tuple[Any, Any, Any, str]:
     )
 
 
+def resource_principal_detection_clients() -> tuple[Any, Any]:
+    """Build only the clients needed to reconcile managed detections."""
+    signer = oci.auth.signers.get_resource_principals_signer()
+    return (
+        oci.log_analytics.LogAnalyticsClient({}, signer=signer),
+        oci.management_dashboard.DashxApisClient({}, signer=signer),
+    )
+
+
 def profile_clients(profile: str) -> tuple[Any, Any, Any, str]:
     config = oci.config.from_file(profile_name=profile)
     object_storage = oci.object_storage.ObjectStorageClient(config)

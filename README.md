@@ -135,7 +135,8 @@ docker build --platform linux/arm64 \
 docker push '<REGION_KEY>.ocir.io/<NAMESPACE>/<REPOSITORY>:<IMMUTABLE_TAG>'
 ```
 
-Use a unique immutable tag or digest for every release.
+Use a unique immutable tag for every release. OCI Functions requires that tag
+form and does not accept an image digest reference.
 
 ## Deploy to OCI
 
@@ -176,7 +177,7 @@ variables file. Without `--apply`, it stops after producing and summarizing the
 reviewed plan:
 
 ```bash
-PYTHONPATH=src python3 scripts/deploy_all.py \
+python3 scripts/deploy_all.py \
   --profile <OCI_PROFILE> \
   --data-safe-compartment-id <DATA_SAFE_COMPARTMENT_OCID> \
   --solution-compartment-id <SOLUTION_COMPARTMENT_OCID> \
@@ -190,15 +191,16 @@ source/parser contract, reconciles detection searches and schedules, imports
 the dashboard suite with duplicate cleanup, invokes the newly deployed
 Function, requires a positive export, runs live data/query/dashboard/inventory
 acceptance, and finishes with strict redacted discovery. Resource Manager uses
-the same generated root Terraform package
-through the Deploy to OCI button; the SDK detection phase remains an explicit
-post-apply operation.
+the same generated root Terraform package through the Deploy to OCI button.
+When detections are enabled, the packaged Function reconciles the same
+saved-search and scheduled-task contract on its first scheduled or synchronous
+invocation; no workstation profile or post-apply provisioner is required.
 
-After a Deploy-to-OCI stack succeeds, run the detection reconciliation from a
-trusted operator workstation:
+For an operator-initiated repair or an immediate reconciliation before the
+first schedule runs, use:
 
 ```bash
-PYTHONPATH=src python scripts/deploy_detections.py \
+python scripts/deploy_detections.py \
   --profile <OCI_PROFILE> \
   --compartment-id <SOLUTION_COMPARTMENT_OCID> \
   --deployment-name <DEPLOYMENT_NAME> \
@@ -212,7 +214,7 @@ deployment-prefixed schedules in the catalog.
 Read-only inventory and drift diagnosis:
 
 ```bash
-PYTHONPATH=src python3 scripts/discover.py \
+python3 scripts/discover.py \
   --profile <OCI_PROFILE> \
   --data-safe-compartment-id <DATA_SAFE_COMPARTMENT_OCID> \
   --solution-compartment-id <SOLUTION_COMPARTMENT_OCID> \
@@ -224,11 +226,11 @@ Terraform owns the Log Analytics content and dashboard imports. The scripts
 remain available for focused repair or validation:
 
 ```bash
-PYTHONPATH=src python scripts/setup_log_analytics_content.py \
+python scripts/setup_log_analytics_content.py \
   --profile <OCI_PROFILE> \
   --compartment-id '<COMPARTMENT_OCID>'
 
-PYTHONPATH=src python scripts/deploy_dashboards.py \
+python scripts/deploy_dashboards.py \
   --profile <OCI_PROFILE> \
   --compartment-id '<COMPARTMENT_OCID>'
 ```
@@ -239,7 +241,7 @@ Invoke the exporter, wait for Connector Hub ingestion, parse every query, and
 verify all eight dashboards and the detection/alarm inventory:
 
 ```bash
-PYTHONPATH=src python scripts/e2e.py \
+python scripts/e2e.py \
   --profile <OCI_PROFILE> \
   --compartment-id '<COMPARTMENT_OCID>' \
   --invoke-function-id '<FUNCTION_OCID>' \
@@ -247,11 +249,24 @@ PYTHONPATH=src python scripts/e2e.py \
   --deploy-dashboards
 ```
 
-The receipt is written under ignored `evidence/live/`. E2E success requires a
-real schema-v2 Log Analytics row, a positive Function export count when
+The verifier allows up to ten minutes by default for the asynchronous
+Logging-to-Log-Analytics Connector Hub path. Override `--poll-seconds` only
+when the target's measured ingestion latency justifies a different bound.
+
+The receipt is written under ignored `evidence/live/`. E2E validation is
+read-only unless `--deploy-dashboards` or `--reconcile-content` is explicitly
+supplied. The latter repairs the Log Analytics field/parser/source contract;
+use it only after reviewing the target context. E2E success requires a real
+schema-v2 Log Analytics row, a positive Function export count when
 `--require-function-export` is used, and, when deployment is requested, all
 dashboards to be present. Query syntax success or HTTP 200 alone is not treated
 as end-to-end proof.
+
+With `enable_detections=true`, both deployment paths are unattended: direct
+deployment invokes the same Function during E2E, and Resource Manager's first
+scheduled Function invocation reconciles the detection saved searches and
+tasks. No local OCI profile, provisioner, or tenant value is packaged in the
+Resource Manager archive.
 
 ## Scoped destroy
 

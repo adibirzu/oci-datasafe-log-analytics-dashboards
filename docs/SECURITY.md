@@ -21,6 +21,15 @@ The function can:
 - manage objects only in the named cursor bucket;
 - read the Object Storage namespace.
 
+When `enable_detections=true`, it additionally manages only solution-owned
+Management Dashboard saved searches and Log Analytics scheduled tasks in the
+selected solution compartment. This lets the Resource Manager path reconcile
+the provider-missing scheduled-task action field without a local profile,
+workstation credential, or provisioner. Disable detections to omit these two
+permissions. OCI scopes scheduled-task use and saved-search management at
+tenancy level; the reconciler still owns only its exact deployment-prefixed
+searches and schedules.
+
 Resource Scheduler can invoke functions in the solution compartment. Connector
 Hub can read Logging content in the solution compartment and write only the
 specified Log Analytics log group.

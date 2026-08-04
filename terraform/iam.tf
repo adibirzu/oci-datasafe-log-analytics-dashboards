@@ -35,12 +35,15 @@ resource "oci_identity_policy" "function" {
   name           = replace("${var.deployment_name}-function-policy", "-", "_")
   description    = "Least-privilege Data Safe audit export permissions."
   freeform_tags  = local.tags
-  statements = [
+  statements = concat([
     "Allow dynamic-group ${oci_identity_dynamic_group.function[0].name} to read data-safe-audit-events ${local.data_safe_iam_scope}",
     "Allow dynamic-group ${oci_identity_dynamic_group.function[0].name} to use log-content in compartment id ${var.compartment_ocid}",
     "Allow dynamic-group ${oci_identity_dynamic_group.function[0].name} to manage objects in compartment id ${var.compartment_ocid} where target.bucket.name='${oci_objectstorage_bucket.cursor.name}'",
     "Allow dynamic-group ${oci_identity_dynamic_group.function[0].name} to read objectstorage-namespaces in tenancy",
-  ]
+    ], var.enable_detections ? [
+    "Allow dynamic-group ${oci_identity_dynamic_group.function[0].name} to manage management-saved-search in tenancy",
+    "Allow dynamic-group ${oci_identity_dynamic_group.function[0].name} to use loganalytics-scheduled-task in tenancy",
+  ] : [])
 }
 
 resource "oci_identity_policy" "scheduler" {

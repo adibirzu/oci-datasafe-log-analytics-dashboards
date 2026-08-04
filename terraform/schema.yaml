@@ -81,7 +81,7 @@ variables:
   function_image:
     type: string
     title: "Function image"
-    description: "Published multi-architecture OCIR image URL with an immutable version tag."
+    description: "Published multi-architecture OCIR image URL with a unique immutable version tag. OCI Functions does not accept a digest reference."
     required: true
 
   schedule_interval:

@@ -1,12 +1,22 @@
 # Detection and alarm contract
 
-Terraform creates eight Monitoring alarms. `scripts/deploy_detections.py`
-idempotently owns the eight exact-name Log Analytics saved searches and their
-scheduled tasks through the OCI SDK, including the `savedSearchDuration` field
-currently absent from the Terraform provider resource. The searches are bound
-to the customer-selected Log Analytics log group. The schedules emit metrics
-in the customer-owned `datasafe_audit` namespace. No tenancy identifier,
-database name, user name, or sample record is embedded in the rules.
+Terraform creates eight Monitoring alarms. The Function idempotently reconciles
+the eight exact-name Log Analytics saved searches and scheduled tasks on every
+scheduled or synchronous invocation when `enable_detections=true`.
+`scripts/deploy_detections.py` uses the same reconciliation contract for direct
+operator runs. This is necessary because the Terraform provider scheduled-task
+resource does not expose the `savedSearchDuration` action field. The searches
+are bound to the customer-selected Log Analytics log group. The schedules emit
+metrics in the customer-owned `datasafe_audit` namespace. No tenancy
+identifier, database name, user name, or sample record is embedded in the
+rules.
+
+Resource Manager therefore has no post-apply workstation step: its first
+Function invocation creates or updates the searches and schedules. The
+Function policy receives saved-search and scheduled-task permissions only when
+detections are enabled, and only in the selected solution compartment.
+The Function uses bounded retry delays so reconciliation stays within its
+configured invocation timeout.
 
 | Rule | Default trigger | Severity |
 |---|---:|---|

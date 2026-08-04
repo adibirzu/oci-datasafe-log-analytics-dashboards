@@ -9,22 +9,24 @@ A production acceptance run must prove:
 
 1. the selected OCI context authenticates and Log Analytics is onboarded;
 2. at least one active Data Safe target has recent real audit activity;
-3. the Function invocation exports a schema-v2 event;
+3. the Function invocation exports a schema-v2 event and its opaque
+   per-invocation marker appears in Log Analytics;
 4. OCI Logging contains the custom record and Connector Hub is active;
 5. Log Analytics returns a positive count and non-zero target, user, and
    operation dimensions;
 6. every canonical query parses;
 7. exactly one copy of each of the eight dashboards exists;
-8. all eight scheduled detections exist and are healthy;
-9. all eight Monitoring alarms exist;
+8. all eight scheduled detections exist, are active and ready, and have no
+   recorded failed execution;
+9. all eight Monitoring alarms exist, are active, and are enabled;
 10. a follow-up Terraform plan shows no unexpected drift.
 
 `scripts/e2e.py` directly proves items 3, 5, 6, and 7 and verifies the expected
-counts for items 8 and 9. It does not inspect OCI Logging records, Connector Hub
-run history, scheduled-task lifecycle/last-run health, alarm enabled state, or
-Terraform drift. Items 4, 8, 9, and 10 therefore require the service-level
-checks in `docs/OPERATIONS.md` in addition to the automated gate. Resource
-presence is not health evidence.
+counts and control-plane health for items 8 and 9. It does not inspect OCI
+Logging records, Connector Hub run history, or Terraform drift. Items 4 and 10
+therefore require the service-level checks in `docs/OPERATIONS.md` in addition
+to the automated gate. The scheduled-task check accepts a newly created ready
+task with no execution result, but fails a recorded execution failure.
 
 ## Privacy-safe render evidence
 
@@ -49,6 +51,12 @@ PYTHONPATH=src python scripts/e2e.py \
   --require-function-export \
   --deploy-dashboards
 ```
+
+The command is read-only except for explicitly requested `--deploy-dashboards`
+or `--reconcile-content`. `scripts/deploy_all.py --apply` already performs the
+content reconciliation before this gate, so the normal post-deployment E2E run
+does not need `--reconcile-content`. The default ten-minute poll accommodates
+the asynchronous Connector Hub delivery path while remaining bounded.
 
 Write evidence only to an approved external evidence store. The default local
 `evidence/live/` path is ignored by Git and must be removed when no longer

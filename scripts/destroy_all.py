@@ -36,15 +36,11 @@ def delete_dashboards(profile: str, compartment_id: str) -> int:
         if item.display_name not in expected:
             continue
         current = client.get_management_dashboard(item.id)
-        client.delete_management_dashboard(
-            item.id, if_match=current.headers.get("etag")
-        )
+        client.delete_management_dashboard(item.id, if_match=current.headers.get("etag"))
         removed += 1
     remaining = {
         item.display_name
-        for item in client.list_management_dashboards(
-            compartment_id=compartment_id
-        ).data.items
+        for item in client.list_management_dashboards(compartment_id=compartment_id).data.items
         if item.display_name in expected
     }
     if remaining:
@@ -52,9 +48,7 @@ def delete_dashboards(profile: str, compartment_id: str) -> int:
     return removed
 
 
-def delete_detection_schedules(
-    profile: str, compartment_id: str, deployment_name: str
-) -> int:
+def delete_detection_schedules(profile: str, compartment_id: str, deployment_name: str) -> int:
     config = oci.config.from_file(profile_name=profile)
     client = oci.log_analytics.LogAnalyticsClient(config)
     namespace = client.list_namespaces(config["tenancy"]).data.items[0].namespace_name
@@ -73,9 +67,7 @@ def delete_detection_schedules(
     return removed
 
 
-def delete_detection_searches(
-    profile: str, compartment_id: str, deployment_name: str
-) -> int:
+def delete_detection_searches(profile: str, compartment_id: str, deployment_name: str) -> int:
     config = oci.config.from_file(profile_name=profile)
     client = oci.management_dashboard.DashxApisClient(config)
     titles = {
@@ -91,9 +83,7 @@ def delete_detection_searches(
         if item.display_name not in titles:
             continue
         current = client.get_management_saved_search(item.id)
-        client.delete_management_saved_search(
-            item.id, if_match=current.headers.get("etag")
-        )
+        client.delete_management_saved_search(item.id, if_match=current.headers.get("etag"))
         removed += 1
     return removed
 

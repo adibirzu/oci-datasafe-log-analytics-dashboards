@@ -4,9 +4,7 @@ from pathlib import Path
 from types import SimpleNamespace
 
 ROOT = Path(__file__).resolve().parents[1]
-SPEC = importlib.util.spec_from_file_location(
-    "deploy_all", ROOT / "scripts" / "deploy_all.py"
-)
+SPEC = importlib.util.spec_from_file_location("deploy_all", ROOT / "scripts" / "deploy_all.py")
 MODULE = importlib.util.module_from_spec(SPEC)
 assert SPEC.loader
 SPEC.loader.exec_module(MODULE)
@@ -14,7 +12,7 @@ SPEC.loader.exec_module(MODULE)
 
 def test_apply_invokes_new_function_and_requires_export(monkeypatch, tmp_path):
     tfvars = tmp_path / "terraform.tfvars"
-    tfvars.write_text("deployment_name = \"example\"\n")
+    tfvars.write_text('deployment_name = "example"\n')
     commands = []
 
     def fake_run(command, *, capture=False):

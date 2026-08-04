@@ -38,6 +38,12 @@ def test_dashboard_suite_recreates_data_safe_landing_and_insights():
     assert {"Failed Login Detections", "Privilege & Entitlement Changes"} <= titles
 
 
+def test_discovery_expects_the_full_eight_dashboard_suite():
+    discover_source = (ROOT / "scripts" / "discover.py").read_text()
+    assert "EXPECTED_DASHBOARD_COUNT = 8" in discover_source
+    assert 'checks["dashboard_unique_names"] == EXPECTED_DASHBOARD_COUNT' in discover_source
+
+
 def test_all_tiles_are_in_bounds_and_non_overlapping():
     for dashboard in MODULE.build_bundle()["dashboards"]:
         occupied = set()
@@ -57,12 +63,8 @@ def test_committed_bundle_is_current():
 
 def test_dashboard_scope_uses_runtime_parameters_not_invalid_log_group_ocids():
     for dashboard in MODULE.build_bundle()["dashboards"]:
-        parameters = {
-            item["paramName"]: item for item in dashboard["parametersConfig"]
-        }
-        assert parameters["log-analytics-loggroup-filter"]["defaultValue"] == (
-            "${compartment_id}"
-        )
+        parameters = {item["paramName"]: item for item in dashboard["parametersConfig"]}
+        assert parameters["log-analytics-loggroup-filter"]["defaultValue"] == ("${compartment_id}")
         assert parameters["time"]["defaultValue"] == "l7d"
         assert "log-analytics-entity-filter" in parameters
         for saved_search in dashboard["savedSearches"]:
@@ -74,9 +76,7 @@ def test_dashboard_scope_uses_runtime_parameters_not_invalid_log_group_ocids():
                 }
             ]
             assert scope["LogGroup"]["flags"]["IncludeSubCompartments"] is True
-            assert scope["Entity"]["flags"]["ScopeCompartmentId"] == (
-                "${compartment_id}"
-            )
+            assert scope["Entity"]["flags"]["ScopeCompartmentId"] == ("${compartment_id}")
             assert scope["filters"][0]["type"] == "LogGroup"
             assert scope["isGlobal"] is False
         for tile in dashboard["tiles"]:
@@ -91,9 +91,9 @@ def test_saved_searches_use_current_log_analytics_widget_contract():
         for dashboard in MODULE.build_bundle()["dashboards"]
         for search in dashboard["savedSearches"]
     ]
-    assert {
-        search["widgetTemplate"] for search in searches
-    } == {"visualizations/chartWidgetTemplate.html"}
-    assert {
-        search["widgetVM"] for search in searches
-    } == {"jet-modules/dashboards/widgets/lxSavedSearchWidget"}
+    assert {search["widgetTemplate"] for search in searches} == {
+        "visualizations/chartWidgetTemplate.html"
+    }
+    assert {search["widgetVM"] for search in searches} == {
+        "jet-modules/dashboards/widgets/lxSavedSearchWidget"
+    }

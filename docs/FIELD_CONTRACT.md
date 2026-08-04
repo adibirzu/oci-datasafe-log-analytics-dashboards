@@ -39,8 +39,11 @@ returned on `AuditEventSummary`. The Function queries each Data Safe
 classifier over the exact bounded collection-time window and joins matching
 event IDs into the exported records as numeric `0`/`1` fields.
 
-Every record also includes `schema_version=2.0`. The portable content bundle
-contains 43 reader-facing Log Analytics fields (including Schema Version),
+Every record also includes `schema_version=2.0`. An E2E-triggered export also
+includes an opaque, per-invocation `export_run_id`; it is used only to prove
+that the newly invoked Function reached Log Analytics and is not shown in
+dashboards or public evidence. The portable content bundle contains 44
+reader-facing Log Analytics fields (including Schema Version and Export Run ID),
 the JSON parser, and the canonical source. Built-in Log Analytics fields are
 reused rather than duplicated.
 

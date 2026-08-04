@@ -54,6 +54,7 @@ FIELD_ALIASES = {
     "application_contexts": "Application Contexts",
     "extended_event_attributes": "Extended Event Attributes",
     "fga_policy_name": "FGA Policy Name",
+    "export_run_id": "Export Run ID",
 }
 
 COMPLEX_STRING_FIELDS = {

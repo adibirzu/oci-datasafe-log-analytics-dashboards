@@ -162,7 +162,7 @@ class AuditExporter:
         )
         self.logging.put_logs(self.config.logging_log_id, details)
 
-    def run(self) -> ExportResult:
+    def run(self, export_run_id: str | None = None) -> ExportResult:
         start, end, loaded = self._window()
         raw_events, truncated = self._list_events(start, end)
         classifier_end = end
@@ -180,6 +180,8 @@ class AuditExporter:
             for wire_name, ids in classified.items():
                 enriched[wire_name] = 1 if raw_id in ids else 0
             item = normalize_event(enriched, self.config)
+            if export_run_id:
+                item["export_run_id"] = export_run_id
             if event_id(item) in seen:
                 duplicates += 1
                 continue

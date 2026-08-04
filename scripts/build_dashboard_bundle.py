@@ -169,9 +169,7 @@ def _place(queries: list[tuple[str, dict]]) -> list[dict]:
                 "state": "DEFAULT",
                 "drilldownConfig": [],
                 "parametersMap": {
-                    "log-analytics-entity": (
-                        "$(dashboard.params.log-analytics-entity-filter)"
-                    ),
+                    "log-analytics-entity": ("$(dashboard.params.log-analytics-entity-filter)"),
                     "log-analytics-log-group-compartment": (
                         "$(dashboard.params.log-analytics-loggroup-filter)"
                     ),

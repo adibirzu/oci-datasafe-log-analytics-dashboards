@@ -87,7 +87,7 @@ variable "function_subnet_ocid" {
 }
 
 variable "function_image" {
-  description = "Immutable OCIR image URL including a digest or unique tag."
+  description = "OCIR image URL with a unique immutable tag; OCI Functions does not accept a digest reference here."
   type        = string
   default     = null
   nullable    = true

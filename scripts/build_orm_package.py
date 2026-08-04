@@ -31,9 +31,7 @@ def package_files() -> dict[str, bytes]:
     files["content/oci-datasafe-log-analytics-content.zip"] = (
         TERRAFORM / "content" / "oci-datasafe-log-analytics-content.zip"
     ).read_bytes()
-    files["dashboard_bundle.json"] = (
-        ROOT / "dashboards" / "generated_bundle.json"
-    ).read_bytes()
+    files["dashboard_bundle.json"] = (ROOT / "dashboards" / "generated_bundle.json").read_bytes()
     return files
 
 
